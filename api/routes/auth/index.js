@@ -1,10 +1,10 @@
 import { Router } from 'express'
-// import passport from 'passport'
+import passport from 'passport'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import find from 'lodash/find'
 import { SECRET } from '../../env'
 import { MultiAccountUser } from './modal'
+import omit from 'lodash/omit'
 
 const router = Router()
 
@@ -22,7 +22,7 @@ router.post('/register', async (req, res) => {
     const user = new MultiAccountUser({
       username,
       email,
-      accounts: [{ password: passwordHash }]
+      password: passwordHash
     })
     await user.save()
     res.status(200).json({ username, message: 'Sign up suceesfully' })
@@ -30,6 +30,34 @@ router.post('/register', async (req, res) => {
     res.status(400).json({ error })
   }
 })
+
+router.get('/auth/facebook', passport.authenticate('facebook'))
+
+router.get(
+  '/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    session: false,
+    failureRedirect: '/login'
+  }),
+  (req, res) => {
+    const payload = {
+      id: req.user.id,
+      expires: Date.now() + 3 * 60 * 60 * 1000
+    }
+
+    req.login(payload, { session: false }, (error) => {
+      if (error) res.status(400).json({ message: error })
+
+      const token = jwt.sign(JSON.stringify(payload), SECRET)
+
+      res.status(200).json({
+        id: req.user.id,
+        token,
+        message: 'Sign in successfully'
+      })
+    })
+  }
+)
 
 /**
  * @name login - get user token
@@ -43,13 +71,10 @@ router.post('/login', async (req, res) => {
   try {
     const user = await MultiAccountUser.findOne({ username }).lean()
     if (password) {
-      const passwordsMatch = await bcrypt.compare(
-        password,
-        find(user.accounts, 'password').password
-      )
+      const passwordsMatch = await bcrypt.compare(password, user.password)
       if (passwordsMatch) {
         const payload = {
-          username: user.username,
+          id: user._id,
           expires: Date.now() + 3 * 60 * 60 * 1000
         }
 
@@ -61,7 +86,7 @@ router.post('/login', async (req, res) => {
           res.status(200).json({
             username: user.username,
             token,
-            message: 'Sign in suceesfully'
+            message: 'Sign in successfully'
           })
         })
       } else {
@@ -74,5 +99,25 @@ router.post('/login', async (req, res) => {
     res.status(400).json({ message: error })
   }
 })
+
+router.get('/logout', async (req, res) => {
+  try {
+    await req.session.destroy()
+    await req.logout()
+    res.status(200).json({ message: 'logout' })
+  } catch (error) {
+    res.status(400).json({ message: error })
+  }
+})
+
+router.get(
+  '/profile',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    console.log('req res', req.user)
+    const { user } = await req
+    res.status(200).json(omit(user, ['password', 'role']))
+  }
+)
 
 export default router

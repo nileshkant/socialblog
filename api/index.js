@@ -4,12 +4,13 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import compression from 'compression'
 import morgan from 'morgan'
+// import session from 'express-session'
 import * as Sentry from '@sentry/node'
 import routes from './core/rest'
 import { RATE_LIMIT, SENTRY_DNS } from './env'
 import passport from './core/passport'
-// eslint-disable-next-line no-unused-vars
-import db from './core/mongoose'
+import './core/mongoose'
+// const MongoStore = require('connect-mongo')(session)
 
 // Create express instance
 const app = express()
@@ -26,9 +27,17 @@ app.use(compression())
 app.use(morgan('tiny'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+// app.use(
+//   session({
+//     store: new MongoStore({ mongooseConnection: db }),
+//     name: 'sid',
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: SECRET
+//   })
+// )
 app.use(passport.initialize())
 app.use(passport.session())
-
 if (process.env.NODE_ENV === 'production')
   app.use(Sentry.Handlers.requestHandler())
 

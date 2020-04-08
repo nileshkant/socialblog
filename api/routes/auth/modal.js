@@ -1,30 +1,32 @@
 import mongoose, { Schema } from 'mongoose'
 
-const accountType = new Schema({
-  kind: {
-    type: String,
-    enum: ['internal', 'google', 'facebook'],
-    default: 'internal'
-  },
-  uid: {
-    type: String,
-    required() {
-      return this.kind !== 'internal'
-    }
-  },
-  password: {
-    type: String,
-    required() {
-      return this.kind === 'internal'
-    }
-  }
-})
+// const accountType = new Schema({
+//   kind: {
+//     type: String,
+//     enum: ['internal', 'google', 'facebook'],
+//     default: 'internal'
+//   },
+//   uid: {
+//     type: String,
+//     required() {
+//       return this.kind !== 'internal'
+//     }
+//   },
+//   password: {
+//     type: String,
+//     required() {
+//       return this.kind === 'internal'
+//     }
+//   }
+// })
 
 const userMultiAccountSchema = new Schema({
   username: {
-    type: String,
-    required: true,
-    unique: true
+    type: String
+    // required: true,
+    // unique() {
+    //   return !this.facebook.id || !this.googleId
+    // }
   },
   email: {
     type: String,
@@ -35,19 +37,38 @@ const userMultiAccountSchema = new Schema({
         )
       },
       message: ({ value }) => `${value} is not a valid email format`
-    },
-    required: true,
-    unique: true
+    }
+    // required: true,
+    // unique() {
+    //   return !this.facebook.id || !this.googleId
+    // }
   },
   accountCreatedDate: {
     type: Date,
     default: Date.now
   },
-  accounts: [accountType],
+  password: {
+    type: String
+  },
+
+  gender: {
+    type: String
+  },
+
+  facebook: {
+    id: { type: String },
+    profilePic: { type: String },
+    displayName: { type: String }
+  },
+
+  googleId: {
+    type: String
+  },
+  //   accounts: [accountType],
   role: {
     type: String,
     enum: ['admin', 'user'],
-    default: 'user'
+    default: 'admin'
   },
   permissions: [
     {

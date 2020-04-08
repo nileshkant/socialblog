@@ -10,6 +10,12 @@
           </small>
         </footer>
       </blockquote>
+      <a
+        href="http://127.0.0.1:3000/api/authentication/auth/facebook"
+        class="button--grey"
+      >
+        facebook Login
+      </a>
     </v-flex>
   </v-layout>
 </template>
