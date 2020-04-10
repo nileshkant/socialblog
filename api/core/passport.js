@@ -4,29 +4,17 @@ import { Strategy as FacebookStrategy } from 'passport-facebook'
 import { SECRET, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../env'
 import { MultiAccountUser } from '../routes/auth/modal'
 
-// passport.serializeUser(function(user, done) {
-//   console.log('user', user)
-//   done(null, user.id)
-// })
-
-// passport.deserializeUser(function(id, done) {
-//   console.log('userID', id)
-//   MultiAccountUser.findById(id, function(err, user) {
-//     done(err, user)
-//   })
-// })
-
 passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: SECRET
     },
-    async (jwtPayload, done) => {
+    (jwtPayload, done) => {
       try {
         if (Date.now() > jwtPayload.expires) return done('Token expired')
-        const user = await MultiAccountUser.findById(jwtPayload.id).lean()
-        return done(null, user)
+        console.log('jwtpayload', jwtPayload)
+        return done(null, jwtPayload.userDetails)
       } catch (error) {
         return done(error)
       }

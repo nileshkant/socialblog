@@ -2,11 +2,39 @@ import { Router } from 'express'
 import passport from 'passport'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { SECRET } from '../../env'
-import { MultiAccountUser } from './modal'
 import omit from 'lodash/omit'
+import {
+  SECRET,
+  TOKEN_EXPIRE_TIME,
+  REFRESH_TOKEN_EXPIRE_TIME,
+  REFRESH_TOKEN_SECRET
+} from '../../env'
+import { MultiAccountUser } from './modal'
 
 const router = Router()
+
+const jwtLogin = (req, res, user, id) => {
+  const userDetails = omit(user, ['password'])
+  const payload = {
+    userDetails,
+    expires: TOKEN_EXPIRE_TIME
+  }
+
+  req.login(payload, { session: false }, (error) => {
+    if (error) res.status(400).json({ message: error })
+
+    const token = jwt.sign(JSON.stringify(payload), SECRET)
+    const refreshToken = jwt.sign(
+      JSON.stringify({ ...payload, expires: REFRESH_TOKEN_EXPIRE_TIME }),
+      REFRESH_TOKEN_SECRET
+    )
+    res.status(200).json({
+      userDetails,
+      token,
+      refreshToken
+    })
+  })
+}
 
 /**
  * @name register - Register an account
@@ -16,7 +44,19 @@ const router = Router()
  */
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body
+  if (!username || !password || !email) {
+    res.status(400).json({ message: 'Please provide valid details' })
+  }
 
+  const user = await MultiAccountUser.findOne({ email }).lean()
+  if (user && user.email) {
+    res.status(400).json({ message: 'User already exist' })
+    return
+  }
+  if (user && user.username) {
+    res.status(400).json({ message: 'Username already exist' })
+    return
+  }
   try {
     const passwordHash = await bcrypt.hash(password, 10)
     const user = new MultiAccountUser({
@@ -40,22 +80,7 @@ router.get(
     failureRedirect: '/login'
   }),
   (req, res) => {
-    const payload = {
-      id: req.user.id,
-      expires: Date.now() + 3 * 60 * 60 * 1000
-    }
-
-    req.login(payload, { session: false }, (error) => {
-      if (error) res.status(400).json({ message: error })
-
-      const token = jwt.sign(JSON.stringify(payload), SECRET)
-
-      res.status(200).json({
-        id: req.user.id,
-        token,
-        message: 'Sign in successfully'
-      })
-    })
+    jwtLogin(req, res, req.user, req.user.id)
   }
 )
 
@@ -73,22 +98,7 @@ router.post('/login', async (req, res) => {
     if (password) {
       const passwordsMatch = await bcrypt.compare(password, user.password)
       if (passwordsMatch) {
-        const payload = {
-          id: user._id,
-          expires: Date.now() + 3 * 60 * 60 * 1000
-        }
-
-        req.login(payload, { session: false }, (error) => {
-          if (error) res.status(400).json({ message: error })
-
-          const token = jwt.sign(JSON.stringify(payload), SECRET)
-
-          res.status(200).json({
-            username: user.username,
-            token,
-            message: 'Sign in successfully'
-          })
-        })
+        jwtLogin(req, res, user, user._id)
       } else {
         res.status(400).json({ message: 'Incorrect Username / Password' })
       }
@@ -116,8 +126,21 @@ router.get(
   async (req, res) => {
     console.log('req res', req.user)
     const { user } = await req
-    res.status(200).json(omit(user, ['password', 'role']))
+    res.status(200).json(omit(user, ['password']))
   }
 )
+
+router.post('/getToken', async (req, res) => {
+  const { refreshToken } = req.body
+  const tokenData = await jwt.decode(refreshToken, REFRESH_TOKEN_SECRET)
+  console.log('token data', tokenData)
+  if (Date.now() > tokenData.expires)
+    return res.status(400).json({ message: 'invalid token' })
+  const newToken = jwt.sign(
+    JSON.stringify({ ...tokenData, expires: TOKEN_EXPIRE_TIME }),
+    SECRET
+  )
+  res.status(200).json({ token: newToken })
+})
 
 export default router
