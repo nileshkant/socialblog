@@ -1,25 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
 
-// const accountType = new Schema({
-//   kind: {
-//     type: String,
-//     enum: ['internal', 'google', 'facebook'],
-//     default: 'internal'
-//   },
-//   uid: {
-//     type: String,
-//     required() {
-//       return this.kind !== 'internal'
-//     }
-//   },
-//   password: {
-//     type: String,
-//     required() {
-//       return this.kind === 'internal'
-//     }
-//   }
-// })
-
 const userMultiAccountSchema = new Schema({
   username: {
     type: String

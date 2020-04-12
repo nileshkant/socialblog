@@ -14,3 +14,9 @@ export const REFRESH_TOKEN_EXPIRE_TIME =
   process.env.REFRESH_TOKEN_EXPIRE_TIME || Date.now() + 30 * 24 * 60 * 60 * 1000
 
 export const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET
+
+export const CLOUDINARY_CONFIG = {
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KRY,
+  api_secret: process.env.CLOUDINARY_SECRET
+}

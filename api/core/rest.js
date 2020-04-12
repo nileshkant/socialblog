@@ -1,5 +1,8 @@
 import { Router } from 'express'
 import authentication from '../routes/auth/index'
+import uploadFile from '../routes/uploadFile'
+import article from '../routes/article'
+
 // import blog from '~/blog/rest'
 
 const router = Router()
@@ -11,6 +14,7 @@ router.get('/', (req, res) => {
 // router.use('/hello-world', helloWorld);
 // router.use('/crud-operations', crudOperations);
 router.use('/authentication', authentication)
-// router.use('/blog', blog)
+router.use('/upload-file', uploadFile)
+router.use('/article', article)
 
 export default router
