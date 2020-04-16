@@ -45,11 +45,15 @@
     "nuxt": "^2.0.0",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "tiptap": "^1.27.0",
+    "tiptap-extensions": "^1.29.0",
+    "vue-resize": "^0.5.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
     "@nuxtjs/eslint-module": "^1.0.0",
+    "@nuxtjs/style-resources": "^1.0.0",
     "@nuxtjs/vuetify": "^1.0.0",
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-eslint": "^10.0.1",
@@ -61,8 +65,10 @@
     "husky": "^4.0.0",
     "jest": "^24.1.0",
     "lint-staged": "^10.0.0",
+    "node-sass": "^4.13.1",
     "nodemon": "^1.18.9",
     "prettier": "^1.19.1",
+    "sass-loader": "^8.0.2",
     "vue-jest": "^4.0.0-0"
   }
 }

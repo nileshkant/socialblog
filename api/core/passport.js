@@ -13,7 +13,6 @@ passport.use(
     (jwtPayload, done) => {
       try {
         if (Date.now() > jwtPayload.expires) return done('Token expired')
-        console.log('jwtpayload', jwtPayload)
         return done(null, jwtPayload.userDetails)
       } catch (error) {
         return done(error)

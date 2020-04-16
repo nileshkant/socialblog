@@ -1,0 +1,109 @@
+@font-face {
+  font-family: 'tiptap';
+  src: url('../tiptap/tiptap.eot?nu54es');
+  src: url('../tiptap/tiptap.eot?nu54es#iefix') format('embedded-opentype'),
+    url('../tiptap/tiptap.ttf?nu54es') format('truetype'),
+    url('../tiptap/tiptap.woff?nu54es') format('woff'),
+    url('../tiptap/tiptap.svg?nu54es#tiptap') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^='icon-'],
+[class*=' icon-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'tiptap' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add_col_after:before {
+  content: '\e900';
+}
+.icon-add_col_before:before {
+  content: '\e901';
+}
+.icon-add_row_after:before {
+  content: '\e902';
+}
+.icon-add_row_before:before {
+  content: '\e903';
+}
+.icon-bold:before {
+  content: '\e904';
+}
+.icon-checklist:before {
+  content: '\e905';
+}
+.icon-code:before {
+  content: '\e906';
+}
+.icon-combine_cells:before {
+  content: '\e907';
+}
+.icon-delete_col:before {
+  content: '\e908';
+}
+.icon-delete_row:before {
+  content: '\e909';
+}
+.icon-delete_table:before {
+  content: '\e90a';
+}
+.icon-github:before {
+  content: '\e90b';
+}
+.icon-hr:before {
+  content: '\e90c';
+}
+.icon-image:before {
+  content: '\e90d';
+}
+.icon-italic:before {
+  content: '\e90e';
+}
+.icon-link:before {
+  content: '\e90f';
+}
+.icon-mention:before {
+  content: '\e910';
+}
+.icon-ol:before {
+  content: '\e911';
+}
+.icon-paragraph:before {
+  content: '\e912';
+}
+.icon-quote:before {
+  content: '\e913';
+}
+.icon-redo:before {
+  content: '\e914';
+}
+.icon-remove:before {
+  content: '\e915';
+}
+.icon-strike:before {
+  content: '\e916';
+}
+.icon-table:before {
+  content: '\e917';
+}
+.icon-ul:before {
+  content: '\e918';
+}
+.icon-underline:before {
+  content: '\e919';
+}
+.icon-undo:before {
+  content: '\e91a';
+}

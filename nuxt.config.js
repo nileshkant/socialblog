@@ -26,11 +26,11 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~/assets/css/main.css', '~/assets/css/tiptap.css'],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~/plugins/axios', '~/plugins/vue-resize'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -47,21 +47,27 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/style-resources'
   ],
+
+  styleResources: {
+    scss: ['~assets/scss/_main.scss']
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  // axios: {},
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
+    server: true,
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      options: { customProperties: true },
       themes: {
         dark: {
           primary: colors.blue.darken2,
@@ -70,7 +76,19 @@ module.exports = {
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          success: colors.green.accent3,
+          greyAccent: colors.grey.darken2
+        },
+        light: {
+          primary: colors.red.darken2,
+          secondary: colors.deepOrange.accent4,
+          accent: '#323d46',
+          info: '#323d46',
+          success: '#7b9c58',
+          warning: '#f88c20',
+          error: '#f44336',
+          white: '#FFFFFF',
+          greyAccent: colors.grey.lighten2
         }
       }
     }

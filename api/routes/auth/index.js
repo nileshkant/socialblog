@@ -13,7 +13,7 @@ import { MultiAccountUser } from './modal'
 
 const router = Router()
 
-const jwtLogin = (req, res, user, id) => {
+const jwtLogin = (req, res, user, social) => {
   const userDetails = omit(user, ['password'])
   const payload = {
     userDetails,
@@ -28,11 +28,16 @@ const jwtLogin = (req, res, user, id) => {
       JSON.stringify({ ...payload, expires: REFRESH_TOKEN_EXPIRE_TIME }),
       REFRESH_TOKEN_SECRET
     )
-    res.status(200).json({
+    const jsonRes = {
       userDetails,
       token,
       refreshToken
-    })
+    }
+    if (social) {
+      res.redirect(`/callback?res=${JSON.stringify(jsonRes)}`)
+      return
+    }
+    res.status(200).json(jsonRes)
   })
 }
 
@@ -80,7 +85,7 @@ router.get(
     failureRedirect: '/login'
   }),
   (req, res) => {
-    jwtLogin(req, res, req.user, req.user.id)
+    jwtLogin(req, res, req.user, true)
   }
 )
 
@@ -98,7 +103,7 @@ router.post('/login', async (req, res) => {
     if (password) {
       const passwordsMatch = await bcrypt.compare(password, user.password)
       if (passwordsMatch) {
-        jwtLogin(req, res, user, user._id)
+        jwtLogin(req, res, user)
       } else {
         res.status(400).json({ message: 'Incorrect Username / Password' })
       }
@@ -110,37 +115,33 @@ router.post('/login', async (req, res) => {
   }
 })
 
-router.get('/logout', async (req, res) => {
-  try {
-    await req.session.destroy()
-    await req.logout()
-    res.status(200).json({ message: 'logout' })
-  } catch (error) {
-    res.status(400).json({ message: error })
-  }
-})
-
 router.get(
   '/profile',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    console.log('req res', req.user)
-    const { user } = await req
-    res.status(200).json(omit(user, ['password']))
+    try {
+      const { user } = await req
+      res.status(200).json(omit(user, ['password']))
+    } catch (err) {
+      res.send(400, err)
+    }
   }
 )
 
 router.post('/getToken', async (req, res) => {
-  const { refreshToken } = req.body
-  const tokenData = await jwt.decode(refreshToken, REFRESH_TOKEN_SECRET)
-  console.log('token data', tokenData)
-  if (Date.now() > tokenData.expires)
-    return res.status(400).json({ message: 'invalid token' })
-  const newToken = jwt.sign(
-    JSON.stringify({ ...tokenData, expires: TOKEN_EXPIRE_TIME }),
-    SECRET
-  )
-  res.status(200).json({ token: newToken })
+  try {
+    const { refreshToken } = req.body
+    const tokenData = await jwt.decode(refreshToken, REFRESH_TOKEN_SECRET)
+    if (Date.now() > tokenData.expires)
+      return res.status(400).json({ message: 'invalid token' })
+    const newToken = jwt.sign(
+      JSON.stringify({ ...tokenData, expires: TOKEN_EXPIRE_TIME }),
+      SECRET
+    )
+    res.status(200).json({ token: newToken })
+  } catch (err) {
+    res.send(400, err)
+  }
 })
 
 export default router
