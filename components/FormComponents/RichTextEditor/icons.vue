@@ -1,6 +1,6 @@
 <template>
   <div
-    class="icon"
+    class="icon iconColor"
     :class="[`icon-${name}`, `icon-${size}`, { 'has-align-fix': fixAlign }]"
   ></div>
 </template>
@@ -21,3 +21,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.iconColor {
+  color: var(--v-colorTheme-base);
+}
+</style>

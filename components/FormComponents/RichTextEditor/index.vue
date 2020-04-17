@@ -4,6 +4,7 @@
     <editor-menu-bar v-slot="{ commands, isActive, focused }" :editor="editor">
       <div class="menubar is-hidden" :class="{ 'is-focused': focused }">
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.bold() }"
           @click="commands.bold"
@@ -12,6 +13,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.italic() }"
           @click="commands.italic"
@@ -20,6 +22,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.strike() }"
           @click="commands.strike"
@@ -28,6 +31,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.underline() }"
           @click="commands.underline"
@@ -36,6 +40,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.code() }"
           @click="commands.code"
@@ -44,6 +49,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.paragraph() }"
           @click="commands.paragraph"
@@ -52,6 +58,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.heading({ level: 1 }) }"
           @click="commands.heading({ level: 1 })"
@@ -60,6 +67,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.heading({ level: 2 }) }"
           @click="commands.heading({ level: 2 })"
@@ -68,6 +76,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.heading({ level: 3 }) }"
           @click="commands.heading({ level: 3 })"
@@ -76,6 +85,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.bullet_list() }"
           @click="commands.bullet_list"
@@ -84,6 +94,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.ordered_list() }"
           @click="commands.ordered_list"
@@ -92,6 +103,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.blockquote() }"
           @click="commands.blockquote"
@@ -100,6 +112,7 @@
         </button>
 
         <button
+          type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.code_block() }"
           @click="commands.code_block"
@@ -132,7 +145,8 @@ import {
   Link,
   Strike,
   Underline,
-  History
+  History,
+  Placeholder
 } from 'tiptap-extensions'
 import Icon from './icons'
 export default {
@@ -164,16 +178,21 @@ export default {
         new Italic(),
         new Strike(),
         new Underline(),
-        new History()
+        new History(),
+        new Placeholder({
+          emptyEditorClass: 'is-editor-empty',
+          emptyNodeClass: 'is-empty',
+          emptyNodeText: 'Start chat with little details',
+          showOnlyWhenEditable: true,
+          showOnlyCurrent: true
+        })
       ],
-      content: `
-          <h2>
-            Hiding Menu Bar
-          </h2>
-          <p>
-            Click into this text to see the menu. Click outside and the menu will disappear. It's like magic.
-          </p>
-        `
+      content: '',
+      onUpdate: ({ getHTML }) => {
+        // get new content on update
+        const newContent = getHTML()
+        this.$emit('richContent', newContent)
+      }
     })
   },
   beforeDestroy() {
@@ -205,23 +224,49 @@ $color-black: #000000;
     display: inline-flex;
     background: transparent;
     border: 0;
-    color: $color-black;
+    color: var(--v-colorTheme-base);
     padding: 0.2rem 0.5rem;
     margin-right: 0.2rem;
     border-radius: 3px;
     cursor: pointer;
 
     &:hover {
-      background-color: rgba($color-black, 0.05);
+      background-color: var(--v-colorTheme-base);
+      color: var(--v-colorReverseTheme-base);
+      .iconColor {
+        color: var(--v-colorReverseTheme-base);
+      }
     }
 
     &.is-active {
-      background-color: rgba($color-black, 0.1);
+      background-color: var(--v-colorTheme-base);
+      color: var(--v-colorReverseTheme-base);
+      .iconColor {
+        color: var(--v-colorReverseTheme-base);
+      }
     }
   }
 
   span#{&}__button {
     font-size: 13.3333px;
   }
+}
+
+.editor__content {
+  border-bottom: 1px solid var(--v-colorTheme-base);
+}
+
+.editor__content ::v-deep p {
+  margin: 0 !important;
+}
+.editor__content ::v-deep > .ProseMirror {
+  outline: none;
+}
+.editor ::v-deep p.is-editor-empty:first-child::before {
+  content: attr(data-empty-text);
+  float: left;
+  color: #aaa;
+  pointer-events: none;
+  height: 0;
 }
 </style>

@@ -7,13 +7,16 @@
       <v-toolbar flat>
         <v-toolbar-title class="font-weight-bold">Politics</v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-btn color="accent" @click="overlay = !overlay">
+          + Article {{ windowHeight }}
+        </v-btn>
         <v-btn icon large>
           <v-icon>mdi-bookmark-check-outline</v-icon>
         </v-btn>
       </v-toolbar>
       <v-divider />
       <div
-        :style="{ 'max-height': windowHeight - 66 - editorHeight + 'px' }"
+        :style="{ 'max-height': windowHeight - 66 + 'px' }"
         class="overflowY-auto scrollBar"
       >
         <v-row class="mx-0">
@@ -27,10 +30,9 @@
           </v-col>
         </v-row>
       </div>
-      <div class="editor-pos">
-        <resize-observer @notify="handleResize" />
-        <richtext-editor />
-      </div>
+      <v-overlay :dark="isDarkMode" :value="overlay" opacity=".60">
+        <article-form @closeModel="closeModel" />
+      </v-overlay>
     </v-col>
     <v-col sm="12" md="3" cols="12" class="py-0">
       <v-row>
@@ -68,33 +70,34 @@ import sidebar from '../components/Sidebar'
 import ChatCard from '../components/ChatCard'
 import QuoteCard from '../components/ChatCard/QuoteCard'
 import TrendingCard from '../components/TrendingCard'
-import RichtextEditor from '../components/RichTextEditor'
+import ArticleForm from '../components/ArticleForm'
 export default {
   components: {
     sidebar,
     'chat-card': ChatCard,
     'quote-card': QuoteCard,
     'trending-card': TrendingCard,
-    'richtext-editor': RichtextEditor
+    'article-form': ArticleForm
   },
   data() {
     return {
       autoRight: true,
-      editorHeight: 0
+      overlay: false
     }
   },
   mounted() {
     this.$meta().refresh()
-    this.$store.dispatch('article/getArticle')
+    // this.$store.dispatch('article/getArticle')
   },
   methods: {
-    handleResize({ height }) {
-      this.editorHeight = height
+    closeModel() {
+      this.overlay = false
     }
   },
   computed: {
     ...mapGetters({
-      windowHeight: 'commonState/windowHeight'
+      windowHeight: 'commonState/windowHeight',
+      isDarkMode: 'commonState/isDarkMode'
     })
   }
 }

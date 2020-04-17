@@ -77,7 +77,9 @@ module.exports = {
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
-          greyAccent: colors.grey.darken2
+          greyAccent: colors.grey.darken2,
+          colorTheme: '#FFFFFF',
+          colorReverseTheme: '#000000'
         },
         light: {
           primary: colors.red.darken2,
@@ -88,7 +90,9 @@ module.exports = {
           warning: '#f88c20',
           error: '#f44336',
           white: '#FFFFFF',
-          greyAccent: colors.grey.lighten2
+          greyAccent: colors.grey.lighten2,
+          colorTheme: '#000000',
+          colorReverseTheme: '#FFFFFF'
         }
       }
     }
@@ -100,6 +104,7 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
+    transpile: ['vee-validate/dist/rules'],
     extend(config, ctx) {}
   },
 
