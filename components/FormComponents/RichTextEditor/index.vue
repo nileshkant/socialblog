@@ -119,10 +119,21 @@
         >
           <icon name="code" />
         </button>
+        <span
+          v-if="limitcharcount"
+          class="px-3"
+          :class="{ 'error--text': charcount > limitcharcount }"
+        >
+          {{ charcount }}/{{ limitcharcount }} Characters
+        </span>
       </div>
     </editor-menu-bar>
 
-    <editor-content class="editor__content" :editor="editor" />
+    <editor-content
+      class="editor__content"
+      :class="{ errorContent: charcount > limitcharcount }"
+      :editor="editor"
+    />
   </div>
   <!-- </client-only> -->
 </template>
@@ -155,9 +166,16 @@ export default {
     EditorMenuBar,
     Icon
   },
+  props: {
+    limitcharcount: {
+      type: Number,
+      default: 200
+    }
+  },
   data() {
     return {
-      editor: null
+      editor: null,
+      charcount: 0
     }
   },
   mounted() {
@@ -188,7 +206,12 @@ export default {
         })
       ],
       content: '',
-      onUpdate: ({ getHTML }) => {
+      onUpdate: ({ getHTML, transaction }) => {
+        this.$emit(
+          'charCount',
+          transaction.doc && transaction.doc.textContent.length
+        )
+        this.charcount = transaction.doc && transaction.doc.textContent.length
         // get new content on update
         const newContent = getHTML()
         this.$emit('richContent', newContent)
@@ -254,6 +277,9 @@ $color-black: #000000;
 
 .editor__content {
   border-bottom: 1px solid var(--v-colorTheme-base);
+}
+.editor__content.errorContent {
+  border-bottom: 1px solid var(--v-error-base) !important;
 }
 
 .editor__content ::v-deep p {

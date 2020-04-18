@@ -2,8 +2,8 @@
   <div class="my-4">
     <ValidationProvider ref="provider" :name="$attrs.label" :rules="rules">
       <v-file-input
-        slot-scope="{ errors, valid }"
         v-model="innerValue"
+        slot-scope="{ errors, valid }"
         :error-messages="errors"
         :success="valid"
         show-size

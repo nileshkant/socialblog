@@ -1,5 +1,5 @@
 <template>
-  <div :class="$attrs.class">
+  <div :class="$attrs.classes">
     <ValidationProvider :name="$attrs.label" :rules="rules">
       <v-text-field
         v-model="innerValue"

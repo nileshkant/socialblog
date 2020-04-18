@@ -33,14 +33,18 @@
               rules="min:3"
               label="Source"
             />
-            <RichtextEditor @richContent="richContent" />
+            <RichtextEditor
+              :limitcharcount="200"
+              @richContent="richContent"
+              @charCount="charCount"
+            />
             <v-row>
               <v-col md="4" sm="6" cols="6">
                 <SelectBox
                   v-model="select"
                   :items="items"
                   label="Select"
-                  class="mt-4"
+                  classes="mt-4"
                   @change="changeValue"
                 />
               </v-col>
@@ -54,7 +58,7 @@
                 <VTextFieldWithValidation
                   v-if="select === 'Image/Video Url'"
                   v-model="imageUrl"
-                  class="mt-4"
+                  classes="mt-4"
                   :rules="{
                     min: 3,
                     regex: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
@@ -112,7 +116,8 @@ export default {
     richText: '',
     file: '',
     imageUrl: '',
-    select: ''
+    select: '',
+    totalCharBody: 0
   }),
   computed: {
     ...mapGetters({
@@ -136,6 +141,9 @@ export default {
       } else if (this.select === 'Image/Video Url') {
         this.file = null
       }
+    },
+    charCount(count) {
+      this.totalCharBody = count
     },
     clear() {
       this.name = this.email = ''
