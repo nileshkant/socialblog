@@ -17,7 +17,14 @@ module.exports = {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,400;0,500;0,700;1,400;1,700&display=swap'
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -65,6 +72,7 @@ module.exports = {
    */
   vuetify: {
     server: true,
+    treeShake: true,
     customVariables: ['~/assets/variables.scss'],
     theme: {
       options: { customProperties: true },

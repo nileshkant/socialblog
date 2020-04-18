@@ -5,7 +5,7 @@
       height="200px"
     ></v-img>
 
-    <v-card-title>
+    <v-card-title class="title">
       Top western road trips
     </v-card-title>
 

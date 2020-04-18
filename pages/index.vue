@@ -5,10 +5,10 @@
     </v-col>
     <v-col class="pa-0 border-right-grey middle-col" sm="12" md="5" cols="12">
       <v-toolbar flat>
-        <v-toolbar-title class="font-weight-bold">Politics</v-toolbar-title>
+        <v-toolbar-title class="title">Politics</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn color="accent" @click="overlay = !overlay">
-          + Article {{ windowHeight }}
+          + Article
         </v-btn>
         <v-btn icon large>
           <v-icon>mdi-bookmark-check-outline</v-icon>
@@ -38,9 +38,7 @@
       <v-row>
         <v-col cols="12" class="px-0 py-0">
           <v-toolbar flat>
-            <v-toolbar-title class="font-weight-bold"
-              >#Trending Today</v-toolbar-title
-            >
+            <v-toolbar-title class="title">#Trending Today</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon large>
               <v-icon>mdi-weather-night</v-icon>
@@ -87,7 +85,7 @@ export default {
   },
   mounted() {
     this.$meta().refresh()
-    // this.$store.dispatch('article/getArticle')
+    this.$store.dispatch('article/getArticle')
   },
   methods: {
     closeModel() {

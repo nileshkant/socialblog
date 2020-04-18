@@ -1,14 +1,14 @@
 <template>
   <div :class="$attrs.class">
     <ValidationProvider :name="$attrs.label" :rules="rules">
-      <v-text-field
+      <v-select
         v-model="innerValue"
         slot-scope="{ errors, valid }"
+        :valid="valid"
         :error-messages="errors"
-        :success="valid"
         v-bind="$attrs"
         v-on="$listeners"
-      ></v-text-field>
+      ></v-select>
     </ValidationProvider>
   </div>
 </template>
@@ -23,20 +23,19 @@ export default {
   props: {
     rules: {
       type: [Object, String],
-      default: ''
+      default: null
     },
     class: {
       type: String,
       default: ''
     },
-    // must be included in props
     value: {
       type: null,
-      default: ''
+      default: null
     }
   },
   data: () => ({
-    innerValue: ''
+    innerValue: null
   }),
   watch: {
     // Handles internal model changes.
@@ -48,7 +47,7 @@ export default {
       this.innerValue = newVal
     }
   },
-  mounted() {
+  created() {
     if (this.value) {
       this.innerValue = this.value
     }

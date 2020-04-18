@@ -2,7 +2,7 @@
   <v-row>
     <v-col class="pa-0">
       <v-toolbar flat>
-        <v-toolbar-title class="font-weight-bold">All Topics</v-toolbar-title>
+        <v-toolbar-title class="title">All Topics</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn v-if="!isDarkMode" icon large @click="onThemeChange">
           <v-icon>mdi-weather-night</v-icon>
@@ -37,7 +37,10 @@
                 }}</span>
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title v-html="item.title"></v-list-item-title>
+                <v-list-item-title
+                  class="title"
+                  v-html="item.title"
+                ></v-list-item-title>
                 <v-list-item-subtitle
                   v-html="item.subtitle"
                 ></v-list-item-subtitle>

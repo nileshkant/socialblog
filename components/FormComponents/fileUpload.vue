@@ -1,20 +1,24 @@
 <template>
-  <div :class="$attrs.class">
-    <ValidationProvider :name="$attrs.label" :rules="rules">
-      <v-text-field
-        v-model="innerValue"
+  <div class="my-4">
+    <ValidationProvider ref="provider" :name="$attrs.label" :rules="rules">
+      <v-file-input
         slot-scope="{ errors, valid }"
+        v-model="innerValue"
         :error-messages="errors"
         :success="valid"
+        show-size
+        accept="image/*"
         v-bind="$attrs"
         v-on="$listeners"
-      ></v-text-field>
+        @change="handleFileChange"
+      />
     </ValidationProvider>
   </div>
 </template>
 
 <script>
 import { ValidationProvider } from 'vee-validate'
+import { toBase64 } from '../../utilities/common'
 
 export default {
   components: {
@@ -23,34 +27,37 @@ export default {
   props: {
     rules: {
       type: [Object, String],
-      default: ''
+      default: null
     },
-    class: {
-      type: String,
-      default: ''
-    },
-    // must be included in props
     value: {
       type: null,
-      default: ''
+      default: null
     }
   },
   data: () => ({
-    innerValue: ''
+    innerValue: null
   }),
   watch: {
     // Handles internal model changes.
-    innerValue(newVal) {
-      this.$emit('input', newVal)
+    async innerValue(newVal) {
+      if (newVal) {
+        this.$emit('file', await toBase64(newVal))
+      }
     },
     // Handles external model changes.
     value(newVal) {
       this.innerValue = newVal
     }
   },
-  mounted() {
+  created() {
     if (this.value) {
       this.innerValue = this.value
+    }
+  },
+  methods: {
+    async handleFileChange(e) {
+      this.$refs.provider.syncValue(e)
+      this.valid = await this.$refs.provider.validate(e)
     }
   }
 }
