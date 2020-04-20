@@ -7,7 +7,7 @@
       <v-toolbar flat>
         <v-toolbar-title class="title">Politics</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn color="accent" @click="overlay = !overlay">
+        <v-btn color="accent" to="/create-post">
           + Article
         </v-btn>
         <v-btn icon large>
@@ -30,9 +30,6 @@
           </v-col>
         </v-row>
       </div>
-      <v-overlay :dark="isDarkMode" :value="overlay" opacity=".60">
-        <article-form @closeModel="closeModel" />
-      </v-overlay>
     </v-col>
     <v-col sm="12" md="3" cols="12" class="py-0">
       <v-row>
@@ -68,19 +65,16 @@ import sidebar from '../components/Sidebar'
 import ChatCard from '../components/ChatCard'
 import QuoteCard from '../components/ChatCard/QuoteCard'
 import TrendingCard from '../components/TrendingCard'
-import ArticleForm from '../components/ArticleForm'
 export default {
   components: {
     sidebar,
     'chat-card': ChatCard,
     'quote-card': QuoteCard,
-    'trending-card': TrendingCard,
-    'article-form': ArticleForm
+    'trending-card': TrendingCard
   },
   data() {
     return {
-      autoRight: true,
-      overlay: false
+      autoRight: true
     }
   },
   mounted() {

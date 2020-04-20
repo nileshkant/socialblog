@@ -18,7 +18,6 @@
 
 <script>
 import { ValidationProvider } from 'vee-validate'
-import { toBase64 } from '../../utilities/common'
 
 export default {
   components: {
@@ -39,10 +38,8 @@ export default {
   }),
   watch: {
     // Handles internal model changes.
-    async innerValue(newVal) {
-      if (newVal) {
-        this.$emit('file', await toBase64(newVal))
-      }
+    innerValue(newVal) {
+      this.$emit('input', newVal)
     },
     // Handles external model changes.
     value(newVal) {

@@ -1,35 +1,23 @@
 <template>
   <client-only>
     <ValidationObserver ref="obs">
-      <v-card
-        :max-width="maxWidth"
-        :min-width="maxWidth"
-        :max-height="maxHeight"
-        :min-height="minHeight"
-      >
-        <v-toolbar>
-          <v-toolbar-title class="title">Create Post</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon color="error" @click="clear">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
+      <v-card>
         <v-card-text>
           <v-form>
             <VTextFieldWithValidation
-              v-model="heading"
+              v-model="formData.title"
               rules="required|min:5"
-              label="Heading*"
+              label="Title*"
             />
 
             <VTextFieldWithValidation
-              v-model="subheading"
+              v-model="formData.subtitle"
               rules="min:5"
-              label="SubHeading"
+              label="Subtitle"
             />
 
             <VTextFieldWithValidation
-              v-model="source"
+              v-model="formData.source"
               rules="min:3"
               label="Source"
             />
@@ -51,13 +39,13 @@
               <v-col md="8" sm="6" cols="6">
                 <file-upload
                   v-if="select === 'Upload Image'"
-                  v-model="file"
+                  v-model="formData.file"
                   rules="image|size:10000"
                   label="Upload Image"
                 />
                 <VTextFieldWithValidation
                   v-if="select === 'Image/Video Url'"
-                  v-model="imageUrl"
+                  v-model="formData.imageUrl"
                   classes="mt-4"
                   :rules="{
                     min: 3,
@@ -88,7 +76,6 @@ import {
   size,
   regex
 } from 'vee-validate/dist/rules'
-import { mapGetters } from 'vuex'
 import VTextFieldWithValidation from '../FormComponents/Textfield'
 import RichtextEditor from '../FormComponents/RichTextEditor'
 import FileUpload from '../FormComponents/fileUpload'
@@ -110,50 +97,46 @@ export default {
   },
   data: () => ({
     items: ['No Image', 'Upload Image', 'Image/Video Url'],
-    heading: '',
-    subheading: '',
-    source: '',
-    richText: '',
-    file: '',
-    imageUrl: '',
     select: '',
-    totalCharBody: 0
+    totalCharBody: 0,
+    formData: {
+      title: '',
+      subtitle: '',
+      source: '',
+      mainArticle: '',
+      file: null,
+      imageUrl: ''
+    }
   }),
-  computed: {
-    ...mapGetters({
-      windowWidth: 'commonState/windowWidth'
-      // windowHeight: 'commonState/windowHeight'
-    }),
-    maxWidth() {
-      return this.windowWidth > 768 ? '50vw' : '100vw'
-    },
-    maxHeight() {
-      return this.windowWidth < 768 ? '100vh' : ''
-    },
-    minHeight() {
-      return this.windowWidth < 768 ? '100vh' : ''
+  watch: {
+    formData: {
+      handler(newValue) {
+        this.$emit('formData', newValue)
+      },
+      deep: true
     }
   },
   methods: {
     changeValue() {
       if (this.select === 'uploadImage') {
-        this.imageUrl = null
+        this.formData.imageUrl = null
       } else if (this.select === 'Image/Video Url') {
-        this.file = null
+        this.formData.file = null
+      } else {
+        this.formData.imageUrl = null
+        this.formData.file = null
       }
     },
     charCount(count) {
       this.totalCharBody = count
     },
     clear() {
-      this.name = this.email = ''
       this.$nextTick(() => {
         this.$refs.obs.reset()
       })
-      this.$emit('closeModel')
     },
     richContent(content) {
-      this.richText = content
+      this.formData.mainArticle = content
     },
     async submit() {
       await this.$refs.obs.validate()

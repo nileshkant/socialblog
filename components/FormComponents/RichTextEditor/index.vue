@@ -124,7 +124,7 @@
           class="px-3"
           :class="{ 'error--text': charcount > limitcharcount }"
         >
-          {{ charcount }}/{{ limitcharcount }} Characters
+          {{ charcount }}/{{ limitcharcount }}
         </span>
       </div>
     </editor-menu-bar>

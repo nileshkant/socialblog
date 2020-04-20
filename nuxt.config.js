@@ -37,7 +37,11 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/axios', '~/plugins/vue-resize'],
+  plugins: [
+    '~/plugins/axios',
+    '~/plugins/vue-resize',
+    '~/plugins/vuex-persist.client.js'
+  ],
   /*
    ** Nuxt.js dev-modules
    */

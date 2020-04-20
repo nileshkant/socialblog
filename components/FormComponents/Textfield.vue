@@ -25,7 +25,7 @@ export default {
       type: [Object, String],
       default: ''
     },
-    class: {
+    classes: {
       type: String,
       default: ''
     },
