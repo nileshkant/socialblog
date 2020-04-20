@@ -1,8 +1,8 @@
 <template>
   <!-- <client-only placeholder="Loading..."> -->
   <div class="editor">
-    <editor-menu-bar v-slot="{ commands, isActive, focused }" :editor="editor">
-      <div class="menubar is-hidden" :class="{ 'is-focused': focused }">
+    <editor-menu-bar v-slot="{ commands, isActive }" :editor="editor">
+      <div class="menubar is-focused">
         <button
           type="button"
           class="menubar__button"

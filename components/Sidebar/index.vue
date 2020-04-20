@@ -13,7 +13,10 @@
       </v-toolbar>
       <v-divider />
       <div
-        :style="{ 'max-height': windowHeight - 66 + 'px' }"
+        :style="{
+          'min-height': windowHeight - 66 + 'px',
+          'max-height': windowHeight - 66 + 'px'
+        }"
         class="overflowY-auto scrollBar"
       >
         <v-list three-line class="py-0">

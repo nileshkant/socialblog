@@ -1,5 +1,5 @@
 <template>
-  <div class="my-4">
+  <div :class="$attrs.classes">
     <ValidationProvider ref="provider" :name="$attrs.label" :rules="rules">
       <v-file-input
         v-model="innerValue"
@@ -27,6 +27,10 @@ export default {
     rules: {
       type: [Object, String],
       default: null
+    },
+    classes: {
+      type: String,
+      default: ''
     },
     value: {
       type: null,

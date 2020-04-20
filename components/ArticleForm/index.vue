@@ -4,6 +4,12 @@
       <v-card>
         <v-card-text>
           <v-form>
+            <SelectBox
+              v-model="formData.cardselect"
+              :items="cardoption"
+              label="Select"
+              classes="mt-4"
+            />
             <VTextFieldWithValidation
               v-model="formData.title"
               rules="required|min:5"
@@ -13,7 +19,9 @@
             <VTextFieldWithValidation
               v-model="formData.subtitle"
               rules="min:5"
-              label="Subtitle"
+              :label="
+                formData.cardselect === 'Quote Card' ? 'Quote' : 'Subtitle'
+              "
             />
 
             <VTextFieldWithValidation
@@ -22,11 +30,12 @@
               label="Source"
             />
             <RichtextEditor
+              v-if="formData.cardselect !== 'Quote Card'"
               :limitcharcount="200"
               @richContent="richContent"
               @charCount="charCount"
             />
-            <v-row>
+            <v-row v-if="formData.cardselect !== 'Quote Card'">
               <v-col md="4" sm="6" cols="6">
                 <SelectBox
                   v-model="select"
@@ -97,6 +106,7 @@ export default {
   },
   data: () => ({
     items: ['No Image', 'Upload Image', 'Image/Video Url'],
+    cardoption: ['Image Card', 'Quote Card'],
     select: '',
     totalCharBody: 0,
     formData: {
@@ -105,7 +115,8 @@ export default {
       source: '',
       mainArticle: '',
       file: null,
-      imageUrl: ''
+      imageUrl: '',
+      cardselect: 'Image Card'
     }
   }),
   watch: {

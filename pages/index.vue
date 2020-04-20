@@ -16,16 +16,19 @@
       </v-toolbar>
       <v-divider />
       <div
-        :style="{ 'max-height': windowHeight - 66 + 'px' }"
+        :style="{
+          'min-height': windowHeight - 66 + 'px',
+          'max-height': windowHeight - 66 + 'px'
+        }"
         class="overflowY-auto scrollBar"
       >
         <v-row class="mx-0">
-          <v-col md="8" :class="{ 'ml-auto': !autoRight }">
+          <v-col md="8" cols="10" :class="{ 'ml-auto': !autoRight }">
             <chat-card :left="true" :image-no-temp="1"> </chat-card>
           </v-col>
         </v-row>
         <v-row class="mx-0">
-          <v-col md="8" :class="{ 'ml-auto': autoRight }">
+          <v-col md="8" cols="10" :class="{ 'ml-auto': autoRight }">
             <chat-card :right="true" :image-no-temp="4"> </chat-card>
           </v-col>
         </v-row>
@@ -43,17 +46,21 @@
           </v-toolbar>
           <v-divider />
         </v-col>
-        <div
-          :style="{ 'max-height': windowHeight - 66 + 'px' }"
+        <v-col
+          :style="{
+            'min-height': windowHeight - 66 + 'px',
+            'max-height': windowHeight - 66 + 'px'
+          }"
           class="overflowY-auto scrollBar"
+          cols="12"
         >
-          <v-col cols="12" class="px-5">
+          <div>
             <quote-card></quote-card>
-          </v-col>
-          <v-col cols="12" class="px-5">
+          </div>
+          <div class="my-6">
             <trending-card></trending-card>
-          </v-col>
-        </div>
+          </div>
+        </v-col>
       </v-row>
     </v-col>
   </v-row>
@@ -65,6 +72,8 @@ import sidebar from '../components/Sidebar'
 import ChatCard from '../components/ChatCard'
 import QuoteCard from '../components/ChatCard/QuoteCard'
 import TrendingCard from '../components/TrendingCard'
+// const Cookie = process.client ? require('js-cookie') : undefined
+
 export default {
   components: {
     sidebar,
@@ -79,6 +88,8 @@ export default {
   },
   mounted() {
     this.$meta().refresh()
+    // Cookie.remove('auth')
+    // this.$store.commit('setAuth', null)
     this.$store.dispatch('article/getArticle')
   },
   methods: {

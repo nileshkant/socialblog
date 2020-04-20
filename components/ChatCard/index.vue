@@ -52,10 +52,6 @@ export default {
       type: Boolean,
       default: false
     },
-    imageNoTemp: {
-      type: Number,
-      default: 2
-    },
     cardcontent: {
       type: Object,
       default: () => {
