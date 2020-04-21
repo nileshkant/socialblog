@@ -81,8 +81,6 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     const { articleId, like } = req.body
-    console.log('articleID', articleId)
-
     try {
       if (!like) {
         const deleteLike = await Article.findOneAndUpdate(
@@ -109,8 +107,6 @@ router.get('/get-articles', async (req, res) => {
   const categoryPosts = req.query.categoryid
   const limit = Number(req.query.limit)
   const page = Number(req.query.page)
-  console.log('limitlimitlimit', req.query.limit, req.query.page)
-
   const allArticles = await Article.find({
     categories: mongoose.Types.ObjectId(categoryPosts)
   })

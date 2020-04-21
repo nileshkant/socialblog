@@ -4,7 +4,7 @@
       <h3 class="text-center mb-3">
         Add Post Details
       </h3>
-      <article-form @formData="formUpdate" />
+      <article-form @formData="formUpdate" @onSubmit="onSubmit" />
     </v-col>
     <v-col md="6">
       <h3 class="text-center mb-3">
@@ -46,6 +46,9 @@ export default {
         ...data,
         file: data && data.file ? await toBase64(data.file) : null
       }
+    },
+    onSubmit() {
+      console.log('formDataaaaaa', this.formdata)
     }
   }
 }

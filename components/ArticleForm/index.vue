@@ -151,6 +151,7 @@ export default {
     },
     async submit() {
       await this.$refs.obs.validate()
+      this.$emit('onSubmit')
     }
   }
 }

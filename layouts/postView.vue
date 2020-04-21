@@ -8,6 +8,9 @@
           </v-btn>
           <v-toolbar-title class="title">Create Post</v-toolbar-title>
           <v-spacer></v-spacer>
+          <v-btn @click="logout">
+            Logout
+          </v-btn>
         </v-toolbar>
       </v-container>
       <v-container class="py-0">
@@ -18,12 +21,21 @@
 </template>
 
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined
+
 export default {
   mounted() {
     this.$store.dispatch(
       'commonState/changeTheme',
       JSON.parse(localStorage.getItem('isDarkMode'))
     )
+  },
+  methods: {
+    logout() {
+      Cookie.remove('auth')
+      this.$store.commit('setAuth', null)
+      this.$router.push('/')
+    }
   }
 }
 </script>

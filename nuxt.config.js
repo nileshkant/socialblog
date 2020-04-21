@@ -39,8 +39,8 @@ module.exports = {
    */
   plugins: [
     '~/plugins/axios',
-    '~/plugins/vue-resize',
-    '~/plugins/vuex-persist.client.js'
+    '~/plugins/vue-resize'
+    // '~/plugins/vuex-persist.client.js'
   ],
   /*
    ** Nuxt.js dev-modules

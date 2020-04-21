@@ -72,8 +72,6 @@ import sidebar from '../components/Sidebar'
 import ChatCard from '../components/ChatCard'
 import QuoteCard from '../components/ChatCard/QuoteCard'
 import TrendingCard from '../components/TrendingCard'
-// const Cookie = process.client ? require('js-cookie') : undefined
-
 export default {
   components: {
     sidebar,
@@ -88,8 +86,6 @@ export default {
   },
   mounted() {
     this.$meta().refresh()
-    // Cookie.remove('auth')
-    // this.$store.commit('setAuth', null)
     this.$store.dispatch('article/getArticle')
   },
   methods: {

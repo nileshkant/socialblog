@@ -9,6 +9,7 @@ import {
   REFRESH_TOKEN_EXPIRE_TIME,
   REFRESH_TOKEN_SECRET
 } from '../../env'
+import { authorized } from '../../utils'
 import { MultiAccountUser } from './modal'
 
 const router = Router()
@@ -115,25 +116,21 @@ router.post('/login', async (req, res) => {
   }
 })
 
-router.get(
-  '/profile',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res) => {
-    try {
-      const { user } = await req
-      res.status(200).json(omit(user, ['password']))
-    } catch (err) {
-      res.send(400, err)
-    }
+router.get('/profile', authorized, async (req, res) => {
+  try {
+    const { user } = await req
+    res.status(200).json(omit(user, ['password']))
+  } catch (err) {
+    res.send(400, err)
   }
-)
+})
 
 router.post('/getToken', async (req, res) => {
   try {
     const { refreshToken } = req.body
     const tokenData = await jwt.decode(refreshToken, REFRESH_TOKEN_SECRET)
     if (Date.now() > tokenData.expires)
-      return res.status(400).json({ message: 'invalid token' })
+      return res.status(401).json({ message: 'invalid token' })
     const newToken = jwt.sign(
       JSON.stringify({ ...tokenData, expires: TOKEN_EXPIRE_TIME }),
       SECRET
