@@ -1,8 +1,8 @@
 <template>
   <v-card class="mx-auto" max-width="344">
     <v-img
-      v-if="cardcontent.imageUrl || cardcontent.file"
-      :src="cardcontent.file"
+      v-if="cardcontent.mediaUrl || cardcontent.file"
+      :src="cardcontent.mediaUrl || cardcontent.file"
       height="200px"
     ></v-img>
     <v-card-title class="title">
@@ -35,7 +35,7 @@
     <v-expand-transition>
       <div v-show="show">
         <v-divider></v-divider>
-        <v-card-text v-html="cardcontent.mainArticle"> </v-card-text>
+        <v-card-text v-html="cardcontent.articleBody"> </v-card-text>
       </div>
     </v-expand-transition>
   </v-card>

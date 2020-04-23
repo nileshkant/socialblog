@@ -1,10 +1,13 @@
 <template>
   <div :class="$attrs.classes">
-    <ValidationProvider :name="$attrs.label" :rules="rules">
+    <ValidationProvider
+      v-slot="{ errors, valid }"
+      :name="$attrs.label"
+      :rules="rules"
+    >
       <v-select
         v-model="innerValue"
-        slot-scope="{ errors, valid }"
-        :valid="valid"
+        :success="valid"
         :error-messages="errors"
         v-bind="$attrs"
         v-on="$listeners"

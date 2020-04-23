@@ -1,34 +1,25 @@
 import { Router } from 'express'
 import mongoose from 'mongoose'
 import passport from 'passport'
+import cloudinary from '../../core/cloudinary'
+import { authorized } from '../../utils'
 import { Article, Category } from './modal'
 const router = Router()
 
-router.post(
-  '/',
-  passport.authenticate('jwt', { session: false }),
-  (req, res, next) => {
-    if (req.user.role === 'user') {
-      return res.send(401, 'unauthorised')
-    } else {
-      next()
+router.post('/', authorized, async (req, res) => {
+  const { file, ...restfield } = req.body
+  const article = new Article({
+    ...restfield,
+    author: req.user._id
+  })
+  if (req.user.role === 'user') {
+    article.isVerified = false
+  }
+  try {
+    if (file) {
+      const mediaUrl = await cloudinary.uploader.upload(file)
+      article.mediaUrl = mediaUrl.secure_url
     }
-  },
-  async (req, res) => {
-    const { message, ...restfield } = req.body
-    const textArr = message.map((msg) => {
-      const messageArr = {
-        message: msg,
-        commentedUser: req.user._id,
-        postType: 'post'
-      }
-      return messageArr
-    })
-    const article = new Article({
-      ...restfield,
-      text: textArr,
-      author: req.user._id
-    })
     await article.save((err, data) => {
       if (err) {
         res.send(400, err)
@@ -36,30 +27,22 @@ router.post(
       }
       res.status(200).json({ savedArticle: data })
     })
+  } catch (err) {
+    res.status(400).json({ message: err })
   }
-)
+})
 
-router.post(
-  '/create-category',
-  passport.authenticate('jwt', { session: false }),
-  (req, res, next) => {
-    if (req.user.role === 'user') {
-      return res.send(401, 'unauthorised')
-    } else {
-      next()
-    }
-  },
-  async (req, res) => {
-    const { name } = req.body
-    const category = new Category({
-      name,
-      createdBy: req.user._id
-    })
-    await category.save((_, data) => {
-      res.status(200).json({ category: data })
-    })
-  }
-)
+router.post('/create-category', authorized, async (req, res) => {
+  const { name, summary } = req.body
+  const category = new Category({
+    name,
+    summary,
+    createdBy: req.user._id
+  })
+  await category.save((_, data) => {
+    res.status(200).json({ category: data })
+  })
+})
 
 router.post(
   '/add-comment',
@@ -137,6 +120,15 @@ router.get('/get-articles', async (req, res) => {
     resArticle.push(doc)
   })
   res.status(200).json(resArticle)
+})
+
+router.get('/categories', async (req, res) => {
+  const allCategories = await Category.find()
+  const categories = []
+  allCategories.forEach((doc) => {
+    categories.push(doc)
+  })
+  res.status(200).json(categories)
 })
 
 export default router

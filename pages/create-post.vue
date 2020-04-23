@@ -11,7 +11,7 @@
         Preview Post
       </h3>
       <ArticleCard
-        v-if="formdata.cardselect === 'Image Card'"
+        v-if="formdata.articleType === 'Image Card'"
         :cardcontent="formdata"
       />
       <QuoteCard v-else :cardcontent="formdata" />
@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      formdata: { ...this.formdata, cardselect: 'Image Card' }
+      formdata: { ...this.formdata, articleType: 'Image Card' }
     }
   },
   mounted() {
@@ -48,7 +48,7 @@ export default {
       }
     },
     onSubmit() {
-      console.log('formDataaaaaa', this.formdata)
+      this.$store.dispatch('article/postArticle', this.formdata)
     }
   }
 }

@@ -170,12 +170,24 @@ export default {
     limitcharcount: {
       type: Number,
       default: 200
+    },
+    value: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
       editor: null,
       charcount: 0
+    }
+  },
+  watch: {
+    value(val) {
+      // so cursor doesn't jump to start on typing
+      if (this.editor && val !== this.value) {
+        this.editor.setContent(val, true)
+      }
     }
   },
   mounted() {
@@ -205,7 +217,7 @@ export default {
           showOnlyCurrent: true
         })
       ],
-      content: '',
+      content: this.value,
       onUpdate: ({ getHTML, transaction }) => {
         this.$emit(
           'charCount',
@@ -217,6 +229,7 @@ export default {
         this.$emit('richContent', newContent)
       }
     })
+    this.editor.setContent(this.value)
   },
   beforeDestroy() {
     this.editor.destroy()

@@ -29,7 +29,7 @@ module.exports = {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: 'red' },
   /*
    ** Global CSS
    */
@@ -39,8 +39,8 @@ module.exports = {
    */
   plugins: [
     '~/plugins/axios',
-    '~/plugins/vue-resize'
-    // '~/plugins/vuex-persist.client.js'
+    '~/plugins/vue-resize',
+    '~/plugins/vuex-persist.client.js'
   ],
   /*
    ** Nuxt.js dev-modules

@@ -15,24 +15,7 @@
         </v-btn>
       </v-toolbar>
       <v-divider />
-      <div
-        :style="{
-          'min-height': windowHeight - 66 + 'px',
-          'max-height': windowHeight - 66 + 'px'
-        }"
-        class="overflowY-auto scrollBar"
-      >
-        <v-row class="mx-0">
-          <v-col md="8" cols="10" :class="{ 'ml-auto': !autoRight }">
-            <chat-card :left="true" :image-no-temp="1"> </chat-card>
-          </v-col>
-        </v-row>
-        <v-row class="mx-0">
-          <v-col md="8" cols="10" :class="{ 'ml-auto': autoRight }">
-            <chat-card :right="true" :image-no-temp="4"> </chat-card>
-          </v-col>
-        </v-row>
-      </div>
+      <NuxtChild :key="$route.params.id" />
     </v-col>
     <v-col sm="12" md="3" cols="12" class="py-0">
       <v-row>
@@ -69,24 +52,17 @@
 <script>
 import { mapGetters } from 'vuex'
 import sidebar from '../components/Sidebar'
-import ChatCard from '../components/ChatCard'
 import QuoteCard from '../components/ChatCard/QuoteCard'
 import TrendingCard from '../components/TrendingCard'
 export default {
   components: {
     sidebar,
-    'chat-card': ChatCard,
     'quote-card': QuoteCard,
     'trending-card': TrendingCard
   },
-  data() {
-    return {
-      autoRight: true
-    }
-  },
   mounted() {
     this.$meta().refresh()
-    this.$store.dispatch('article/getArticle')
+    this.$store.dispatch('article/getCategories')
   },
   methods: {
     closeModel() {

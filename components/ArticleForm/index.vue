@@ -5,10 +5,19 @@
         <v-card-text>
           <v-form>
             <SelectBox
-              v-model="formData.cardselect"
+              v-model="formData.articleType"
               :items="cardoption"
-              label="Select"
+              label="Article Type"
               classes="mt-4"
+            />
+            <SelectBox
+              v-model="formData.categories"
+              :items="dropdownCategories"
+              label="Categories"
+              classes="mt-4"
+              rules="required"
+              multiple
+              chips
             />
             <VTextFieldWithValidation
               v-model="formData.title"
@@ -31,6 +40,7 @@
             />
             <RichtextEditor
               v-if="formData.cardselect !== 'Quote Card'"
+              v-model="formData.articleBody"
               :limitcharcount="200"
               @richContent="richContent"
               @charCount="charCount"
@@ -42,6 +52,7 @@
                   :items="items"
                   label="Select"
                   classes="mt-4"
+                  rules="required"
                   @change="changeValue"
                 />
               </v-col>
@@ -54,7 +65,7 @@
                 />
                 <VTextFieldWithValidation
                   v-if="select === 'Image/Video Url'"
-                  v-model="formData.imageUrl"
+                  v-model="formData.mediaUrl"
                   classes="mt-4"
                   :rules="{
                     min: 3,
@@ -64,12 +75,12 @@
                 />
               </v-col>
             </v-row>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" @click="submit">Post</v-btn>
+            </v-card-actions>
           </v-form>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="submit">Post</v-btn>
-        </v-card-actions>
       </v-card>
     </ValidationObserver>
   </client-only>
@@ -77,6 +88,7 @@
 
 <script>
 import { ValidationObserver, extend } from 'vee-validate'
+import { mapGetters } from 'vuex'
 import {
   required,
   min,
@@ -85,6 +97,7 @@ import {
   size,
   regex
 } from 'vee-validate/dist/rules'
+// import cloneDeep from 'lodash/cloneDeep'
 import VTextFieldWithValidation from '../FormComponents/Textfield'
 import RichtextEditor from '../FormComponents/RichTextEditor'
 import FileUpload from '../FormComponents/fileUpload'
@@ -113,12 +126,19 @@ export default {
       title: '',
       subtitle: '',
       source: '',
-      mainArticle: '',
+      articleBody: '',
       file: null,
-      imageUrl: '',
-      cardselect: 'Image Card'
+      mediaUrl: '',
+      articleType: 'Image Card',
+      categories: ''
     }
   }),
+  computed: {
+    ...mapGetters({
+      dropdownCategories: 'article/dropdownCategories',
+      initValue: 'article/latestArticle'
+    })
+  },
   watch: {
     formData: {
       handler(newValue) {
@@ -127,6 +147,11 @@ export default {
       deep: true
     }
   },
+
+  // later it can be used fro editing post
+  // mounted() {
+  //   this.formData = cloneDeep(this.initValue.savedArticle)
+  // },
   methods: {
     changeValue() {
       if (this.select === 'uploadImage') {
@@ -147,11 +172,13 @@ export default {
       })
     },
     richContent(content) {
-      this.formData.mainArticle = content
+      this.formData.articleBody = content
     },
     async submit() {
-      await this.$refs.obs.validate()
-      this.$emit('onSubmit')
+      const success = await this.$refs.obs.validate()
+      if (success) {
+        this.$emit('onSubmit')
+      }
     }
   }
 }

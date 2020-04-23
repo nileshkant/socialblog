@@ -2,7 +2,9 @@ import mongoose, { Schema } from 'mongoose'
 
 const userMultiAccountSchema = new Schema({
   username: {
-    type: String
+    type: String,
+    lowercase: true,
+    trim: true
   },
   email: {
     type: String,
