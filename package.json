@@ -55,6 +55,7 @@
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
+    "@nuxtjs/date-fns": "^1.2.0",
     "@nuxtjs/eslint-config": "^2.0.0",
     "@nuxtjs/eslint-module": "^1.0.0",
     "@nuxtjs/style-resources": "^1.0.0",

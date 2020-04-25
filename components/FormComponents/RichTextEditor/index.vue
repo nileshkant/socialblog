@@ -1,6 +1,6 @@
 <template>
   <!-- <client-only placeholder="Loading..."> -->
-  <div class="editor">
+  <div class="editor py-3">
     <editor-menu-bar v-slot="{ commands, isActive }" :editor="editor">
       <div class="menubar is-focused">
         <button
@@ -56,34 +56,6 @@
         >
           <icon name="paragraph" />
         </button>
-
-        <button
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 1 }) }"
-          @click="commands.heading({ level: 1 })"
-        >
-          H1
-        </button>
-
-        <button
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 2 }) }"
-          @click="commands.heading({ level: 2 })"
-        >
-          H2
-        </button>
-
-        <button
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 3 }) }"
-          @click="commands.heading({ level: 3 })"
-        >
-          H3
-        </button>
-
         <button
           type="button"
           class="menubar__button"
@@ -144,19 +116,14 @@ import {
   Blockquote,
   BulletList,
   CodeBlock,
-  HardBreak,
-  Heading,
   ListItem,
   OrderedList,
-  TodoItem,
-  TodoList,
   Bold,
   Code,
   Italic,
-  Link,
+  // Link,
   Strike,
   Underline,
-  History,
   Placeholder
 } from 'tiptap-extensions'
 import Icon from './icons'
@@ -196,23 +163,18 @@ export default {
         new Blockquote(),
         new BulletList(),
         new CodeBlock(),
-        new HardBreak(),
-        new Heading({ levels: [1, 2, 3] }),
         new ListItem(),
         new OrderedList(),
-        new TodoItem(),
-        new TodoList(),
-        new Link(),
+        // new Link(),
         new Bold(),
         new Code(),
         new Italic(),
         new Strike(),
         new Underline(),
-        new History(),
         new Placeholder({
           emptyEditorClass: 'is-editor-empty',
           emptyNodeClass: 'is-empty',
-          emptyNodeText: 'Start chat with little details',
+          emptyNodeText: 'Add more details',
           showOnlyWhenEditable: true,
           showOnlyCurrent: true
         })
@@ -307,5 +269,19 @@ $color-black: #000000;
   color: #aaa;
   pointer-events: none;
   height: 0;
+}
+.iframe__embed {
+  width: 100%;
+  height: 15rem;
+  border: 0;
+}
+.iframe__input {
+  display: block;
+  width: 100%;
+  font: inherit;
+  border: 0;
+  border-radius: 5px;
+  background-color: inherit;
+  padding: 0.3rem 0.5rem;
 }
 </style>

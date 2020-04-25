@@ -29,7 +29,7 @@
               v-model="formData.subtitle"
               rules="min:5"
               :label="
-                formData.cardselect === 'Quote Card' ? 'Quote' : 'Subtitle'
+                formData.articleType === 'Quote Card' ? 'Quote' : 'Subtitle'
               "
             />
 
@@ -39,20 +39,19 @@
               label="Source"
             />
             <RichtextEditor
-              v-if="formData.cardselect !== 'Quote Card'"
+              v-if="formData.articleType !== 'Quote Card'"
               v-model="formData.articleBody"
               :limitcharcount="200"
               @richContent="richContent"
               @charCount="charCount"
             />
-            <v-row v-if="formData.cardselect !== 'Quote Card'">
+            <v-row v-if="formData.articleType !== 'Quote Card'">
               <v-col md="4" sm="6" cols="6">
                 <SelectBox
                   v-model="select"
                   :items="items"
                   label="Select"
                   classes="mt-4"
-                  rules="required"
                   @change="changeValue"
                 />
               </v-col>
@@ -148,7 +147,7 @@ export default {
     }
   },
 
-  // later it can be used fro editing post
+  // later it can be used for editing post
   // mounted() {
   //   this.formData = cloneDeep(this.initValue.savedArticle)
   // },

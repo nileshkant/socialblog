@@ -3,16 +3,14 @@ import mongoose, { Schema } from 'mongoose'
 const postComment = new Schema({
   articleId: {
     type: Schema.Types.ObjectId,
-    ref: 'article'
+    ref: 'article',
+    required: true
   },
   createdDate: {
     type: Date,
     default: Date.now
   },
-  editedDate: {
-    type: Date
-  },
-  textMessage: {
+  textComment: {
     type: String
   },
   mediaUrl: {
@@ -86,13 +84,7 @@ const articleSchema = new Schema({
   },
   author: { type: Schema.Types.ObjectId, ref: 'MultiAccountUser' },
   articleBody: {
-    type: String,
-    validate: {
-      validator(value) {
-        return /^.{6,}$/i.test(value)
-      },
-      message: () => `minimum 6 charater required`
-    }
+    type: String
   },
   createdDate: {
     type: Date,

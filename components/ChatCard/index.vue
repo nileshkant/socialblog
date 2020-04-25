@@ -1,18 +1,42 @@
 <template>
   <v-card class="mx-auto" max-width="344">
-    <v-img
-      v-if="cardcontent.mediaUrl || cardcontent.file"
-      :src="cardcontent.mediaUrl || cardcontent.file"
-      height="200px"
-    ></v-img>
-    <v-card-title class="title">
-      {{ cardcontent.title }}
-    </v-card-title>
+    <NLink :to="'/article/' + cardcontent._id" class="link">
+      <v-img
+        v-if="cardcontent.mediaUrl || cardcontent.file"
+        :src="transform(cardcontent.mediaUrl, 'q_auto:eco') || cardcontent.file"
+        height="200px"
+      >
+      </v-img>
+    </NLink>
+    <v-card-text
+      v-if="cardcontent.createdDate"
+      class="caption pb-0 text--secondary text-truncate"
+    >
+      {{
+        $dateFns.formatDistanceToNow(new Date(cardcontent.createdDate), {
+          addSuffix: true
+        })
+      }}
+      <span
+        >-
+        {{
+          cardcontent.author.username || cardcontent.author.facebook.displayName
+        }}</span
+      >
+    </v-card-text>
+    <div class="title pt-0 px-4">
+      <NLink
+        @click.native="redirectTo"
+        :to="'/article/' + cardcontent._id"
+        class="link"
+      >
+        {{ cardcontent.title }}
+      </NLink>
+    </div>
 
     <v-card-subtitle>
       {{ cardcontent.subtitle }}
     </v-card-subtitle>
-
     <v-card-actions>
       <v-btn icon color="secondary" text>
         <v-icon>mdi-heart-outline</v-icon>
@@ -35,13 +59,25 @@
     <v-expand-transition>
       <div v-show="show">
         <v-divider></v-divider>
-        <v-card-text v-html="cardcontent.articleBody"> </v-card-text>
+        <v-card-text class="pb-0" v-html="cardcontent.articleBody">
+        </v-card-text>
+        <v-tooltip bottom content-class="caption">
+          <template v-slot:activator="{ on }">
+            <v-card-text
+              class="caption text-truncate text--disabled pt-0"
+              v-on="on"
+              >Source: {{ cardcontent.source }}
+            </v-card-text>
+          </template>
+          <span>Source: {{ cardcontent.source }}</span>
+        </v-tooltip>
       </div>
     </v-expand-transition>
   </v-card>
 </template>
 
 <script>
+import { cloudinarytransformUrl } from '../../utilities/common'
 export default {
   props: {
     left: {
@@ -71,7 +107,13 @@ export default {
   },
   data: () => ({
     show: false
-  })
+  }),
+  methods: {
+    transform: cloudinarytransformUrl,
+    redirectTo() {
+      this.$store.commit('article/getSingleArticle', this.cardcontent)
+    }
+  }
 }
 </script>
 
@@ -104,5 +146,20 @@ export default {
     rgba(85, 88, 218, 1) 0%,
     rgba(95, 209, 249, 1) 100.2%
   );
+}
+
+.link {
+  text-decoration: none;
+  background-image: linear-gradient(#37b2b2 50%, #37b2b2 50%);
+  background-size: 10000px 1px;
+  background-repeat: no-repeat;
+  background-position: 0 1em;
+  background-position: -10000px 1em;
+  color: inherit;
+  cursor: pointer;
+}
+.link:hover {
+  background-position: 0 1em;
+  transition: background-position 2s ease-in-out;
 }
 </style>

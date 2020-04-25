@@ -2,7 +2,9 @@ export const state = () => ({
   articles: [],
   categories: [],
   dropdownCategories: [],
-  latestArticle: {}
+  latestArticle: {},
+  singleArticle: null,
+  latestComment: null
 })
 
 export const mutations = {
@@ -21,6 +23,12 @@ export const mutations = {
   },
   latestArticle(state, payload) {
     state.latestArticle = payload
+  },
+  getSingleArticle(state, payload) {
+    state.singleArticle = payload
+  },
+  postComment(state, payload) {
+    state.latestComment = payload.newComment
   }
 }
 
@@ -38,6 +46,17 @@ export const actions = {
   async postArticle(context, payload) {
     const article = await this.$axios.$post('/article', payload)
     context.commit('latestArticle', article)
+  },
+  async getSingleArticle(context, payload) {
+    const singleArticle = await this.$axios.$get(
+      `/article/single-article?articleid=${payload}`
+    )
+    context.commit('getSingleArticle', singleArticle)
+  },
+  async postComment(context, payload) {
+    context.commit('postComment', payload)
+    const comment = await this.$axios.$post('/article/add-comment', payload)
+    context.commit('postComment', comment)
   }
 }
 
@@ -53,5 +72,11 @@ export const getters = {
   },
   articles: (state) => {
     return state.articles
+  },
+  singleArticle: (state) => {
+    return state.singleArticle
+  },
+  latestComment: (state) => {
+    return state.latestComment
   }
 }

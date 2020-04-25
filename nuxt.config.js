@@ -48,7 +48,8 @@ module.exports = {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/date-fns'
   ],
   /*
    ** Nuxt.js modules
@@ -117,7 +118,9 @@ module.exports = {
      ** You can extend webpack config here
      */
     transpile: ['vee-validate/dist/rules'],
-    extend(config, ctx) {}
+    extend(config, ctx) {
+      config.resolve.alias.vue = 'vue/dist/vue.common'
+    }
   },
 
   serverMiddleware: [

@@ -12,9 +12,16 @@
         :key="article._id"
         class="mx-0"
       >
-        <v-col md="8" cols="10" :class="{ 'ml-auto': index % 2 === 0 }">
-          <chat-card :cardcontent="article" :left="true" :image-no-temp="1">
-          </chat-card>
+        <v-col
+          v-if="article.articleType === 'Quote Card'"
+          md="8"
+          cols="10"
+          :class="{ 'ml-auto': index % 2 === 0 }"
+        >
+          <QuoteCard :cardcontent="article"> </QuoteCard>
+        </v-col>
+        <v-col v-else md="8" cols="10" :class="{ 'ml-auto': index % 2 === 0 }">
+          <chat-card :cardcontent="article"> </chat-card>
         </v-col>
       </v-row>
     </div>
@@ -24,10 +31,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import ChatCard from '~/components/ChatCard'
+import QuoteCard from '~/components/ChatCard/QuoteCard'
 
 export default {
   components: {
-    'chat-card': ChatCard
+    'chat-card': ChatCard,
+    QuoteCard
   },
   data() {
     return {

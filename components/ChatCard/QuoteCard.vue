@@ -7,22 +7,24 @@
     <v-card-text v-if="cardcontent.subtitle" class="headline font-weight-bold">
       " {{ cardcontent.subtitle }} "
     </v-card-text>
-
-    <v-card-text>
-      <v-list-item-content v-if="cardcontent.source">
-        <v-list-item-title>- {{ cardcontent.source }}</v-list-item-title>
-      </v-list-item-content>
-    </v-card-text>
     <v-card-actions>
-      <v-list-item class="grow">
-        <v-row align="center" justify="end">
-          <v-icon class="mr-1">mdi-heart</v-icon>
-          <span class="subheading mr-2">256</span>
-          <span class="mr-1">·</span>
-          <v-icon class="mr-1">mdi-share-variant</v-icon>
-          <span class="subheading">45</span>
-        </v-row>
-      </v-list-item>
+      <v-btn icon text>
+        <v-icon>mdi-heart-outline</v-icon>
+      </v-btn>
+
+      <v-btn icon text>
+        <v-icon>mdi-bookmark-plus-outline</v-icon>
+      </v-btn>
+
+      <v-btn icon text>
+        <v-icon>mdi-share-outline</v-icon>
+      </v-btn>
+      <v-card-text
+        v-if="cardcontent.source"
+        class="caption py-0 text--secondary text-truncate text-right"
+      >
+        {{ cardcontent.source }}
+      </v-card-text>
     </v-card-actions>
   </v-card>
 </template>
