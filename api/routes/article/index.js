@@ -64,6 +64,28 @@ router.post('/add-comment', authorized, async (req, res) => {
   })
 })
 
+router.get('/get-comments', async (req, res) => {
+  const articleId = req.query.articleId
+  const limit = Number(req.query.limit)
+  const page = Number(req.query.page)
+  const allComments = await PostComment.find({
+    articleId: mongoose.Types.ObjectId(articleId)
+  })
+    .populate({
+      path: 'commentor',
+      model: 'MultiAccountUser',
+      select: { password: 0, permissions: 0 }
+    })
+    .limit(limit)
+    .skip(limit * (page - 1))
+    .exec()
+  const resArticle = []
+  allComments.forEach((doc) => {
+    resArticle.push(doc)
+  })
+  res.status(200).json(resArticle)
+})
+
 router.post(
   '/like',
   passport.authenticate('jwt', { session: false }),

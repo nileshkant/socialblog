@@ -140,7 +140,7 @@ export default {
     },
     value: {
       type: String,
-      default: ''
+      default: null
     }
   },
   data() {
@@ -153,6 +153,10 @@ export default {
     value(val) {
       // so cursor doesn't jump to start on typing
       if (this.editor && val !== this.value) {
+        this.editor.setContent(val, true)
+      }
+      // if Content is clear in the parent
+      if (!val) {
         this.editor.setContent(val, true)
       }
     }

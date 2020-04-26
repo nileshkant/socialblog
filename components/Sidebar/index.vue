@@ -93,7 +93,6 @@ export default {
       this.$store.commit('setUserDetails', null)
     },
     clickedTopic(item) {
-      this.$store.dispatch('article/titleContent', item)
       this.$router.push({ path: `/topic-articles/${item._id}` })
     }
   }

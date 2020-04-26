@@ -136,7 +136,6 @@ export default {
   methods: {
     fieldChange(icon) {
       this.activeField = icon
-      this.formData.embededUrl = this.formData.file = this.formData.textComment = null
     },
     charCount(count) {
       this.totalCharBody = count
@@ -149,11 +148,11 @@ export default {
       if (success) {
         if (this.formData.file) {
           this.$emit('onSubmit')
-          this.formData.embededUrl = this.formData.file = this.formData.textComment = null
+          this.formData.file = this.formData.textComment = null
         }
         if (this.formData.textComment && this.totalCharBody <= 250) {
           this.$emit('onSubmit')
-          this.formData.embededUrl = this.formData.file = this.formData.textComment = null
+          this.formData.file = this.formData.textComment = null
         }
       }
     }

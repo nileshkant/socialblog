@@ -8,14 +8,20 @@
 <script>
 export default {
   props: {
-    name: {},
+    name: {
+      type: String,
+      default: ''
+    },
     size: {
+      type: String,
       default: 'normal'
     },
     modifier: {
+      type: String,
       default: null
     },
     fixAlign: {
+      type: Boolean,
       default: true
     }
   }

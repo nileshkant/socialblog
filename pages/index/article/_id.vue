@@ -38,15 +38,16 @@
             <chat-card :cardcontent="article"> </chat-card>
           </v-col>
         </v-row>
-        <v-row v-if="allComment" class="mx-0">
+        <v-row v-for="comments in allComments" :key="comments._id" class="mx-0">
           <v-col md="8" cols="10" class="ml-auto">
-            <MessageCard :cardcontent="allComment" />
+            <MessageCard :cardcontent="comments" />
           </v-col>
         </v-row>
       </div>
       <v-divider />
       <div class="editor-pos">
         <v-card flat class="br-0 px-3">
+          <v-img v-if="formdata && formdata.file" :src="formdata.file"></v-img>
           <resize-observer @notify="handleResize" />
           <CommentForm @formData="formUpdate" @onSubmit="onSubmit" />
         </v-card>
@@ -72,6 +73,7 @@ export default {
   },
   async fetch({ store, params, route }) {
     await store.dispatch('article/getSingleArticle', route.params.id)
+    await store.dispatch('article/getComments', { articleId: route.params.id })
   },
   data() {
     return {
@@ -85,7 +87,7 @@ export default {
     ...mapGetters({
       windowHeight: 'commonState/windowHeight',
       article: 'article/singleArticle',
-      allComment: 'article/latestComment',
+      allComments: 'article/allComments',
       user: 'user'
     })
   },
