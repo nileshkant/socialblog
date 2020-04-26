@@ -1,5 +1,20 @@
 <template>
   <div>
+    <v-toolbar flat>
+      <v-toolbar-title class="title">Please select a topic'</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn
+        v-if="user && user.userDetails.role != user"
+        color="accent"
+        to="/create-post"
+      >
+        + Article
+      </v-btn>
+      <v-btn icon large>
+        <v-icon>mdi-bookmark-check-outline</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-divider />
     <div
       :style="{
         'min-height': windowHeight - 66 + 'px',
@@ -38,6 +53,9 @@ export default {
     'chat-card': ChatCard,
     QuoteCard
   },
+  async fetch({ store, params, route }) {
+    await store.dispatch('article/getArticles', route.params.id)
+  },
   data() {
     return {
       autoRight: true
@@ -46,11 +64,9 @@ export default {
   computed: {
     ...mapGetters({
       windowHeight: 'commonState/windowHeight',
-      articles: 'article/articles'
+      articles: 'article/articles',
+      user: 'user'
     })
-  },
-  mounted() {
-    this.$store.dispatch('article/getArticles', this.$route.params.id)
   }
 }
 </script>

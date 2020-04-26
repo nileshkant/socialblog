@@ -2,6 +2,7 @@
   <v-app>
     <v-content>
       <v-container class="py-0" fluid>
+        <LoginPopUp />
         <nuxt />
       </v-container>
     </v-content>
@@ -9,7 +10,11 @@
 </template>
 
 <script>
+import LoginPopUp from '../components/LoginPopUp'
 export default {
+  components: {
+    LoginPopUp
+  },
   data() {
     return {
       window: {

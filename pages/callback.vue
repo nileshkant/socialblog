@@ -13,9 +13,11 @@ export default {
     const auth = {
       accessToken: data.token
     }
+    const user = data
     this.$store.commit('setAuth', auth)
-    localStorage.setItem('userData', JSON.stringify(data))
+    this.$store.commit('setUserDetails', user)
     Cookie.set('auth', auth)
+    Cookie.set('user', user)
     this.$router.replace('/')
   }
 }

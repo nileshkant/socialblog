@@ -1,6 +1,21 @@
 <template>
-  <div>
-    <client-only>
+  <client-only>
+    <div>
+      <v-toolbar flat>
+        <v-toolbar-title class="title">Please select a topic</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn
+          v-if="user && user.userDetails.role != user"
+          color="accent"
+          to="/create-post"
+        >
+          + Article
+        </v-btn>
+        <v-btn icon large>
+          <v-icon>mdi-bookmark-check-outline</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-divider />
       <div
         :style="{
           'min-height': windowHeight - 66 - editorHeight + 'px',
@@ -34,8 +49,8 @@
           <CommentForm @formData="formUpdate" @onSubmit="onSubmit" />
         </v-card>
       </div>
-    </client-only>
-  </div>
+    </div>
+  </client-only>
 </template>
 
 <script>
@@ -58,18 +73,19 @@ export default {
       autoRight: true,
       editorHeight: 0,
       comment: '',
-      formdata: { ...this.formdata, articleId: this.$route.params.id }
+      formdata: null
     }
   },
   computed: {
     ...mapGetters({
       windowHeight: 'commonState/windowHeight',
       article: 'article/singleArticle',
-      allComment: 'article/latestComment'
+      allComment: 'article/latestComment',
+      user: 'user'
     })
   },
   mounted() {
-    if (!this.article) {
+    if (!this.article || this.article._id !== this.$route.params.id) {
       this.$store.dispatch('article/getSingleArticle', this.$route.params.id)
     }
   },

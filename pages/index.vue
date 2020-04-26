@@ -4,17 +4,6 @@
       <sidebar />
     </v-col>
     <v-col class="pa-0 border-right-grey middle-col" sm="12" md="5" cols="12">
-      <v-toolbar flat>
-        <v-toolbar-title class="title">Politics</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn color="accent" to="/create-post">
-          + Article
-        </v-btn>
-        <v-btn icon large>
-          <v-icon>mdi-bookmark-check-outline</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <v-divider />
       <NuxtChild :key="$route.params.id" />
     </v-col>
     <v-col sm="12" md="3" cols="12" class="py-0">
@@ -55,25 +44,28 @@ import sidebar from '../components/Sidebar'
 import QuoteCard from '../components/ChatCard/QuoteCard'
 import TrendingCard from '../components/TrendingCard'
 export default {
+  async fetch({ store, params }) {
+    await store.dispatch('article/getCategories')
+  },
   components: {
     sidebar,
     'quote-card': QuoteCard,
     'trending-card': TrendingCard
   },
+  computed: {
+    ...mapGetters({
+      windowHeight: 'commonState/windowHeight',
+      isDarkMode: 'commonState/isDarkMode',
+      titleSection: 'article/titleSection'
+    })
+  },
   mounted() {
     this.$meta().refresh()
-    this.$store.dispatch('article/getCategories')
   },
   methods: {
     closeModel() {
       this.overlay = false
     }
-  },
-  computed: {
-    ...mapGetters({
-      windowHeight: 'commonState/windowHeight',
-      isDarkMode: 'commonState/isDarkMode'
-    })
   }
 }
 </script>

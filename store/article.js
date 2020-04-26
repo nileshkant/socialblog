@@ -4,7 +4,8 @@ export const state = () => ({
   dropdownCategories: [],
   latestArticle: {},
   singleArticle: null,
-  latestComment: null
+  latestComment: null,
+  titleSection: null
 })
 
 export const mutations = {
@@ -26,9 +27,13 @@ export const mutations = {
   },
   getSingleArticle(state, payload) {
     state.singleArticle = payload
+    state.titleSection = state.singleArticle.categories[0]
   },
   postComment(state, payload) {
     state.latestComment = payload.newComment
+  },
+  titleContent(state, payload) {
+    state.titleSection = payload
   }
 }
 
@@ -57,6 +62,9 @@ export const actions = {
     context.commit('postComment', payload)
     const comment = await this.$axios.$post('/article/add-comment', payload)
     context.commit('postComment', comment)
+  },
+  titleContent(context, payload) {
+    context.commit('titleContent', payload)
   }
 }
 
@@ -78,5 +86,8 @@ export const getters = {
   },
   latestComment: (state) => {
     return state.latestComment
+  },
+  titleSection: (state) => {
+    return state.titleSection
   }
 }

@@ -8,10 +8,11 @@
           </v-btn>
           <v-toolbar-title class="title">Create Post</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn @click="logout">
+          <v-btn color="accent" @click="logout">
             Logout
           </v-btn>
         </v-toolbar>
+        <v-divider />
       </v-container>
       <v-container class="py-0">
         <nuxt />
@@ -33,7 +34,9 @@ export default {
   methods: {
     logout() {
       Cookie.remove('auth')
+      Cookie.remove('user')
       this.$store.commit('setAuth', null)
+      this.$store.commit('setUserDetails', null)
       this.$router.push('/')
     }
   }

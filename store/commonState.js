@@ -2,7 +2,8 @@ import Vue from 'vue'
 export const state = () => ({
   windowHeight: 0,
   windowWidth: 0,
-  isDarkMode: false
+  isDarkMode: false,
+  loginPopUp: false
 })
 
 export const mutations = {
@@ -17,6 +18,9 @@ export const mutations = {
       typeof payload === 'undefined' ? !state.isDarkMode : payload
     Vue.prototype.$nuxt.$vuetify.theme.dark = state.isDarkMode
     localStorage.setItem('isDarkMode', state.isDarkMode)
+  },
+  loginPopUp(state) {
+    state.loginPopUp = !state.loginPopUp
   }
 }
 
@@ -29,6 +33,9 @@ export const actions = {
   },
   changeTheme(context, payload) {
     context.commit('changeTheme', payload)
+  },
+  loginPopUp(context) {
+    context.commit('loginPopUp')
   }
 }
 
@@ -41,5 +48,8 @@ export const getters = {
   },
   isDarkMode: (state) => {
     return state.isDarkMode
+  },
+  loginPopUp: (state) => {
+    return state.loginPopUp
   }
 }

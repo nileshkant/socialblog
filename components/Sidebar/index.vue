@@ -4,6 +4,12 @@
       <v-toolbar flat>
         <v-toolbar-title class="title">All Topics</v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-btn v-if="!user" type="button" color="accent" @click="loginPopUp">
+          Login / SignUp
+        </v-btn>
+        <v-btn v-else type="button" color="accent" @click="logout">
+          Logout
+        </v-btn>
         <v-btn v-if="!isDarkMode" icon large @click="onThemeChange">
           <v-icon>mdi-weather-night</v-icon>
         </v-btn>
@@ -30,7 +36,7 @@
             <v-list-item
               v-if="item.name"
               :key="item._id"
-              :to="'/topic-articles/' + item._id"
+              @click="clickedTopic(item)"
             >
               <v-list-item-avatar color="primary" class="color.white">
                 <span class="white--text headline">{{
@@ -55,6 +61,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+const Cookie = process.client ? require('js-cookie') : undefined
+
 export default {
   filters: {
     capitalize(value) {
@@ -68,11 +76,26 @@ export default {
       isDarkMode: 'commonState/isDarkMode',
       windowHeight: 'commonState/windowHeight',
       categories: 'article/categories'
+      categories: 'article/categories',
+      user: 'user'
     })
   },
   methods: {
     onThemeChange() {
       this.$store.dispatch('commonState/changeTheme')
+    },
+    loginPopUp() {
+      this.$store.dispatch('commonState/loginPopUp')
+    },
+    logout() {
+      Cookie.remove('auth')
+      Cookie.remove('user')
+      this.$store.commit('setAuth', null)
+      this.$store.commit('setUserDetails', null)
+    },
+    clickedTopic(item) {
+      this.$store.dispatch('article/titleContent', item)
+      this.$router.push({ path: `/topic-articles/${item._id}` })
     }
   }
 }
