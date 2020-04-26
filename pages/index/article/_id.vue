@@ -2,7 +2,9 @@
   <client-only>
     <div>
       <v-toolbar flat>
-        <v-toolbar-title class="title">Please select a topic</v-toolbar-title>
+        <v-toolbar-title class="title">{{
+          (article && article.categories[0].name) || 'Please select a topic'
+        }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn
           v-if="user && user.userDetails.role != user"
@@ -68,6 +70,9 @@ export default {
     CommentForm,
     MessageCard
   },
+  async fetch({ store, params, route }) {
+    await store.dispatch('article/getSingleArticle', route.params.id)
+  },
   data() {
     return {
       autoRight: true,
@@ -83,11 +88,6 @@ export default {
       allComment: 'article/latestComment',
       user: 'user'
     })
-  },
-  mounted() {
-    if (!this.article || this.article._id !== this.$route.params.id) {
-      this.$store.dispatch('article/getSingleArticle', this.$route.params.id)
-    }
   },
   methods: {
     handleResize({ height }) {

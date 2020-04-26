@@ -149,9 +149,11 @@ export default {
       if (success) {
         if (this.formData.file) {
           this.$emit('onSubmit')
+          this.formData.embededUrl = this.formData.file = this.formData.textComment = null
         }
         if (this.formData.textComment && this.totalCharBody <= 250) {
           this.$emit('onSubmit')
+          this.formData.embededUrl = this.formData.file = this.formData.textComment = null
         }
       }
     }

@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-toolbar flat>
-      <v-toolbar-title class="title">Please select a topic'</v-toolbar-title>
+      <v-toolbar-title class="title">{{
+        (articles && articles[0] && articles[0].categories[0].name) ||
+          'Please select a category'
+      }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
         v-if="user && user.userDetails.role != user"
