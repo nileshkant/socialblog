@@ -49,7 +49,24 @@
         <v-card flat class="br-0 px-3">
           <v-img v-if="formdata && formdata.file" :src="formdata.file"></v-img>
           <resize-observer @notify="handleResize" />
-          <CommentForm @formData="formUpdate" @onSubmit="onSubmit" />
+          <CommentForm
+            v-if="user"
+            @formData="formUpdate"
+            @onSubmit="onSubmit"
+          />
+          <v-row v-else>
+            <v-col class="pa-0">
+              <v-card-text color="accent" class="subtitle-1 text--disabled">
+                <resize-observer @notify="handleResize" />
+                Login to Comment
+              </v-card-text>
+            </v-col>
+            <v-col cols="auto">
+              <v-btn class="accent" type="button" @click="loginPopUp">
+                Login
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-card>
       </div>
     </div>
@@ -100,6 +117,9 @@ export default {
         ...data,
         file: data && data.file ? await toBase64(data.file) : null
       }
+    },
+    loginPopUp() {
+      this.$store.dispatch('commonState/loginPopUp')
     },
     onSubmit() {
       const sendForm = { ...this.formdata, articleId: this.$route.params.id }
