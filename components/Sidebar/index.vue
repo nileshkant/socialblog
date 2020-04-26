@@ -75,7 +75,6 @@ export default {
     ...mapGetters({
       isDarkMode: 'commonState/isDarkMode',
       windowHeight: 'commonState/windowHeight',
-      categories: 'article/categories'
       categories: 'article/categories',
       user: 'user'
     })
