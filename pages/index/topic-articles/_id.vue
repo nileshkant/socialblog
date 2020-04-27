@@ -39,7 +39,7 @@
           <QuoteCard :cardcontent="article"> </QuoteCard>
         </v-col>
         <v-col v-else md="8" cols="10" :class="{ 'ml-auto': index % 2 === 0 }">
-          <chat-card :cardcontent="article"> </chat-card>
+          <chat-card :cardcontent="article.fullDetailsCard"> </chat-card>
         </v-col>
       </v-row>
     </div>
