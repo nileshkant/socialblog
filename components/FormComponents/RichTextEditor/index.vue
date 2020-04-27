@@ -106,6 +106,9 @@
       :class="{ errorContent: charcount > limitcharcount }"
       :editor="editor"
     />
+    <div v-if="charcount > limitcharcount" class="error--text caption">
+      You can't use more than {{ limitcharcount }} characters
+    </div>
   </div>
   <!-- </client-only> -->
 </template>

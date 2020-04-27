@@ -3,13 +3,19 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 import cloudinary from '../../core/cloudinary'
 import { authorized } from '../../utils'
-import { Article, Category, PostComment } from './modal'
+import { Article } from './articleModal'
+import { Category, PostComment } from './modal'
 const router = Router()
 
 router.post('/', authorized, async (req, res) => {
-  const { file, ...restfield } = req.body
+  const { file, articleType, ...restfield } = req.body
+  const validateData = {
+    ...restfield,
+    articleType
+  }
   const article = new Article({
     ...restfield,
+    articleType,
     author: req.user._id
   })
   if (req.user.role === 'user') {
@@ -18,8 +24,13 @@ router.post('/', authorized, async (req, res) => {
   try {
     if (file) {
       const mediaUrl = await cloudinary.uploader.upload(file)
-      article.mediaUrl = mediaUrl.secure_url
+      article[articleType].mediaUrl = mediaUrl.secure_url
+      validateData[articleType].mediaUrl = article[articleType].mediaUrl
     }
+    // console.log('validateData', validateData)
+    const err = article.joiValidate(article)
+    console.log('validateData', err)
+    if (err) res.send(400, err)
     await article.save((err, data) => {
       if (err) {
         res.send(400, err)
@@ -122,11 +133,6 @@ router.get('/get-articles', async (req, res) => {
   })
     .populate('categories')
     .populate({
-      path: 'commentedUser',
-      model: 'MultiAccountUser',
-      select: { password: 0, permissions: 0 }
-    })
-    .populate({
       path: 'author',
       model: 'MultiAccountUser',
       select: { password: 0, permissions: 0 }
@@ -153,11 +159,6 @@ router.get('/single-article', async (req, res) => {
   const articleid = req.query.articleid
   const article = await Article.findById(articleid)
     .populate('categories')
-    .populate({
-      path: 'commentedUser',
-      model: 'MultiAccountUser',
-      select: { password: 0, permissions: 0 }
-    })
     .populate({
       path: 'author',
       model: 'MultiAccountUser',
