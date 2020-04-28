@@ -11,6 +11,7 @@
             :items="cardoption"
             label="Article Type"
             classes="mt-4"
+            @change="changeCard"
           />
           <SelectBox
             v-model="formdata.categories"
@@ -21,8 +22,14 @@
             chips
           />
           <article-form
+            v-if="formdata.articleType === 'fullDetailsCard'"
             @formData="formUpdate"
             @file="uploadFile"
+            @onSubmit="onSubmit"
+          />
+          <QuoteForm
+            v-if="formdata.articleType === 'quoteCard'"
+            @formData="formUpdate"
             @onSubmit="onSubmit"
           />
         </v-col>
@@ -33,7 +40,7 @@
         Preview Post
       </h3>
       <ArticleCard
-        v-if="formdata.articleType === 'Image Card'"
+        v-if="formdata.articleType === 'fullDetailsCard'"
         :cardcontent="formdata"
       />
       <QuoteCard v-else :cardcontent="formdata" />
@@ -46,6 +53,7 @@ import { mapGetters } from 'vuex'
 import ArticleForm from '../components/ArticleForm'
 import ArticleCard from '../components/ChatCard'
 import QuoteCard from '../components/ChatCard/QuoteCard'
+import QuoteForm from '../components/ArticleForm/quoteForm'
 import { toBase64 } from '../utilities/common'
 import SelectBox from '../components/FormComponents/selectBox'
 export default {
@@ -55,6 +63,7 @@ export default {
     ArticleCard,
     'article-form': ArticleForm,
     QuoteCard,
+    QuoteForm,
     SelectBox
   },
   async fetch({ store, params }) {
@@ -81,15 +90,21 @@ export default {
     this.$meta().refresh()
   },
   methods: {
+    changeCard(value) {
+      if (value === 'fullDetailsCard') {
+        this.formdata.quoteCard = null
+      } else {
+        this.formdata.fullDetailsCard = null
+      }
+    },
     formUpdate(data) {
-      this.formdata = { ...this.formdata, [this.formdata.articleType]: data }
+      this.formdata = { ...this.formdata, quoteCard: data }
     },
     async uploadFile(data) {
       this.formdata.file = data && data ? await toBase64(data) : null
     },
     onSubmit(data) {
       this.formdata.isPublished = data === 'publish'
-      console.log(this.formdata)
       if (this.formdata.categories) {
         this.$store.dispatch('article/postArticle', this.formdata)
       }

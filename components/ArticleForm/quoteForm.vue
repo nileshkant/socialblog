@@ -10,15 +10,16 @@
         <VTextFieldWithValidation
           v-model="formData.quote"
           rules="required|min:5"
-          label="Subtitle*"
+          label="Quote*"
         />
         <VTextFieldWithValidation
           v-model="formData.source"
           rules="min:3"
           label="Source"
         />
+        <ColorPicker v-model="formData.color" />
         <v-card-actions>
-          <v-btn color="primary" @click="submit('save')">Save</v-btn>
+          <v-btn @click="submit('save')">Save</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="primary" @click="submit('publish')">Publish</v-btn>
         </v-card-actions>
@@ -31,6 +32,8 @@
 import { ValidationObserver, extend } from 'vee-validate'
 import { mapGetters } from 'vuex'
 import { required, min, size, regex } from 'vee-validate/dist/rules'
+import VTextFieldWithValidation from '../FormComponents/Textfield'
+import ColorPicker from '../FormComponents/colorpicker'
 // import cloneDeep from 'lodash/cloneDeep'
 extend('required', required)
 extend('min', min)
@@ -39,7 +42,9 @@ extend('regex', regex)
 
 export default {
   components: {
-    ValidationObserver
+    ValidationObserver,
+    VTextFieldWithValidation,
+    ColorPicker
   },
   data: () => ({
     items: ['No Image', 'Upload Image', 'Image/Video Url'],
@@ -50,7 +55,8 @@ export default {
     formData: {
       title: '',
       quote: '',
-      source: ''
+      source: '',
+      color: '#000000'
     }
   }),
   computed: {

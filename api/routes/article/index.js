@@ -9,10 +9,6 @@ const router = Router()
 
 router.post('/', authorized, async (req, res) => {
   const { file, articleType, ...restfield } = req.body
-  const validateData = {
-    ...restfield,
-    articleType
-  }
   const article = new Article({
     ...restfield,
     articleType,
@@ -25,15 +21,10 @@ router.post('/', authorized, async (req, res) => {
     if (file) {
       const mediaUrl = await cloudinary.uploader.upload(file)
       article[articleType].mediaUrl = mediaUrl.secure_url
-      validateData[articleType].mediaUrl = article[articleType].mediaUrl
     }
-    // console.log('validateData', validateData)
-    const err = article.joiValidate(article)
-    console.log('validateData', err)
-    if (err) res.send(400, err)
     await article.save((err, data) => {
       if (err) {
-        res.send(400, err)
+        res.status(400).json({ msg: err })
         return
       }
       res.status(200).json({ savedArticle: data })

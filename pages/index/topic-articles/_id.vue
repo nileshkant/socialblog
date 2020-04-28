@@ -3,7 +3,7 @@
     <v-toolbar flat>
       <v-toolbar-title class="title">{{
         (articles && articles[0] && articles[0].categories[0].name) ||
-          'Please select a category'
+          'Sorry no content found'
       }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
@@ -31,7 +31,7 @@
         class="mx-0"
       >
         <v-col
-          v-if="article.articleType === 'Quote Card'"
+          v-if="article.articleType === 'quoteCard'"
           md="8"
           cols="10"
           :class="{ 'ml-auto': index % 2 === 0 }"
@@ -39,7 +39,7 @@
           <QuoteCard :cardcontent="article"> </QuoteCard>
         </v-col>
         <v-col v-else md="8" cols="10" :class="{ 'ml-auto': index % 2 === 0 }">
-          <chat-card :cardcontent="article.fullDetailsCard"> </chat-card>
+          <chat-card :cardcontent="article"> </chat-card>
         </v-col>
       </v-row>
     </div>

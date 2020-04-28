@@ -38,10 +38,7 @@ const articleSchema = new Schema({
     title: {
       type: String,
       unique: true,
-      min: [5, 'Minimum 5 charaters required'],
-      required: () => {
-        return this.articleType === 'fullDetailsCard'
-      }
+      min: [5, 'Minimum 5 charaters required']
     },
     subtitle: {
       type: String,
@@ -49,10 +46,7 @@ const articleSchema = new Schema({
     },
     articleBody: {
       type: String,
-      min: [5, 'Minimum 5 charaters required'],
-      required: () => {
-        return this.articleType === 'fullDetailsCard'
-      }
+      min: [5, 'Minimum 5 charaters required']
     },
     mediaUrl: {
       type: String
@@ -70,40 +64,21 @@ const articleSchema = new Schema({
     title: {
       type: String,
       unique: true,
-      min: [5, 'Minimum 5 charaters required'],
-      required: () => {
-        return this.articleType === 'quoteCard'
-      }
+      min: [5, 'Minimum 5 charaters required']
     },
     quote: {
       type: String,
-      min: [5, 'Minimum 5 charaters required'],
-      required: () => {
-        return this.articleType === 'quoteCard'
-      }
+      min: [5, 'Minimum 5 charaters required']
     },
     color: {
-      text: {
-        type: String,
-        validate: {
-          validator(value) {
-            return /(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\b|(?:rgb|hsl)a?\([^)]*\)/i.test(
-              value
-            )
-          },
-          message: () => `Not a valid color`
-        }
-      },
-      background: {
-        type: String,
-        validate: {
-          validator(value) {
-            return /(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\b|(?:rgb|hsl)a?\([^)]*\)/i.test(
-              value
-            )
-          },
-          message: () => `Not a valid color`
-        }
+      type: String,
+      validate: {
+        validator(value) {
+          return /(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\b|(?:rgb|hsl)a?\([^)]*\)/i.test(
+            value
+          )
+        },
+        message: () => `Not a valid color`
       }
     },
     source: {
