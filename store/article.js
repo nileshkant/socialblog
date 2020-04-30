@@ -52,6 +52,9 @@ export const actions = {
   async postArticle(context, payload) {
     const article = await this.$axios.$post('/article', payload)
     context.commit('latestArticle', article)
+    this.$router.push({
+      path: `/article/${article.savedArticle._id}`
+    })
   },
   async getSingleArticle(context, payload) {
     const singleArticle = await this.$axios.$get(

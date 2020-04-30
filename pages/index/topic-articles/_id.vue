@@ -31,14 +31,21 @@
         class="mx-0"
       >
         <v-col
-          v-if="article.articleType === 'quoteCard'"
+          v-if="article.articleType === 'quoteCard' && article.quoteCard"
           md="8"
           cols="10"
           :class="{ 'ml-auto': index % 2 === 0 }"
         >
           <QuoteCard :cardcontent="article"> </QuoteCard>
         </v-col>
-        <v-col v-else md="8" cols="10" :class="{ 'ml-auto': index % 2 === 0 }">
+        <v-col
+          v-if="
+            article.articleType === 'fullDetailsCard' && article.fullDetailsCard
+          "
+          md="8"
+          cols="10"
+          :class="{ 'ml-auto': index % 2 === 0 }"
+        >
           <chat-card :cardcontent="article"> </chat-card>
         </v-col>
       </v-row>

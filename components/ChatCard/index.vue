@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="344">
+  <v-card>
     <NLink :to="'/article/' + cardcontent._id" class="link">
       <v-img
         v-if="

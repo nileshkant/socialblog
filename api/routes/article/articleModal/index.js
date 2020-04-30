@@ -37,7 +37,6 @@ const articleSchema = new Schema({
   fullDetailsCard: {
     title: {
       type: String,
-      unique: true,
       min: [5, 'Minimum 5 charaters required']
     },
     subtitle: {
@@ -63,7 +62,6 @@ const articleSchema = new Schema({
   quoteCard: {
     title: {
       type: String,
-      unique: true,
       min: [5, 'Minimum 5 charaters required']
     },
     quote: {
