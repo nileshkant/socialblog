@@ -35,7 +35,9 @@ const jwtLogin = (req, res, user, social) => {
       refreshToken
     }
     if (social) {
-      res.redirect(`/callback?res=${JSON.stringify(jsonRes)}`)
+      res.redirect(
+        `https://theopenstories.com/callback?res=${JSON.stringify(jsonRes)}`
+      )
       return
     }
     res.status(200).json(jsonRes)
@@ -83,7 +85,7 @@ router.get(
   '/auth/facebook/callback',
   passport.authenticate('facebook', {
     session: false,
-    failureRedirect: '/login'
+    failureRedirect: 'https://theopenstories.com/'
   }),
   (req, res) => {
     jwtLogin(req, res, req.user, true)
