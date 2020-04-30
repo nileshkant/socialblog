@@ -2,7 +2,12 @@
   <v-card class="mx-auto" max-width="344">
     <NLink :to="'/article/' + cardcontent._id" class="link">
       <v-img
-        v-if="cardcontent.fullDetailsCard.mediaUrl || cardcontent.file"
+        v-if="
+          (cardcontent &&
+            cardcontent.fullDetailsCard &&
+            cardcontent.fullDetailsCard.mediaUrl) ||
+            cardcontent.file
+        "
         :src="
           transform(cardcontent.fullDetailsCard.mediaUrl, 'q_auto:eco') ||
             cardcontent.file
@@ -33,12 +38,12 @@
         :to="'/article/' + cardcontent._id"
         class="link"
       >
-        {{ cardcontent.fullDetailsCard.title }}
+        {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.title }}
       </NLink>
     </div>
 
     <v-card-subtitle>
-      {{ cardcontent.fullDetailsCard.subtitle }}
+      {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.subtitle }}
     </v-card-subtitle>
     <v-card-actions>
       <v-btn icon color="secondary" text>
@@ -64,7 +69,10 @@
         <v-divider></v-divider>
         <v-card-text
           class="pb-0"
-          v-html="cardcontent.fullDetailsCard.articleBody"
+          v-html="
+            cardcontent.fullDetailsCard &&
+              cardcontent.fullDetailsCard.articleBody
+          "
         >
         </v-card-text>
         <v-tooltip bottom content-class="caption">
@@ -79,7 +87,12 @@
               }}
             </v-card-text>
           </template>
-          <span>Source: {{ cardcontent.fullDetailsCard.source }}</span>
+          <span
+            >Source:
+            {{
+              cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.source
+            }}</span
+          >
         </v-tooltip>
       </div>
     </v-expand-transition>
