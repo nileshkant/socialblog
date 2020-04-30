@@ -98,7 +98,7 @@ export default {
       }
     },
     formUpdate(data) {
-      this.formdata = { ...this.formdata, quoteCard: data }
+      this.formdata = { ...this.formdata, [this.formdata.articleType]: data }
     },
     async uploadFile(data) {
       this.formdata.file = data && data ? await toBase64(data) : null

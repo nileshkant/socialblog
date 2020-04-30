@@ -2,8 +2,11 @@
   <v-card class="mx-auto" max-width="344">
     <NLink :to="'/article/' + cardcontent._id" class="link">
       <v-img
-        v-if="cardcontent.mediaUrl || cardcontent.file"
-        :src="transform(cardcontent.mediaUrl, 'q_auto:eco') || cardcontent.file"
+        v-if="cardcontent.fullDetailsCard.mediaUrl || cardcontent.file"
+        :src="
+          transform(cardcontent.fullDetailsCard.mediaUrl, 'q_auto:eco') ||
+            cardcontent.file
+        "
         height="200px"
       >
       </v-img>
@@ -30,12 +33,12 @@
         :to="'/article/' + cardcontent._id"
         class="link"
       >
-        {{ cardcontent.title }}
+        {{ cardcontent.fullDetailsCard.title }}
       </NLink>
     </div>
 
     <v-card-subtitle>
-      {{ cardcontent.subtitle }}
+      {{ cardcontent.fullDetailsCard.subtitle }}
     </v-card-subtitle>
     <v-card-actions>
       <v-btn icon color="secondary" text>
@@ -59,17 +62,24 @@
     <v-expand-transition>
       <div v-show="show">
         <v-divider></v-divider>
-        <v-card-text class="pb-0" v-html="cardcontent.articleBody">
+        <v-card-text
+          class="pb-0"
+          v-html="cardcontent.fullDetailsCard.articleBody"
+        >
         </v-card-text>
         <v-tooltip bottom content-class="caption">
           <template v-slot:activator="{ on }">
             <v-card-text
               class="caption text-truncate text--disabled pt-0"
               v-on="on"
-              >Source: {{ cardcontent.source }}
+              >Source:
+              {{
+                cardcontent.fullDetailsCard &&
+                  cardcontent.fullDetailsCard.source
+              }}
             </v-card-text>
           </template>
-          <span>Source: {{ cardcontent.source }}</span>
+          <span>Source: {{ cardcontent.fullDetailsCard.source }}</span>
         </v-tooltip>
       </div>
     </v-expand-transition>
@@ -92,15 +102,17 @@ export default {
       type: Object,
       default: () => {
         return {
-          title: 'Top western road trips',
-          subtitle: '1,000 miles of wonder',
-          imageUrl: null,
-          file: null,
-          mainArticle: `I'm a thing. But, like most politicians, he promised more than he
+          cardcontent: {
+            title: 'Top western road trips',
+            subtitle: '1,000 miles of wonder',
+            imageUrl: null,
+            file: null,
+            mainArticle: `I'm a thing. But, like most politicians, he promised more than he
           could deliver. You won't have time for sleeping, soldier, not with all
           the bed making you'll be doing. Then we'll go with that data file!
           Hey, you add a one and two zeros to that or we walk! You're going to
           do his laundry? I've got to find a way to escape.`
+          }
         }
       }
     }
