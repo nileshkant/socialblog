@@ -147,6 +147,26 @@ router.get('/get-articles', async (req, res) => {
   res.status(200).json(resArticle)
 })
 
+router.delete('/delete-article', authorized, async (req, res) => {
+  const query = { _id: req.query.articleId }
+  if (req.user.role !== 'admin') {
+    query.author = req.user._id
+  }
+  try {
+    const deleteArticle = await Article.findOneAndDelete(query).exec()
+    if (deleteArticle) {
+      await PostComment.deleteMany({ articleId: req.query.articleId }).exec()
+      res
+        .status(200)
+        .json({ message: `${req.query.articleId} deleted successfully` })
+    } else {
+      res.status(400).json({ message: `Article not found` })
+    }
+  } catch (err) {
+    res.status(400).json({ message: err })
+  }
+})
+
 router.get('/single-article', async (req, res) => {
   const articleid = req.query.articleid
   const article = await Article.findById(articleid)
