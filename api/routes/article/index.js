@@ -120,7 +120,8 @@ router.get('/get-articles', async (req, res) => {
   const limit = Number(req.query.limit)
   const page = Number(req.query.page)
   const allArticles = await Article.find({
-    categories: mongoose.Types.ObjectId(categoryPosts)
+    categories: mongoose.Types.ObjectId(categoryPosts),
+    isPublished: true
   })
     .populate('categories')
     .populate({
