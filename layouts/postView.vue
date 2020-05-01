@@ -8,7 +8,7 @@
           </v-btn>
           <v-toolbar-title class="title">Create Post</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn color="accent" @click="logout">
+          <v-btn color="accent" outlined @click="logout">
             Logout
           </v-btn>
         </v-toolbar>

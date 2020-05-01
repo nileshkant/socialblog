@@ -1,21 +1,41 @@
 <template>
   <v-card>
-    <NLink :to="'/article/' + cardcontent._id" class="link">
+    <v-overlay absolute :opacity="0.7" :value="overlay">
+      <v-btn class="mr-2" @click.stop.prevent="overlay = false">
+        Cancel
+      </v-btn>
+      <v-btn color="error" class="ml-2" @click.stop.prevent="deleteArticle">
+        Delete!
+      </v-btn>
+    </v-overlay>
+    <NLink
+      :to="'/article/' + cardcontent._id"
+      :event="overlay || !cardcontent._id ? '' : 'click'"
+      class="link"
+    >
       <v-img
         v-if="
-          (cardcontent &&
+          cardcontent &&
             cardcontent.fullDetailsCard &&
-            cardcontent.fullDetailsCard.mediaUrl) ||
-            cardcontent.file
+            cardcontent.fullDetailsCard.mediaUrl
         "
         :src="
-          transform(cardcontent.fullDetailsCard.mediaUrl, 'q_auto:eco') ||
-            cardcontent.file
+          cardcontent &&
+            cardcontent.fullDetailsCard &&
+            cardcontent.fullDetailsCard.mediaUrl &&
+            transform(cardcontent.fullDetailsCard.mediaUrl, 'q_auto:eco')
         "
         height="200px"
       >
       </v-img>
+      <v-img
+        v-if="cardcontent && cardcontent.fileURL"
+        :src="cardcontent.fileURL"
+        height="200px"
+      >
+      </v-img>
     </NLink>
+    {{ cardcontent.file }}
     <v-card-text
       v-if="cardcontent.createdDate"
       class="caption pb-0 text--secondary text-truncate"
@@ -34,9 +54,9 @@
     </v-card-text>
     <div class="title pt-0 px-4">
       <NLink
-        @click.native="redirectTo"
         :to="'/article/' + cardcontent._id"
         class="link"
+        @click.native="redirectTo"
       >
         {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.title }}
       </NLink>
@@ -54,9 +74,23 @@
         <v-icon>mdi-bookmark-plus-outline</v-icon>
       </v-btn>
 
-      <v-btn icon color="secondary" text>
-        <v-icon>mdi-share-outline</v-icon>
-      </v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn class="mx-2" icon color="secondary" text v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(menu, index) in dropDown"
+            :key="index"
+            @click="onClickdropDownMenu(menu)"
+          >
+            <v-icon>{{ menu.icon }}</v-icon>
+            <v-list-item-title>{{ menu.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <v-spacer></v-spacer>
       <v-btn fab small color="primary" @click="show = !show">
@@ -131,12 +165,32 @@ export default {
     }
   },
   data: () => ({
-    show: false
+    show: false,
+    hoverDelete: false,
+    overlay: false,
+    dropDown: [
+      {
+        title: 'Share',
+        icon: 'mdi-share-outline'
+      },
+      {
+        title: 'Delete',
+        icon: 'mdi-delete-outline'
+      }
+    ]
   }),
   methods: {
     transform: cloudinarytransformUrl,
     redirectTo() {
       this.$store.commit('article/getSingleArticle', this.cardcontent)
+    },
+    deleteArticle() {
+      this.$store.dispatch('article/deleteArticle', this.cardcontent._id)
+    },
+    onClickdropDownMenu(data) {
+      if (data.title === 'Delete') {
+        this.overlay = true
+      }
     }
   }
 }

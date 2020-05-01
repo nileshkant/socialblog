@@ -27,7 +27,7 @@
       >
         <v-row v-if="article" class="mx-0">
           <v-col
-            v-if="article.articleType === 'Quote Card'"
+            v-if="article.articleType === 'quoteCard'"
             md="8"
             cols="10"
             class="mr-auto"
@@ -107,6 +107,13 @@ export default {
       allComments: 'article/allComments',
       user: 'user'
     })
+  },
+  watch: {
+    article(newValue) {
+      if (!newValue) {
+        this.$router.replace({ path: '/' })
+      }
+    }
   },
   methods: {
     handleResize({ height }) {

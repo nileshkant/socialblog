@@ -35,6 +35,12 @@ export const mutations = {
   },
   allComments(state, payload) {
     state.allComments = payload
+  },
+  deletedArticle(state, payload) {
+    state.articles = state.articles.filter((article) => {
+      return article._id !== payload
+    })
+    state.singleArticle = null
   }
 }
 
@@ -55,6 +61,10 @@ export const actions = {
     this.$router.push({
       path: `/article/${article.savedArticle._id}`
     })
+  },
+  async deleteArticle(context, payload) {
+    await this.$axios.$delete(`/article/delete-article?articleId=${payload}`)
+    context.commit('deletedArticle', payload)
   },
   async getSingleArticle(context, payload) {
     const singleArticle = await this.$axios.$get(

@@ -44,13 +44,13 @@ import sidebar from '../components/Sidebar'
 import QuoteCard from '../components/ChatCard/QuoteCard'
 import TrendingCard from '../components/TrendingCard'
 export default {
-  async fetch({ store, params }) {
-    await store.dispatch('article/getCategories')
-  },
   components: {
     sidebar,
     'quote-card': QuoteCard,
     'trending-card': TrendingCard
+  },
+  async fetch({ store, params }) {
+    await store.dispatch('article/getCategories')
   },
   computed: {
     ...mapGetters({

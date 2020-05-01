@@ -5,6 +5,14 @@
     :dark="checkColor"
     max-width="400"
   >
+    <v-overlay absolute :opacity="0.7" :value="overlay">
+      <v-btn @click.stop.prevent="overlay = false" class="mr-2">
+        Cancel
+      </v-btn>
+      <v-btn color="error" class="ml-2" @click.stop.prevent="deleteArticle">
+        Delete!
+      </v-btn>
+    </v-overlay>
     <v-card-title>
       <span
         class="title font-weight-light"
@@ -29,9 +37,30 @@
         <v-icon>mdi-bookmark-plus-outline</v-icon>
       </v-btn>
 
-      <v-btn icon text :color="!checkColor ? 'black' : ''">
-        <v-icon>mdi-share-outline</v-icon>
-      </v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            v-if="cardcontent._id"
+            class="mx-2"
+            icon
+            color="secondary"
+            text
+            v-on="on"
+          >
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(menu, index) in dropDown"
+            :key="index"
+            @click="onClickdropDownMenu(menu)"
+          >
+            <v-icon>{{ menu.icon }}</v-icon>
+            <v-list-item-title>{{ menu.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-card-text
         v-if="cardcontent.quoteCard && cardcontent.quoteCard.source"
         class="caption py-0 text-truncate text-right"
@@ -61,6 +90,21 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      overlay: false,
+      dropDown: [
+        {
+          title: 'Share',
+          icon: 'mdi-share-outline'
+        },
+        {
+          title: 'Delete',
+          icon: 'mdi-delete-outline'
+        }
+      ]
+    }
+  },
   computed: {
     checkColor() {
       if (
@@ -70,6 +114,16 @@ export default {
         return true
       }
       return false
+    }
+  },
+  methods: {
+    deleteArticle() {
+      this.$store.dispatch('article/deleteArticle', this.cardcontent._id)
+    },
+    onClickdropDownMenu(data) {
+      if (data.title === 'Delete') {
+        this.overlay = true
+      }
     }
   }
 }

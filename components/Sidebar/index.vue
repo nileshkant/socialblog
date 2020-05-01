@@ -4,10 +4,16 @@
       <v-toolbar flat>
         <v-toolbar-title class="title">All Topics</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn v-if="!user" type="button" color="accent" @click="loginPopUp">
+        <v-btn
+          v-if="!user"
+          outlined
+          type="button"
+          color="accent"
+          @click="loginPopUp"
+        >
           Login / SignUp
         </v-btn>
-        <v-btn v-else type="button" color="accent" @click="logout">
+        <v-btn v-else outlined type="button" color="accent" @click="logout">
           Logout
         </v-btn>
         <v-btn v-if="!isDarkMode" icon large @click="onThemeChange">

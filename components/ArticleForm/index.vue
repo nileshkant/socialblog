@@ -43,7 +43,7 @@
               label="Upload Image"
             />
             <VTextFieldWithValidation
-              v-if="select === 'Image/Video Url'"
+              v-if="select === 'Image Url'"
               v-model="formData.mediaUrl"
               classes="mt-4"
               :rules="{
@@ -52,6 +52,9 @@
               }"
               label="Image Url"
             />
+            <div v-if="select === 'Image Url'" class="caption text--disabled">
+              It must be valid image url
+            </div>
           </v-col>
         </v-row>
         <v-card-actions>
@@ -96,7 +99,7 @@ export default {
     SelectBox
   },
   data: () => ({
-    items: ['No Image', 'Upload Image', 'Image/Video Url'],
+    items: ['No Image', 'Upload Image', 'Image Url'],
     // cardoption: ['Image Card', 'Quote Card'],
     select: '',
     totalCharBody: 0,
