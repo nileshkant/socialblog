@@ -13,7 +13,7 @@
         <v-row>
           <v-col align-self="center" class="text-center">
             <v-btn
-              href="https://theopenstories.com/api/authentication/auth/facebook"
+              href="https://theopenstories.xyz/api/authentication/auth/facebook"
               color="blue darken-3"
               dark
             >
