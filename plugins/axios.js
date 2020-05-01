@@ -1,8 +1,10 @@
+import https from 'https'
 const Cookie = process.client ? require('js-cookie') : undefined
 
 export default function({ $axios, redirect, store }) {
+  $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.setBaseURL(
-    'http://theopenstories.xyz/api'
+    'https://theopenstories.xyz/api'
     // 'http://localhost:3000/api'
   )
   $axios.onRequest((request) => {
