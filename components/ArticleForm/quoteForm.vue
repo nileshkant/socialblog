@@ -19,7 +19,7 @@
         />
         <ColorPicker v-model="formData.color" />
         <v-card-actions>
-          <v-btn @click="submit('save')">Save</v-btn>
+          <!-- <v-btn @click="submit('save')">Save</v-btn> -->
           <v-spacer></v-spacer>
           <v-btn color="primary" @click="submit('publish')">Publish</v-btn>
         </v-card-actions>
