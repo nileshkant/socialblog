@@ -21,7 +21,13 @@
         <v-card-actions>
           <!-- <v-btn @click="submit('save')">Save</v-btn> -->
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="submit('publish')">Publish</v-btn>
+          <v-btn
+            color="primary"
+            :loading="loading"
+            :disabled="loading"
+            @click="submit('publish')"
+            >Publish</v-btn
+          >
         </v-card-actions>
       </v-form>
     </ValidationObserver>
@@ -61,8 +67,8 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      // dropdownCategories: 'article/dropdownCategories',
-      initValue: 'article/latestArticle'
+      initValue: 'article/latestArticle',
+      loading: 'article/loading'
     })
   },
   watch: {

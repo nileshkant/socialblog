@@ -6,7 +6,7 @@
     max-width="400"
   >
     <v-overlay absolute :opacity="0.7" :value="overlay">
-      <v-btn @click.stop.prevent="overlay = false" class="mr-2">
+      <v-btn class="mr-2" @click.stop.prevent="overlay = false">
         Cancel
       </v-btn>
       <v-btn color="error" class="ml-2" @click.stop.prevent="deleteArticle">
@@ -43,7 +43,7 @@
             v-if="cardcontent._id"
             class="mx-2"
             icon
-            color="secondary"
+            :color="!checkColor ? 'black' : ''"
             text
             v-on="on"
           >

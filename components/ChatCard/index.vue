@@ -76,7 +76,14 @@
 
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn class="mx-2" icon color="secondary" text v-on="on">
+          <v-btn
+            v-if="cardcontent._id"
+            class="mx-2"
+            icon
+            color="secondary"
+            text
+            v-on="on"
+          >
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
@@ -149,7 +156,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          cardcontent: {
+          fullDetailsCard: {
             title: 'Top western road trips',
             subtitle: '1,000 miles of wonder',
             imageUrl: null,

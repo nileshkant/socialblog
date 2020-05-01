@@ -77,7 +77,8 @@ export default {
       ],
       formdata: {
         articleType: 'fullDetailsCard',
-        categories: null
+        categories: null,
+        fileURL: ''
       }
     }
   },
@@ -100,10 +101,14 @@ export default {
     formUpdate(data) {
       this.formdata = { ...this.formdata, [this.formdata.articleType]: data }
     },
-    async uploadFile(data) {
-      this.formdata.file = data && data ? await toBase64(data) : null
+    uploadFile(data) {
+      this.formdata.fileURL = data ? URL.createObjectURL(data) : ''
+      this.fileData = data || null
     },
-    onSubmit(data) {
+    async onSubmit(data) {
+      if (this.fileData) {
+        this.formdata.file = await toBase64(this.fileData)
+      }
       this.formdata.isPublished = data === 'publish'
       if (this.formdata.categories) {
         this.$store.dispatch('article/postArticle', this.formdata)

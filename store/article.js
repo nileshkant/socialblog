@@ -1,4 +1,6 @@
 export const state = () => ({
+  loading: false,
+  error: false,
   articles: [],
   categories: [],
   dropdownCategories: [],
@@ -10,6 +12,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+  loading(state, payload) {
+    state.loading = payload
+  },
   getArticle(state, payload) {
     state.articles = payload
   },
@@ -56,15 +61,19 @@ export const actions = {
     context.commit('getCategories', categories)
   },
   async postArticle(context, payload) {
+    context.commit('loading', true)
     const article = await this.$axios.$post('/article', payload)
     context.commit('latestArticle', article)
-    this.$router.push({
+    context.commit('loading', false)
+    this.$router.replace({
       path: `/article/${article.savedArticle._id}`
     })
   },
   async deleteArticle(context, payload) {
+    context.commit('loading', true)
     await this.$axios.$delete(`/article/delete-article?articleId=${payload}`)
     context.commit('deletedArticle', payload)
+    context.commit('loading', false)
   },
   async getSingleArticle(context, payload) {
     const singleArticle = await this.$axios.$get(
@@ -73,8 +82,10 @@ export const actions = {
     context.commit('getSingleArticle', singleArticle)
   },
   async postComment(context, payload) {
+    context.commit('loading', true)
     const comment = await this.$axios.$post('/article/add-comment', payload)
     context.commit('postComment', comment)
+    context.commit('loading', false)
   },
   async getComments(context, payload) {
     const allComments = await this.$axios.$get(
@@ -108,5 +119,8 @@ export const getters = {
   },
   allComments: (state) => {
     return state.allComments
+  },
+  loading(state) {
+    return state.loading
   }
 }
