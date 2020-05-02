@@ -45,7 +45,17 @@
         </v-row>
       </div>
       <v-divider />
-      <div class="editor-pos">
+      <div
+        v-if="
+          (article.articleType !== 'quoteCard' &&
+            user &&
+            article.author &&
+            article.author._id === user.userDetails._id) ||
+            (article.articleType !== 'quoteCard' &&
+              user.userDetails.role === 'admin')
+        "
+        class="editor-pos"
+      >
         <v-card flat class="br-0 px-3">
           <v-img v-if="formdata && formdata.file" :src="formdata.file"></v-img>
           <resize-observer @notify="handleResize" />

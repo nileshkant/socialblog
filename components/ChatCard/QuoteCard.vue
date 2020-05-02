@@ -51,14 +51,22 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item
-            v-for="(menu, index) in dropDown"
-            :key="index"
-            @click="onClickdropDownMenu(menu)"
-          >
-            <v-icon>{{ menu.icon }}</v-icon>
-            <v-list-item-title>{{ menu.title }}</v-list-item-title>
-          </v-list-item>
+          <div v-for="(menu, index) in dropDown" :key="index" class="py-0">
+            <v-list-item
+              v-if="
+                (menu.title === 'Delete' &&
+                  user &&
+                  cardcontent.author &&
+                  cardcontent.author._id === user.userDetails._id) ||
+                  user.userDetails.role === 'admin' ||
+                  menu.title !== 'Delete'
+              "
+              @click="onClickdropDownMenu(menu)"
+            >
+              <v-icon>{{ menu.icon }}</v-icon>
+              <v-list-item-title>{{ menu.title }}</v-list-item-title>
+            </v-list-item>
+          </div>
         </v-list>
       </v-menu>
       <v-card-text
@@ -73,6 +81,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { lightOrDark } from '../../utilities/common'
 export default {
   props: {
@@ -114,7 +123,8 @@ export default {
         return true
       }
       return false
-    }
+    },
+    ...mapGetters({ user: 'user' })
   },
   methods: {
     deleteArticle() {
