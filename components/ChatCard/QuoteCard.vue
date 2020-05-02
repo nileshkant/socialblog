@@ -56,9 +56,12 @@
               v-if="
                 (menu.title === 'Delete' &&
                   user &&
+                  user.userDetails &&
                   cardcontent.author &&
                   cardcontent.author._id === user.userDetails._id) ||
-                  user.userDetails.role === 'admin' ||
+                  (user &&
+                    user.userDetails &&
+                    user.userDetails.role === 'admin') ||
                   menu.title !== 'Delete'
               "
               @click="onClickdropDownMenu(menu)"
