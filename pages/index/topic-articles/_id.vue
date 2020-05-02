@@ -19,6 +19,7 @@
     </v-toolbar>
     <v-divider />
     <div
+      id="articleContainer"
       :style="{
         'min-height': windowHeight - 66 + 'px',
         'max-height': windowHeight - 66 + 'px'
@@ -77,6 +78,10 @@ export default {
       articles: 'article/articles',
       user: 'user'
     })
+  },
+  mounted() {
+    const container = this.$el.querySelector('#articleContainer')
+    container.scrollTop = container.scrollHeight
   }
 }
 </script>

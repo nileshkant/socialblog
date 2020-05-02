@@ -13,14 +13,24 @@
         Delete!
       </v-btn>
     </v-overlay>
-    <v-card-title>
+    <v-card-text
+      v-if="cardcontent.createdDate"
+      class="caption pb-0"
+      :class="!checkColor && 'black--text'"
+    >
+      {{
+        $dateFns.formatDistanceToNow(new Date(cardcontent.createdDate), {
+          addSuffix: true
+        })
+      }}
+    </v-card-text>
+    <v-card-title class="pt-0">
       <span
         class="title font-weight-light"
         :class="!checkColor && 'black--text'"
         >{{ cardcontent.quoteCard && cardcontent.quoteCard.title }}</span
       >
     </v-card-title>
-
     <v-card-text
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
       class="headline font-weight-bold"

@@ -19,6 +19,7 @@
       </v-toolbar>
       <v-divider />
       <div
+        id="articleContainer"
         :style="{
           'min-height': windowHeight - 66 - editorHeight + 'px',
           'max-height': windowHeight - 66 - editorHeight + 'px'
@@ -45,25 +46,26 @@
         </v-row>
       </div>
       <v-divider />
-      <div
-        v-if="
-          (article.articleType !== 'quoteCard' &&
-            user &&
-            article.author &&
-            article.author._id === user.userDetails._id) ||
-            (article.articleType !== 'quoteCard' &&
-              user.userDetails.role === 'admin')
-        "
-        class="editor-pos"
-      >
+      <div class="editor-pos">
         <v-card flat class="br-0 px-3">
           <v-img v-if="formdata && formdata.file" :src="formdata.file"></v-img>
           <resize-observer @notify="handleResize" />
           <CommentForm
-            v-if="user"
+            v-if="user && user.userDetails && isAllowed()"
             @formData="formUpdate"
             @onSubmit="onSubmit"
           />
+          <v-row v-else-if="user">
+            <v-col class="pa-0">
+              <v-card-text color="accent" class="subtitle-1 text--disabled">
+                <resize-observer @notify="handleResize" />
+                Thank you for your contribution
+                <div class="caption text--disabled">
+                  You can comment only once
+                </div>
+              </v-card-text>
+            </v-col>
+          </v-row>
           <v-row v-else>
             <v-col class="pa-0">
               <v-card-text color="accent" class="subtitle-1 text--disabled">
@@ -129,6 +131,19 @@ export default {
     handleResize({ height }) {
       this.editorHeight = height
     },
+    isAllowed() {
+      if (this.article.articleType === 'quoteCard') return false
+      if (this.user.userDetails.role === 'admin') return true
+      if (this.article.author._id === this.user.userDetails._id) return true
+      const filterComment = this.allComments.filter((comment) => {
+        return comment.commentor._id === this.user.userDetails._id
+      })
+      if (filterComment.length >= 1) {
+        return false
+      } else {
+        return true
+      }
+    },
     async formUpdate(data) {
       this.formdata = {
         ...data,
@@ -138,9 +153,11 @@ export default {
     loginPopUp() {
       this.$store.dispatch('commonState/loginPopUp')
     },
-    onSubmit() {
+    async onSubmit() {
       const sendForm = { ...this.formdata, articleId: this.$route.params.id }
-      this.$store.dispatch('article/postComment', sendForm)
+      await this.$store.dispatch('article/postComment', sendForm)
+      const container = this.$el.querySelector('#articleContainer')
+      container.scrollTop = container.scrollHeight
     }
   }
 }

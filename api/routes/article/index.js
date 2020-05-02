@@ -12,7 +12,7 @@ router.post('/', authorized, async (req, res) => {
   const article = new Article({
     ...restfield,
     articleType,
-    author: req.user._id
+    author: req.user && req.user._id
   })
   if (req.user.role === 'user') {
     article.isVerified = false
@@ -137,6 +137,7 @@ router.get('/get-articles', async (req, res) => {
         select: { password: 0, permissions: 0 }
       }
     })
+    .sort({ createdDate: -1 })
     .limit(limit)
     .skip(limit * (page - 1))
     .exec()
@@ -144,7 +145,7 @@ router.get('/get-articles', async (req, res) => {
   allArticles.forEach((doc) => {
     resArticle.push(doc)
   })
-  res.status(200).json(resArticle)
+  res.status(200).json(resArticle.reverse())
 })
 
 router.delete('/delete-article', authorized, async (req, res) => {
