@@ -1,16 +1,38 @@
 <template>
   <v-row>
-    <v-col sm="12" md="4" cols="12" class="py-0 border-right-grey">
-      <sidebar />
+    <v-col
+      sm="12"
+      md="4"
+      cols="12"
+      class="py-0 border-right-grey"
+      :class="$route.params.id || isTrending ? 'd-none d-md-flex' : ''"
+    >
+      <sidebar @trending="isTrending = true" />
     </v-col>
     <v-col class="pa-0 border-right-grey middle-col" sm="12" md="5" cols="12">
       <NuxtChild :key="$route.params.id" />
     </v-col>
-    <v-col sm="12" md="3" cols="12" class="py-0">
+    <v-col
+      sm="12"
+      md="3"
+      cols="12"
+      class="py-0"
+      :class="isTrending ? '' : 'd-none d-md-flex'"
+    >
       <v-row>
         <v-col cols="12" class="px-0 py-0">
           <v-toolbar flat>
-            <v-toolbar-title class="title">#Trending Today</v-toolbar-title>
+            <v-btn
+              icon
+              large
+              class="d-flex d-md-none"
+              @click="isTrending = false"
+            >
+              <v-icon>mdi-arrow-left</v-icon>
+            </v-btn>
+            <v-toolbar-title class="title pl-0"
+              >#Trending Today</v-toolbar-title
+            >
             <v-spacer></v-spacer>
             <v-btn icon large>
               <v-icon>mdi-weather-night</v-icon>
@@ -51,6 +73,11 @@ export default {
   },
   async fetch({ store, params }) {
     await store.dispatch('article/getCategories')
+  },
+  data() {
+    return {
+      isTrending: false
+    }
   },
   computed: {
     ...mapGetters({

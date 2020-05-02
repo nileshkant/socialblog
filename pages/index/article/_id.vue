@@ -2,7 +2,10 @@
   <client-only>
     <div>
       <v-toolbar flat>
-        <v-toolbar-title class="title">{{
+        <v-btn icon large class="d-flex d-md-none" to="/">
+          <v-icon>mdi-home-outline</v-icon>
+        </v-btn>
+        <v-toolbar-title class="title pl-0">{{
           (article && article.categories[0].name) || 'Please select a topic'
         }}</v-toolbar-title>
         <v-spacer></v-spacer>

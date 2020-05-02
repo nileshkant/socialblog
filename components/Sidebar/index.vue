@@ -16,6 +16,9 @@
         <v-btn v-else outlined type="button" color="accent" @click="logout">
           Logout
         </v-btn>
+        <v-btn icon large class="d-flex d-md-none" @click="trending">
+          <v-icon>mdi-trending-up</v-icon>
+        </v-btn>
         <v-btn v-if="!isDarkMode" icon large @click="onThemeChange">
           <v-icon>mdi-weather-night</v-icon>
         </v-btn>
@@ -97,6 +100,9 @@ export default {
       Cookie.remove('user')
       this.$store.commit('setAuth', null)
       this.$store.commit('setUserDetails', null)
+    },
+    trending() {
+      this.$emit('trending')
     },
     clickedTopic(item) {
       this.$router.push({ path: `/topic-articles/${item._id}` })

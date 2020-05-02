@@ -1,9 +1,18 @@
 <template>
   <v-row>
-    <v-col md="6">
-      <h3 class="text-center mb-3">
-        Add Post Details
-      </h3>
+    <v-col md="6" cols="12" :class="preview ? 'd-none d-md-flex' : ''">
+      <v-row>
+        <v-col>
+          <h3 class="mb-3">
+            Add Post Details
+          </h3>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn icon large class="d-flex d-md-none" @click="preview = true">
+            <v-icon>mdi-eye-outline</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
       <v-card>
         <v-col>
           <SelectBox
@@ -35,15 +44,35 @@
         </v-col>
       </v-card>
     </v-col>
-    <v-col md="6">
-      <h3 class="text-center mb-3">
-        Preview Post
-      </h3>
-      <ArticleCard
-        v-if="formdata.articleType === 'fullDetailsCard'"
-        :cardcontent="formdata"
-      />
-      <QuoteCard v-else :cardcontent="formdata" />
+    <v-col md="5" cols="12" class="ml-auto">
+      <v-row :class="!preview ? 'd-none d-md-flex' : ''">
+        <v-col cols="12" class="py-0">
+          <v-row>
+            <v-col>
+              <h3>
+                Preview Post
+              </h3>
+            </v-col>
+            <v-col cols="auto">
+              <v-btn
+                icon
+                large
+                class="text-right d-flex d-md-none"
+                @click="preview = false"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="12">
+          <ArticleCard
+            v-if="formdata.articleType === 'fullDetailsCard'"
+            :cardcontent="formdata"
+          />
+          <QuoteCard v-else :cardcontent="formdata" />
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
 </template>
@@ -75,6 +104,7 @@ export default {
         { text: 'Full Article Card', value: 'fullDetailsCard' },
         { text: 'Quote Card', value: 'quoteCard' }
       ],
+      preview: false,
       formdata: {
         articleType: 'fullDetailsCard',
         categories: null,

@@ -1,9 +1,7 @@
 <template>
   <v-card
-    class="mx-auto"
     :color="cardcontent.quoteCard && cardcontent.quoteCard.color"
     :dark="checkColor"
-    max-width="400"
   >
     <v-overlay absolute :opacity="0.7" :value="overlay">
       <v-btn class="mr-2" @click.stop.prevent="overlay = false">

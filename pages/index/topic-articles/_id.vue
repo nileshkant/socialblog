@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-toolbar flat>
-      <v-toolbar-title class="title">{{
+      <v-btn icon large class="d-flex d-md-none" to="/">
+        <v-icon>mdi-home-outline</v-icon>
+      </v-btn>
+      <v-toolbar-title class="title pl-0">{{
         (articles && articles[0] && articles[0].categories[0].name) ||
           'Sorry no content found'
       }}</v-toolbar-title>
