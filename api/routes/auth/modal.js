@@ -41,7 +41,7 @@ const userMultiAccountSchema = new Schema({
   role: {
     type: String,
     enum: ['admin', 'moderator', 'user'],
-    default: 'admin'
+    default: 'moderator'
   },
   permissions: [
     {
