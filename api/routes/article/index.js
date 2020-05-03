@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import mongoose from 'mongoose'
-import passport from 'passport'
 import cloudinary from '../../core/cloudinary'
 import { authorized } from '../../utils'
 import { Article } from './articleModal'
+import { LikeArticle } from './articleModal/otherModal'
 import { Category, PostComment } from './modal'
 const router = Router()
 
@@ -88,66 +88,83 @@ router.get('/get-comments', async (req, res) => {
   res.status(200).json(resArticle)
 })
 
-router.post(
-  '/like',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res) => {
-    const { articleId, like } = req.body
-    try {
-      if (!like) {
-        const deleteLike = await Article.findOneAndUpdate(
-          { _id: articleId },
-          { $pull: { likedBy: mongoose.Types.ObjectId(req.user._id) } },
-          { new: true }
-        )
-        res.status(200).json(deleteLike)
-      } else {
-        const updateArticle = await Article.findOneAndUpdate(
-          { _id: articleId },
-          { $push: { likedBy: mongoose.Types.ObjectId(req.user._id) } },
-          { new: true }
-        )
-        res.status(200).json(updateArticle)
-      }
-    } catch (err) {
-      res.send(400, err)
-    }
-  }
-)
+router.get('/like', authorized, async (req, res) => {
+  try {
+    const query = { articleId: req.query.articleId, likedBy: req.user._id }
 
-router.get('/get-articles', async (req, res) => {
-  const categoryPosts = req.query.categoryid
-  const limit = Number(req.query.limit)
-  const page = Number(req.query.page)
-  const allArticles = await Article.find({
-    categories: mongoose.Types.ObjectId(categoryPosts),
-    isPublished: true
-  })
-    .populate('categories')
-    .populate({
-      path: 'author',
-      model: 'MultiAccountUser',
-      select: { password: 0, permissions: 0 }
-    })
-    .populate({
-      path: 'categories',
-      populate: {
-        path: 'createdBy',
-        model: 'MultiAccountUser',
-        select: { password: 0, permissions: 0 }
-      }
-    })
-    .sort({ createdDate: -1 })
-    .limit(limit)
-    .skip(limit * (page - 1))
-    .exec()
-  const resArticle = []
-  allArticles.forEach((doc) => {
-    resArticle.push(doc)
-  })
-  res.status(200).json(resArticle.reverse())
+    const deleteLike = await LikeArticle.findOneAndDelete(query).exec()
+
+    if (deleteLike) {
+      res.status(400).json({ message: 'Unlike successfully' })
+    } else {
+      const article = new LikeArticle(query)
+      await article.save((err, data) => {
+        if (err) {
+          res.status(400).json({ msg: err })
+          return
+        }
+        res.status(200).json({ message: 'Article liked successfully' })
+      })
+    }
+  } catch (err) {
+    res.status(400).json({ message: err })
+  }
 })
 
+/**
+ * Get Articles
+ * @date 2020-05-04
+ * @param {any} '/get-articles'
+ * @param {String} categoryid
+ * @param {String} limit
+ * @param {String} page
+ * @returns {any}
+ */
+router.get('/get-articles', async (req, res) => {
+  try {
+    const categoryPosts = req.query.categoryid
+    const limit = Number(req.query.limit)
+    const page = Number(req.query.page)
+    const allArticles = await Article.find({
+      categories: mongoose.Types.ObjectId(categoryPosts),
+      isPublished: true
+    })
+      .populate('categories')
+      .populate([{ path: 'likes' }])
+      .populate({
+        path: 'author',
+        model: 'MultiAccountUser',
+        select: { password: 0, permissions: 0 }
+      })
+      .populate({
+        path: 'categories',
+        populate: {
+          path: 'createdBy',
+          model: 'MultiAccountUser',
+          select: { password: 0, permissions: 0 }
+        }
+      })
+      .sort({ createdDate: -1 })
+      .limit(limit)
+      .skip(limit * (page - 1))
+      .exec()
+    const resArticle = []
+    allArticles.forEach((doc) => {
+      resArticle.push(doc)
+    })
+    res.status(200).json(resArticle.reverse())
+  } catch (err) {
+    res.status(400).json({ msg: err })
+  }
+})
+
+/**
+ * For delete article
+ * @date 2020-05-04
+ * @param {any} '/delete-article'
+ * @param {any} articleId
+ * @returns {any}
+ */
 router.delete('/delete-article', authorized, async (req, res) => {
   try {
     const query = { _id: req.query.articleId }
@@ -168,33 +185,48 @@ router.delete('/delete-article', authorized, async (req, res) => {
   }
 })
 
+/**
+ * Get single post
+ * @date 2020-05-04
+ * @param {any} '/single-article'
+ * @param {any} articleid
+ * @returns {any}
+ */
 router.get('/single-article', async (req, res) => {
-  const articleid = req.query.articleid
-  const article = await Article.findById(articleid)
-    .populate('categories')
-    .populate({
-      path: 'author',
-      model: 'MultiAccountUser',
-      select: { password: 0, permissions: 0 }
-    })
-    .populate({
-      path: 'categories',
-      populate: {
-        path: 'createdBy',
+  try {
+    const articleid = req.query.articleid
+    const article = await Article.findById(articleid)
+      .populate('categories')
+      .populate({
+        path: 'author',
         model: 'MultiAccountUser',
         select: { password: 0, permissions: 0 }
-      }
-    })
-  res.status(200).json(article)
+      })
+      .populate({
+        path: 'categories',
+        populate: {
+          path: 'createdBy',
+          model: 'MultiAccountUser',
+          select: { password: 0, permissions: 0 }
+        }
+      })
+    res.status(200).json(article)
+  } catch (err) {
+    res.status(400).json({ msg: err })
+  }
 })
 
 router.get('/categories', async (req, res) => {
-  const allCategories = await Category.find()
-  const categories = []
-  allCategories.forEach((doc) => {
-    categories.push(doc)
-  })
-  res.status(200).json(categories)
+  try {
+    const allCategories = await Category.find()
+    const categories = []
+    allCategories.forEach((doc) => {
+      categories.push(doc)
+    })
+    res.status(200).json(categories)
+  } catch (err) {
+    res.status(400).json({ msg: err })
+  }
 })
 
 export default router

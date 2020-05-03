@@ -7,12 +7,6 @@ const articleSchema = new Schema({
       ref: 'category'
     }
   ],
-  likedBy: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'MultiAccountUser'
-    }
-  ],
   author: { type: Schema.Types.ObjectId, ref: 'MultiAccountUser' },
   createdDate: {
     type: Date,
@@ -84,5 +78,16 @@ const articleSchema = new Schema({
     }
   }
 })
+
+// This is for joining two documents which has something in common in both
+
+articleSchema.virtual('likesCount', {
+  ref: 'likeArticle',
+  localField: '_id', // this schema reference that is matching to foreignField
+  foreignField: 'articleId' // this schema reference to ref field which is matching to this schema
+})
+
+articleSchema.set('toObject', { virtuals: true })
+articleSchema.set('toJSON', { virtuals: true })
 
 export const Article = mongoose.model('article', articleSchema)
