@@ -8,16 +8,16 @@ import { Category, PostComment } from './modal'
 const router = Router()
 
 router.post('/', authorized, async (req, res) => {
-  const { file, articleType, ...restfield } = req.body
-  const article = new Article({
-    ...restfield,
-    articleType,
-    author: req.user && req.user._id
-  })
-  if (req.user.role === 'user') {
-    article.isVerified = false
-  }
   try {
+    const { file, articleType, ...restfield } = req.body
+    const article = new Article({
+      ...restfield,
+      articleType,
+      author: req.user && req.user._id
+    })
+    if (req.user.role === 'user') {
+      article.isVerified = false
+    }
     if (file) {
       const mediaUrl = await cloudinary.uploader.upload(file)
       article[articleType].mediaUrl = mediaUrl.secure_url
@@ -149,11 +149,11 @@ router.get('/get-articles', async (req, res) => {
 })
 
 router.delete('/delete-article', authorized, async (req, res) => {
-  const query = { _id: req.query.articleId }
-  if (req.user.role !== 'admin') {
-    query.author = req.user._id
-  }
   try {
+    const query = { _id: req.query.articleId }
+    if (req.user.role !== 'admin') {
+      query.author = req.user._id
+    }
     const deleteArticle = await Article.findOneAndDelete(query).exec()
     if (deleteArticle) {
       await PostComment.deleteMany({ articleId: req.query.articleId }).exec()
