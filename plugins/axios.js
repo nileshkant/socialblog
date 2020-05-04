@@ -18,6 +18,7 @@ export default function({ $axios, redirect, store }) {
       Cookie.remove('auth')
       Cookie.remove('user')
       store.commit('setAuth', null)
+      store.commit('setUserDetails', null)
       redirect('/')
     }
   })
