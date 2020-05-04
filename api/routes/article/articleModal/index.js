@@ -81,7 +81,7 @@ const articleSchema = new Schema({
 
 // This is for joining two documents which has something in common in both
 
-articleSchema.virtual('likesCount', {
+articleSchema.virtual('likes', {
   ref: 'likeArticle',
   localField: '_id', // this schema reference that is matching to foreignField
   foreignField: 'articleId' // this schema reference to ref field which is matching to this schema

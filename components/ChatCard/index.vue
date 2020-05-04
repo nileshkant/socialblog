@@ -66,9 +66,16 @@
       {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.subtitle }}
     </v-card-subtitle>
     <v-card-actions>
-      <v-btn icon color="secondary" text>
-        <v-icon>mdi-heart-outline</v-icon>
+      <v-btn icon color="secondary" @click="likeArticle">
+        <v-icon v-if="likes" color="error">mdi-heart</v-icon>
+        <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
+      <div
+        v-if="cardcontent.likes && cardcontent.likes.length > 0"
+        class="text--disabled mr-2"
+      >
+        {{ cardcontent.likes && cardcontent.likes.length }}
+      </div>
 
       <v-btn icon color="secondary" text>
         <v-icon>mdi-bookmark-plus-outline</v-icon>
@@ -198,7 +205,26 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters({ user: 'user' })
+    ...mapGetters({ user: 'user' }),
+    likes() {
+      if (!this.user) {
+        return false
+      }
+      if (
+        !this.cardcontent ||
+        !this.cardcontent.likes ||
+        (this.cardcontent.likes && this.cardcontent.likes.length === 0)
+      )
+        return false
+      const userLiked = this.cardcontent.likes.filter((value) => {
+        return value.likedBy === this.user.userDetails._id
+      })
+      if (userLiked && userLiked.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     transform: cloudinarytransformUrl,
@@ -211,6 +237,13 @@ export default {
     onClickdropDownMenu(data) {
       if (data.title === 'Delete') {
         this.overlay = true
+      }
+    },
+    likeArticle() {
+      if (this.user) {
+        this.$store.dispatch('article/likeArticle', this.cardcontent._id)
+      } else {
+        this.$store.dispatch('commonState/loginPopUp')
       }
     }
   }

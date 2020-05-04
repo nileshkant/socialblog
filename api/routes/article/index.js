@@ -95,7 +95,7 @@ router.get('/like', authorized, async (req, res) => {
     const deleteLike = await LikeArticle.findOneAndDelete(query).exec()
 
     if (deleteLike) {
-      res.status(400).json({ message: 'Unlike successfully' })
+      res.status(200).json({ message: 'Unlike successfully' })
     } else {
       const article = new LikeArticle(query)
       await article.save((err, data) => {
@@ -103,7 +103,7 @@ router.get('/like', authorized, async (req, res) => {
           res.status(400).json({ msg: err })
           return
         }
-        res.status(200).json({ message: 'Article liked successfully' })
+        res.status(200).json({ likeData: data })
       })
     }
   } catch (err) {
@@ -202,6 +202,7 @@ router.get('/single-article', async (req, res) => {
         model: 'MultiAccountUser',
         select: { password: 0, permissions: 0 }
       })
+      .populate([{ path: 'likes' }])
       .populate({
         path: 'categories',
         populate: {

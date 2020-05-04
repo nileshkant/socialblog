@@ -46,6 +46,39 @@ export const mutations = {
       return article._id !== payload
     })
     state.singleArticle = null
+  },
+  likeArticle(state, payload) {
+    if (state.articles && state.articles.length > 0) {
+      state.articles.map((value) => {
+        if (value._id === payload.articleId) {
+          value.likes.push(payload)
+        }
+        return value
+      })
+    }
+    if (state.singleArticle && state.singleArticle._id === payload.articleId) {
+      state.singleArticle.likes.push(payload)
+    }
+  },
+  dislikeArticle(state, payload) {
+    if (state.articles && state.articles.length > 0) {
+      state.articles.map((value) => {
+        if (value._id === payload.articleId) {
+          const filterlikes = value.likes.filter((likeItem) => {
+            return likeItem.likedBy !== payload.userId
+          })
+          value.likes = filterlikes
+        }
+        return value
+      })
+    }
+    if (state.singleArticle && state.singleArticle._id === payload.articleId) {
+      state.singleArticle.likes = state.singleArticle.likes.filter(
+        (likeItem) => {
+          return likeItem.likedBy !== payload.userId
+        }
+      )
+    }
   }
 }
 
@@ -92,6 +125,17 @@ export const actions = {
       `/article/get-comments?articleId=${payload.articleId}`
     )
     context.commit('allComments', allComments)
+  },
+  async likeArticle(context, payload) {
+    const like = await this.$axios.$get(`/article/like?articleId=${payload}`)
+    if (like.likeData) {
+      context.commit('likeArticle', like.likeData)
+    } else {
+      context.commit('dislikeArticle', {
+        userId: context.rootState.user.userDetails._id,
+        articleId: payload
+      })
+    }
   }
 }
 
