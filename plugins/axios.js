@@ -16,6 +16,7 @@ export default function({ $axios, redirect, store }) {
   $axios.onResponseError((error) => {
     if (error.response && error.response.status === 401) {
       Cookie.remove('auth')
+      Cookie.remove('user')
       store.commit('setAuth', null)
       redirect('/')
     }
