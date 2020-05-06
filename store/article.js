@@ -8,7 +8,8 @@ export const state = () => ({
   singleArticle: null,
   latestComment: null,
   titleSection: null,
-  allComments: null
+  allComments: null,
+  bookmarks: []
 })
 
 export const mutations = {
@@ -17,6 +18,10 @@ export const mutations = {
   },
   getArticle(state, payload) {
     state.articles = payload
+    state.titleSection =
+      state.articles &&
+      state.articles[0] &&
+      state.articles[0].categories[0].name
   },
   getCategories(state, payload) {
     state.categories = payload
@@ -79,6 +84,26 @@ export const mutations = {
         }
       )
     }
+  },
+  bookmarkArticle(state, payload) {
+    const bookmark =
+      state.bookmarks &&
+      state.bookmarks.length > 0 &&
+      state.bookmarks.find((article) => article._id === payload._id)
+    if (bookmark) {
+      state.bookmarks = state.bookmarks.filter((article) => {
+        return article._id !== payload._id
+      })
+    } else {
+      state.bookmarks = [...state.bookmarks].concat([payload])
+    }
+    localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks))
+  },
+  loadBookmark(state) {
+    state.bookmarks = JSON.parse(localStorage.getItem('bookmarks'))
+  },
+  setTitle(state, payload) {
+    state.titleSection = payload
   }
 }
 
@@ -136,6 +161,12 @@ export const actions = {
         articleId: payload
       })
     }
+  },
+  bookmarkArticle(context, payload) {
+    context.commit('bookmarkArticle', payload)
+  },
+  setTitle(context, payload) {
+    context.commit('setTitle', payload)
   }
 }
 
@@ -166,5 +197,8 @@ export const getters = {
   },
   loading(state) {
     return state.loading
+  },
+  bookmarks(state) {
+    return state.bookmarks
   }
 }

@@ -39,7 +39,7 @@
             <QuoteCard :cardcontent="article"> </QuoteCard>
           </v-col>
           <v-col v-else md="8" cols="10" class="mr-auto">
-            <chat-card :cardcontent="article"> </chat-card>
+            <chat-card :cardcontent="article" showfullcard> </chat-card>
           </v-col>
         </v-row>
         <v-row v-for="comments in allComments" :key="comments._id" class="mx-0">
@@ -129,6 +129,9 @@ export default {
         this.$router.replace({ path: '/' })
       }
     }
+  },
+  mounted() {
+    this.$meta().refresh()
   },
   methods: {
     handleResize({ height }) {

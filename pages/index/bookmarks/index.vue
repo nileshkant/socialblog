@@ -1,5 +1,5 @@
 <template>
-  <AllArticleList :articles="articles" :user="user" />
+  <AllArticleList v-if="bookmarks" :articles="bookmarks" :user="user" />
 </template>
 
 <script>
@@ -9,14 +9,14 @@ export default {
   components: {
     AllArticleList
   },
-  async fetch({ store, params, route }) {
-    await store.dispatch('article/getArticles', route.params.id)
-  },
   computed: {
     ...mapGetters({
-      articles: 'article/articles',
+      bookmarks: 'article/bookmarks',
       user: 'user'
     })
+  },
+  mounted() {
+    this.$store.dispatch('article/setTitle', 'My bookmarks')
   }
 }
 </script>

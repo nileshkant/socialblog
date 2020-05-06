@@ -30,6 +30,7 @@ export default {
       'commonState/changeTheme',
       JSON.parse(localStorage.getItem('isDarkMode'))
     )
+    this.$store.commit('article/loadBookmark')
   },
   destroyed() {
     window.removeEventListener('resize', this.handleResize)

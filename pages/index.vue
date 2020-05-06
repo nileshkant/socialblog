@@ -34,9 +34,9 @@
               >#Trending Today</v-toolbar-title
             >
             <v-spacer></v-spacer>
-            <v-btn icon large>
-              <v-icon>mdi-weather-night</v-icon>
-            </v-btn>
+            <v-avatar v-if="user" size="32">
+              <v-img :src="user.userDetails.facebook.profilePic"></v-img>
+            </v-avatar>
           </v-toolbar>
           <v-divider />
         </v-col>
@@ -83,7 +83,8 @@ export default {
     ...mapGetters({
       windowHeight: 'commonState/windowHeight',
       isDarkMode: 'commonState/isDarkMode',
-      titleSection: 'article/titleSection'
+      titleSection: 'article/titleSection',
+      user: 'user'
     })
   },
   mounted() {

@@ -1,0 +1,119 @@
+<template>
+  <div>
+    <v-toolbar flat>
+      <v-btn icon large class="d-flex d-md-none" to="/">
+        <v-icon>mdi-home-outline</v-icon>
+      </v-btn>
+      <v-toolbar-title class="title pl-0">{{
+        titleSection || 'Sorry no content found'
+      }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn
+        v-if="user && user.userDetails.role != user"
+        color="accent"
+        to="/create-post"
+      >
+        + Article
+      </v-btn>
+      <v-btn icon large to="/bookmarks" class="ml-2">
+        <v-badge color="green" dot offset-x="5" offset-y="5">
+          <v-icon v-if="$route.path !== '/bookmarks'"
+            >mdi-bookmark-check-outline</v-icon
+          >
+          <v-icon v-else>mdi-bookmark-check</v-icon>
+        </v-badge>
+      </v-btn>
+    </v-toolbar>
+    <v-divider />
+    <div
+      id="articleContainer"
+      :style="{
+        'min-height': windowHeight - 66 + 'px',
+        'max-height': windowHeight - 66 + 'px'
+      }"
+      class="overflowY-auto scrollBar"
+    >
+      <v-row
+        v-for="(article, index) in articles"
+        :key="article._id"
+        class="mx-0"
+      >
+        <v-col
+          v-if="article.articleType === 'quoteCard' && article.quoteCard"
+          md="8"
+          cols="10"
+          :class="{ 'ml-auto': index % 2 === 0 }"
+        >
+          <QuoteCard :cardcontent="article"> </QuoteCard>
+        </v-col>
+        <v-col
+          v-if="
+            article.articleType === 'fullDetailsCard' && article.fullDetailsCard
+          "
+          md="8"
+          cols="10"
+          :class="{ 'ml-auto': index % 2 === 0 }"
+        >
+          <chat-card :cardcontent="article"> </chat-card>
+        </v-col>
+      </v-row>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import ChatCard from '~/components/ChatCard'
+import QuoteCard from '~/components/ChatCard/QuoteCard'
+
+export default {
+  components: {
+    'chat-card': ChatCard,
+    QuoteCard
+  },
+  props: {
+    articles: {
+      type: Array,
+      default: null
+    },
+    user: {
+      type: Object,
+      default: null
+    }
+  },
+  data() {
+    return {
+      autoRight: true
+    }
+  },
+  computed: {
+    ...mapGetters({
+      windowHeight: 'commonState/windowHeight',
+      titleSection: 'article/titleSection'
+    })
+  },
+  mounted() {
+    this.$meta().refresh()
+    const container = this.$el.querySelector('#articleContainer')
+    container.scrollTop = container.scrollHeight
+  }
+}
+</script>
+
+<style scoped>
+.overflowY-auto {
+  overflow-y: auto;
+}
+.border-right-grey {
+  border-right: 1px solid var(--v-greyAccent-base);
+}
+.editor-pos {
+  position: relative;
+  bottom: 0;
+  background: white;
+  width: 100%;
+}
+.middle-col {
+  position: relative;
+}
+</style>

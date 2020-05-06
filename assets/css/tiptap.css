@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'tiptap';
-  src: url('../tiptap/tiptap.eot?nu54es');
-  src: url('../tiptap/tiptap.eot?nu54es#iefix') format('embedded-opentype'),
-    url('../tiptap/tiptap.ttf?nu54es') format('truetype'),
-    url('../tiptap/tiptap.woff?nu54es') format('woff'),
-    url('../tiptap/tiptap.svg?nu54es#tiptap') format('svg');
+  src: url('../tiptap/tiptap.eot?yvcu3');
+  src: url('../tiptap/tiptap.eot?yvcu3#iefix') format('embedded-opentype'),
+    url('../tiptap/tiptap.ttf?yvcu3') format('truetype'),
+    url('../tiptap/tiptap.woff?yvcu3') format('woff'),
+    url('../tiptap/tiptap.svg?yvcu3#tiptap') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26,6 +26,39 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-icons8-facebook:before {
+  content: '\e91b';
+}
+.icon-icons8-facebook-messenger:before {
+  content: '\e91c';
+}
+.icon-icons8-google-plus:before {
+  content: '\e91d';
+}
+.icon-icons8-instagram:before {
+  content: '\e91e';
+}
+.icon-icons8-line:before {
+  content: '\e91f';
+}
+.icon-icons8-linkedin:before {
+  content: '\e920';
+}
+.icon-icons8-pinterest:before {
+  content: '\e921';
+}
+.icon-icons8-reddit:before {
+  content: '\e922';
+}
+.icon-icons8-tumblr:before {
+  content: '\e923';
+}
+.icon-icons8-twitter:before {
+  content: '\e924';
+}
+.icon-icons8-whatsapp:before {
+  content: '\e925';
+}
 .icon-add_col_after:before {
   content: '\e900';
 }

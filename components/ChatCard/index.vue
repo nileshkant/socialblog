@@ -8,6 +8,22 @@
         Delete!
       </v-btn>
     </v-overlay>
+    <v-overlay absolute :opacity="0.85" :value="socialOverlay">
+      <div class="text-center l-h4">
+        <SocialShare :social-share-data="shareData()" />
+      </div>
+      <div class="text-center l-h4">
+        <v-btn
+          fab
+          dark
+          small
+          color="error"
+          @click.stop.prevent="socialOverlay = false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </div>
+    </v-overlay>
     <NLink
       :to="'/article/' + cardcontent._id"
       :event="overlay || !cardcontent._id ? '' : 'click'"
@@ -77,8 +93,9 @@
         {{ cardcontent.likes && cardcontent.likes.length }}
       </div>
 
-      <v-btn icon color="secondary" text>
-        <v-icon>mdi-bookmark-plus-outline</v-icon>
+      <v-btn icon color="secondary" @click="bookmarkArticle">
+        <v-icon v-if="isBookmarked">mdi-bookmark-check</v-icon>
+        <v-icon v-else>mdi-bookmark-plus-outline</v-icon>
       </v-btn>
 
       <v-menu offset-y>
@@ -159,14 +176,22 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import SocialShare from '../SocialShareButtons'
 import { cloudinarytransformUrl } from '../../utilities/common'
 export default {
+  components: {
+    SocialShare
+  },
   props: {
     left: {
       type: Boolean,
       default: false
     },
     right: {
+      type: Boolean,
+      default: false
+    },
+    showfullcard: {
       type: Boolean,
       default: false
     },
@@ -193,6 +218,7 @@ export default {
     show: false,
     hoverDelete: false,
     overlay: false,
+    socialOverlay: false,
     dropDown: [
       {
         title: 'Share',
@@ -205,7 +231,10 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters({ user: 'user' }),
+    ...mapGetters({
+      user: 'user',
+      bookmarks: 'article/bookmarks'
+    }),
     likes() {
       if (!this.user) {
         return false
@@ -224,7 +253,23 @@ export default {
       } else {
         return false
       }
+    },
+    isBookmarked() {
+      const bookmarked =
+        this.bookmarks &&
+        this.bookmarks.length > 0 &&
+        this.bookmarks.find((value) => {
+          return this.cardcontent._id === value._id
+        })
+      if (bookmarked) {
+        return true
+      } else {
+        return false
+      }
     }
+  },
+  mounted() {
+    this.show = this.showfullcard
   },
   methods: {
     transform: cloudinarytransformUrl,
@@ -234,10 +279,26 @@ export default {
     deleteArticle() {
       this.$store.dispatch('article/deleteArticle', this.cardcontent._id)
     },
+    shareData() {
+      const data = {
+        url: '/article/' + this.cardcontent._id,
+        title: this.cardcontent.fullDetailsCard.title,
+        description: this.cardcontent.fullDetailsCard.subtitle,
+        quote: this.cardcontent.fullDetailsCard.title,
+        hashtags: 'thesocialstories'
+      }
+      return data
+    },
     onClickdropDownMenu(data) {
       if (data.title === 'Delete') {
         this.overlay = true
       }
+      if (data.title === 'Share') {
+        this.socialOverlay = true
+      }
+    },
+    bookmarkArticle() {
+      this.$store.dispatch('article/bookmarkArticle', this.cardcontent)
     },
     likeArticle() {
       if (this.user) {
@@ -290,6 +351,9 @@ export default {
   background-position: -10000px 1em;
   color: inherit;
   cursor: pointer;
+}
+.l-h4 {
+  line-height: 4;
 }
 .link:hover {
   background-position: 0 1em;

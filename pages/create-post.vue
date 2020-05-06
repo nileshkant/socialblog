@@ -69,6 +69,7 @@
           <ArticleCard
             v-if="formdata.articleType === 'fullDetailsCard'"
             :cardcontent="formdata"
+            showfullcard
           />
           <QuoteCard v-else :cardcontent="formdata" />
         </v-col>
