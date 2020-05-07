@@ -19,10 +19,21 @@ const postComment = new Schema({
   embedUrl: {
     type: String
   },
+  replyComment: {
+    type: Schema.Types.ObjectId,
+    ref: 'postComment'
+  },
+  reportedBy: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'MultiAccountUser'
+    }
+  ],
   commentor: {
     type: Schema.Types.ObjectId,
     ref: 'MultiAccountUser'
-  }
+  },
+  hashtags: [{ type: String }]
 })
 
 const category = new Schema({

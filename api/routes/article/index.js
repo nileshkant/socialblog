@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import mongoose from 'mongoose'
+import uniq from 'lodash/uniq'
 import cloudinary from '../../core/cloudinary'
 import { authorized } from '../../utils'
 import { Article } from './articleModal'
@@ -47,12 +48,26 @@ router.post('/create-category', authorized, async (req, res) => {
 })
 
 router.post('/add-comment', authorized, async (req, res) => {
-  const { articleId, textComment, file } = req.body
+  const { articleId, textComment, file, replyComment } = req.body
+  const regexp = new RegExp('#', 'g')
+  const allhashtags = textComment.match(/#\w+/g)
   const addComment = new PostComment({
     articleId,
     textComment,
+    hashtags: [],
+    replyComment,
     commentor: req.user._id
   })
+  if (allhashtags) {
+    addComment.hashtags = allhashtags.map((hash) => {
+      return hash.replace('#', '')
+    })
+    addComment.hashtags = addComment.hashtags.filter((hash) => {
+      return hash
+    })
+    addComment.hashtags = uniq(addComment.hashtags)
+    addComment.textComment = addComment.textComment.replace(regexp, '')
+  }
   if (file) {
     const mediaUrl = await cloudinary.uploader.upload(file)
     addComment.mediaUrl = mediaUrl.secure_url
@@ -78,6 +93,10 @@ router.get('/get-comments', async (req, res) => {
       model: 'MultiAccountUser',
       select: { password: 0, permissions: 0 }
     })
+    .populate({
+      path: 'replyComment',
+      model: 'postComment'
+    })
     .limit(limit)
     .skip(limit * (page - 1))
     .exec()
@@ -86,6 +105,23 @@ router.get('/get-comments', async (req, res) => {
     resArticle.push(doc)
   })
   res.status(200).json(resArticle)
+})
+
+router.delete('/delete-comments', authorized, async (req, res) => {
+  try {
+    const query = { _id: req.query.commentId }
+    if (req.user.role !== 'admin') {
+      query.commentor = req.user._id
+    }
+    const deletedComment = await PostComment.findOneAndDelete(query).exec()
+    if (deletedComment) {
+      res.status(200).json({ deletedcomment: deletedComment })
+    } else {
+      res.status(400).json({ msg: 'Delete unsuccessful' })
+    }
+  } catch (err) {
+    res.status(400).json({ msg: err })
+  }
 })
 
 router.get('/like', authorized, async (req, res) => {

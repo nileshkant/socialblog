@@ -38,7 +38,7 @@ export const mutations = {
   },
   getSingleArticle(state, payload) {
     state.singleArticle = payload
-    state.titleSection = state.singleArticle.categories[0]
+    state.titleSection = state.singleArticle.categories[0].name
   },
   postComment(state, payload) {
     state.allComments.push(payload.newComment)
@@ -104,6 +104,11 @@ export const mutations = {
   },
   setTitle(state, payload) {
     state.titleSection = payload
+  },
+  deleteComment(state, payload) {
+    state.allComments = state.allComments.filter((value) => {
+      return value._id !== payload.deletedcomment._id
+    })
   }
 }
 
@@ -167,6 +172,12 @@ export const actions = {
   },
   setTitle(context, payload) {
     context.commit('setTitle', payload)
+  },
+  async deleteComment(context, payload) {
+    const deletedComment = await this.$axios.$delete(
+      `/article/delete-comments?commentId=${payload}`
+    )
+    context.commit('deleteComment', deletedComment)
   }
 }
 

@@ -3,7 +3,7 @@
     :color="cardcontent.quoteCard && cardcontent.quoteCard.color"
     :dark="checkColor"
   >
-    <v-overlay absolute :opacity="0.7" :value="overlay">
+    <v-overlay absolute :opacity="0.7" :value="overlay === cardcontent._id">
       <v-btn class="mr-2" @click.stop.prevent="overlay = false">
         Cancel
       </v-btn>
@@ -11,7 +11,12 @@
         Delete!
       </v-btn>
     </v-overlay>
-    <v-overlay absolute :opacity="0.85" :value="socialOverlay">
+    <v-overlay
+      v-if="cardcontent._id"
+      absolute
+      :opacity="0.85"
+      :value="socialOverlay === cardcontent._id"
+    >
       <div class="text-center l-h4">
         <SocialShare :social-share-data="shareData()" />
       </div>
@@ -59,9 +64,16 @@
       " {{ cardcontent.quoteCard.quote }} "
     </v-card-text>
     <v-card-actions>
-      <v-btn icon color="secondary" @click="likeArticle">
+      <v-btn
+        icon
+        color="secondary"
+        :disabled="!cardcontent._id"
+        @click="likeArticle"
+      >
         <v-icon v-if="likes" color="error">mdi-heart</v-icon>
-        <v-icon v-else>mdi-heart-outline</v-icon>
+        <v-icon v-else :color="!checkColor ? 'black' : ''"
+          >mdi-heart-outline</v-icon
+        >
       </v-btn>
       <div
         v-if="cardcontent.likes && cardcontent.likes.length > 0"
@@ -70,14 +82,13 @@
         {{ cardcontent.likes && cardcontent.likes.length }}
       </div>
 
-      <v-btn
-        icon
-        text
-        :color="!checkColor ? 'black' : ''"
-        @click="bookmarkArticle"
-      >
-        <v-icon v-if="isBookmarked">mdi-bookmark-check</v-icon>
-        <v-icon v-else>mdi-bookmark-plus-outline</v-icon>
+      <v-btn icon text :disabled="!cardcontent._id" @click="bookmarkArticle">
+        <v-icon v-if="isBookmarked" :color="!checkColor ? 'black' : ''"
+          >mdi-bookmark-check</v-icon
+        >
+        <v-icon v-else :color="!checkColor ? 'black' : ''"
+          >mdi-bookmark-plus-outline</v-icon
+        >
       </v-btn>
 
       <v-menu offset-y>
@@ -107,7 +118,7 @@
                     user.userDetails.role === 'admin') ||
                   menu.title !== 'Delete'
               "
-              @click="onClickdropDownMenu(menu)"
+              @click="onClickdropDownMenu(menu, cardcontent._id)"
             >
               <v-icon>{{ menu.icon }}</v-icon>
               <v-list-item-title>{{ menu.title }}</v-list-item-title>
@@ -216,12 +227,12 @@ export default {
     deleteArticle() {
       this.$store.dispatch('article/deleteArticle', this.cardcontent._id)
     },
-    onClickdropDownMenu(data) {
+    onClickdropDownMenu(data, id) {
       if (data.title === 'Delete') {
-        this.overlay = true
+        this.overlay = id
       }
       if (data.title === 'Share') {
-        this.socialOverlay = true
+        this.socialOverlay = id
       }
     },
     bookmarkArticle() {
@@ -233,7 +244,7 @@ export default {
         title: this.cardcontent.quoteCard.quote,
         description: this.cardcontent.quoteCard.quote,
         quote: this.cardcontent.quoteCard.quote,
-        hashtags: 'thesocialstories'
+        hashtags: ''
       }
       return data
     },

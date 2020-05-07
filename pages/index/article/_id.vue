@@ -6,7 +6,7 @@
           <v-icon>mdi-home-outline</v-icon>
         </v-btn>
         <v-toolbar-title class="title pl-0">{{
-          (article && article.categories[0].name) || 'Please select a topic'
+          titleSection || 'Please select a topic'
         }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn
@@ -43,7 +43,17 @@
           </v-col>
         </v-row>
         <v-row v-for="comments in allComments" :key="comments._id" class="mx-0">
-          <v-col md="8" cols="10" class="ml-auto">
+          <v-col
+            md="8"
+            cols="10"
+            :class="
+              (user &&
+                (user.userDetails._id === comments.commentor._id ||
+                  user.userDetails._id === comments.commentor) &&
+                'ml-auto') ||
+                'mr-auto'
+            "
+          >
             <MessageCard :cardcontent="comments" />
           </v-col>
         </v-row>
@@ -120,7 +130,8 @@ export default {
       windowHeight: 'commonState/windowHeight',
       article: 'article/singleArticle',
       allComments: 'article/allComments',
-      user: 'user'
+      user: 'user',
+      titleSection: 'article/titleSection'
     })
   },
   watch: {

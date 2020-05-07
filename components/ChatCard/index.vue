@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-overlay absolute :opacity="0.7" :value="overlay">
+    <v-overlay absolute :opacity="0.7" :value="overlay === cardcontent._id">
       <v-btn class="mr-2" @click.stop.prevent="overlay = false">
         Cancel
       </v-btn>
@@ -8,7 +8,12 @@
         Delete!
       </v-btn>
     </v-overlay>
-    <v-overlay absolute :opacity="0.85" :value="socialOverlay">
+    <v-overlay
+      v-if="cardcontent._id"
+      absolute
+      :opacity="0.85"
+      :value="socialOverlay === cardcontent._id"
+    >
       <div class="text-center l-h4">
         <SocialShare :social-share-data="shareData()" />
       </div>
@@ -82,7 +87,12 @@
       {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.subtitle }}
     </v-card-subtitle>
     <v-card-actions>
-      <v-btn icon color="secondary" @click="likeArticle">
+      <v-btn
+        icon
+        color="secondary"
+        :disabled="!cardcontent._id"
+        @click="likeArticle"
+      >
         <v-icon v-if="likes" color="error">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
@@ -93,12 +103,17 @@
         {{ cardcontent.likes && cardcontent.likes.length }}
       </div>
 
-      <v-btn icon color="secondary" @click="bookmarkArticle">
+      <v-btn
+        icon
+        color="secondary"
+        :disabled="!cardcontent._id"
+        @click="bookmarkArticle"
+      >
         <v-icon v-if="isBookmarked">mdi-bookmark-check</v-icon>
         <v-icon v-else>mdi-bookmark-plus-outline</v-icon>
       </v-btn>
 
-      <v-menu offset-y>
+      <v-menu v-if="cardcontent._id" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn
             v-if="cardcontent._id"
@@ -124,7 +139,7 @@
                     user.userDetails.role === 'admin') ||
                   menu.title !== 'Delete'
               "
-              @click="onClickdropDownMenu(menu)"
+              @click="onClickdropDownMenu(menu, cardcontent._id)"
             >
               <v-icon>{{ menu.icon }}</v-icon>
               <v-list-item-title>{{ menu.title }}</v-list-item-title>
@@ -285,16 +300,16 @@ export default {
         title: this.cardcontent.fullDetailsCard.title,
         description: this.cardcontent.fullDetailsCard.subtitle,
         quote: this.cardcontent.fullDetailsCard.title,
-        hashtags: 'thesocialstories'
+        hashtags: 'TheOpenStories'
       }
       return data
     },
-    onClickdropDownMenu(data) {
+    onClickdropDownMenu(data, id) {
       if (data.title === 'Delete') {
-        this.overlay = true
+        this.overlay = id
       }
       if (data.title === 'Share') {
-        this.socialOverlay = true
+        this.socialOverlay = id
       }
     },
     bookmarkArticle() {
