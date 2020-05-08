@@ -22,6 +22,7 @@
               v-if="activeField === 'mdi-comment-text-outline'"
               v-model="formData.textComment"
               :limitcharcount="250"
+              :autofocus="autoFocusComment"
               @charCount="charCount"
               @richContent="richContent"
             />
@@ -122,7 +123,8 @@ export default {
   computed: {
     ...mapGetters({
       dropdownCategories: 'article/dropdownCategories',
-      initValue: 'article/latestArticle'
+      initValue: 'article/latestArticle',
+      autoFocusComment: 'commonState/autoFocusComment'
     })
   },
   watch: {

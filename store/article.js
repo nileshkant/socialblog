@@ -144,11 +144,15 @@ export const actions = {
     )
     context.commit('getSingleArticle', singleArticle)
   },
-  async postComment(context, payload) {
-    context.commit('loading', true)
+  async postComment({ commit, rootState }, payload) {
+    commit('loading', true)
     const comment = await this.$axios.$post('/article/add-comment', payload)
-    context.commit('postComment', comment)
-    context.commit('loading', false)
+    if (rootState.commonState.replyComment && comment.newComment) {
+      comment.newComment.replyComment = rootState.commonState.replyComment
+      commit('commonState/replyComment', null, { root: true })
+    }
+    commit('postComment', comment)
+    commit('loading', false)
   },
   async getComments(context, payload) {
     const allComments = await this.$axios.$get(

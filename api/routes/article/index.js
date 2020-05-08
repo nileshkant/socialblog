@@ -48,37 +48,41 @@ router.post('/create-category', authorized, async (req, res) => {
 })
 
 router.post('/add-comment', authorized, async (req, res) => {
-  const { articleId, textComment, file, replyComment } = req.body
-  const regexp = new RegExp('#', 'g')
-  const allhashtags = textComment.match(/#\w+/g)
-  const addComment = new PostComment({
-    articleId,
-    textComment,
-    hashtags: [],
-    replyComment,
-    commentor: req.user._id
-  })
-  if (allhashtags) {
-    addComment.hashtags = allhashtags.map((hash) => {
-      return hash.replace('#', '')
+  try {
+    const { articleId, textComment, file, replyComment } = req.body
+    const regexp = new RegExp('#', 'g')
+    const allhashtags = textComment.match(/#\w+/g)
+    const addComment = new PostComment({
+      articleId,
+      textComment,
+      hashtags: [],
+      replyComment,
+      commentor: req.user._id
     })
-    addComment.hashtags = addComment.hashtags.filter((hash) => {
-      return hash
-    })
-    addComment.hashtags = uniq(addComment.hashtags)
-    addComment.textComment = addComment.textComment.replace(regexp, '')
-  }
-  if (file) {
-    const mediaUrl = await cloudinary.uploader.upload(file)
-    addComment.mediaUrl = mediaUrl.secure_url
-  }
-  await addComment.save((err, data) => {
-    if (err) {
-      res.send(400, err)
-      return
+    if (allhashtags) {
+      addComment.hashtags = allhashtags.map((hash) => {
+        return hash.replace('#', '')
+      })
+      addComment.hashtags = addComment.hashtags.filter((hash) => {
+        return hash
+      })
+      addComment.hashtags = uniq(addComment.hashtags)
+      addComment.textComment = addComment.textComment.replace(regexp, '')
     }
-    res.status(200).json({ newComment: data })
-  })
+    if (file) {
+      const mediaUrl = await cloudinary.uploader.upload(file)
+      addComment.mediaUrl = mediaUrl.secure_url
+    }
+    console.log('addedComment', addComment)
+    const commented = await addComment.save()
+    console.log('addedComment', commented)
+
+    if (commented) {
+      res.status(200).json({ newComment: commented })
+    }
+  } catch (err) {
+    res.status(400).json({ message: err })
+  }
 })
 
 router.get('/get-comments', async (req, res) => {

@@ -64,12 +64,7 @@
       " {{ cardcontent.quoteCard.quote }} "
     </v-card-text>
     <v-card-actions>
-      <v-btn
-        icon
-        color="secondary"
-        :disabled="!cardcontent._id"
-        @click="likeArticle"
-      >
+      <v-btn icon :disabled="!cardcontent._id" @click="likeArticle">
         <v-icon v-if="likes" color="error">mdi-heart</v-icon>
         <v-icon v-else :color="!checkColor ? 'black' : ''"
           >mdi-heart-outline</v-icon
@@ -82,7 +77,7 @@
         {{ cardcontent.likes && cardcontent.likes.length }}
       </div>
 
-      <v-btn icon text :disabled="!cardcontent._id" @click="bookmarkArticle">
+      <v-btn icon :disabled="!cardcontent._id" @click="bookmarkArticle">
         <v-icon v-if="isBookmarked" :color="!checkColor ? 'black' : ''"
           >mdi-bookmark-check</v-icon
         >
@@ -98,7 +93,6 @@
             class="mx-2"
             icon
             :color="!checkColor ? 'black' : ''"
-            text
             v-on="on"
           >
             <v-icon>mdi-dots-vertical</v-icon>

@@ -3,7 +3,9 @@ export const state = () => ({
   windowHeight: 0,
   windowWidth: 0,
   isDarkMode: false,
-  loginPopUp: false
+  loginPopUp: false,
+  autoFocusComment: false,
+  replyComment: null
 })
 
 export const mutations = {
@@ -21,6 +23,12 @@ export const mutations = {
   },
   loginPopUp(state) {
     state.loginPopUp = !state.loginPopUp
+  },
+  autoFocusComment(state, payload) {
+    state.autoFocusComment = payload
+  },
+  replyComment(state, payload) {
+    state.replyComment = payload
   }
 }
 
@@ -36,6 +44,12 @@ export const actions = {
   },
   loginPopUp(context) {
     context.commit('loginPopUp')
+  },
+  autoFocusComment(context, payload) {
+    context.commit('autoFocusComment', payload)
+  },
+  replyComment(context, payload) {
+    context.commit('replyComment', payload)
   }
 }
 
@@ -51,5 +65,11 @@ export const getters = {
   },
   loginPopUp: (state) => {
     return state.loginPopUp
+  },
+  autoFocusComment: (state) => {
+    return state.autoFocusComment
+  },
+  replyComment: (state) => {
+    return state.replyComment
   }
 }

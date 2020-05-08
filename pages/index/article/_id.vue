@@ -62,6 +62,11 @@
       <div class="editor-pos">
         <v-card flat class="br-0 px-3">
           <v-img v-if="formdata && formdata.file" :src="formdata.file"></v-img>
+          <MessageCard
+            v-if="replyComment"
+            :cardcontent="replyComment"
+            closebtn
+          />
           <resize-observer @notify="handleResize" />
           <CommentForm
             v-if="user && user.userDetails && isAllowed()"
@@ -131,7 +136,8 @@ export default {
       article: 'article/singleArticle',
       allComments: 'article/allComments',
       user: 'user',
-      titleSection: 'article/titleSection'
+      titleSection: 'article/titleSection',
+      replyComment: 'commonState/replyComment'
     })
   },
   watch: {
@@ -171,6 +177,9 @@ export default {
       this.$store.dispatch('commonState/loginPopUp')
     },
     async onSubmit() {
+      if (this.replyComment) {
+        this.formdata.replyComment = this.replyComment._id
+      }
       const sendForm = { ...this.formdata, articleId: this.$route.params.id }
       await this.$store.dispatch('article/postComment', sendForm)
       const container = this.$el.querySelector('#articleContainer')

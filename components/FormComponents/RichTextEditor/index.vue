@@ -144,6 +144,10 @@ export default {
     value: {
       type: String,
       default: null
+    },
+    autofocus: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -161,6 +165,13 @@ export default {
       // if Content is clear in the parent
       if (!val) {
         this.editor.setContent(val, true)
+      }
+    },
+    autofocus(newVal) {
+      console.log('neeeeeeeeeeeee', newVal)
+
+      if (newVal) {
+        this.editor.focus('end')
       }
     }
   },
@@ -186,6 +197,11 @@ export default {
           showOnlyCurrent: true
         })
       ],
+      onBlur: () => {
+        if (this.autofocus) {
+          this.$store.dispatch('commonState/autoFocusComment', false)
+        }
+      },
       content: this.value,
       onUpdate: ({ getHTML, transaction }) => {
         this.$emit(
@@ -199,6 +215,7 @@ export default {
       }
     })
     this.editor.setContent(this.value)
+    this.editor.focus('end')
   },
   beforeDestroy() {
     this.editor.destroy()

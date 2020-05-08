@@ -87,12 +87,7 @@
       {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.subtitle }}
     </v-card-subtitle>
     <v-card-actions>
-      <v-btn
-        icon
-        color="secondary"
-        :disabled="!cardcontent._id"
-        @click="likeArticle"
-      >
+      <v-btn icon :disabled="!cardcontent._id" @click="likeArticle">
         <v-icon v-if="likes" color="error">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
@@ -103,26 +98,14 @@
         {{ cardcontent.likes && cardcontent.likes.length }}
       </div>
 
-      <v-btn
-        icon
-        color="secondary"
-        :disabled="!cardcontent._id"
-        @click="bookmarkArticle"
-      >
+      <v-btn icon :disabled="!cardcontent._id" @click="bookmarkArticle">
         <v-icon v-if="isBookmarked">mdi-bookmark-check</v-icon>
         <v-icon v-else>mdi-bookmark-plus-outline</v-icon>
       </v-btn>
 
       <v-menu v-if="cardcontent._id" offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn
-            v-if="cardcontent._id"
-            class="mx-2"
-            icon
-            color="secondary"
-            text
-            v-on="on"
-          >
+          <v-btn v-if="cardcontent._id" class="mx-2" icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
@@ -285,6 +268,7 @@ export default {
   },
   mounted() {
     this.show = this.showfullcard
+    this.$meta().refresh()
   },
   methods: {
     transform: cloudinarytransformUrl,
