@@ -61,12 +61,16 @@
       <v-divider />
       <div class="editor-pos">
         <v-card flat class="br-0 px-3">
-          <v-img v-if="formdata && formdata.file" :src="formdata.file"></v-img>
-          <MessageCard
+          <v-btn
             v-if="replyComment"
-            :cardcontent="replyComment"
-            closebtn
-          />
+            class="mx-2 right-menu pos-a"
+            icon
+            small
+            @click="removeReply"
+            ><v-icon small>mdi-close</v-icon>
+          </v-btn>
+          <ReplyCard v-if="replyComment" :replycontent="replyComment" />
+          <v-img v-if="formdata && formdata.file" :src="formdata.file"></v-img>
           <resize-observer @notify="handleResize" />
           <CommentForm
             v-if="user && user.userDetails && isAllowed()"
@@ -110,13 +114,15 @@ import ChatCard from '~/components/ChatCard'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
 import CommentForm from '~/components/CommentForm'
 import MessageCard from '~/components/ChatCard/MessageCard'
+import ReplyCard from '~/components/ChatCard/ReplyCard'
 
 export default {
   components: {
     'chat-card': ChatCard,
     QuoteCard,
     CommentForm,
-    MessageCard
+    MessageCard,
+    ReplyCard
   },
   async fetch({ store, params, route }) {
     await store.dispatch('article/getSingleArticle', route.params.id)
@@ -146,6 +152,11 @@ export default {
         this.$router.replace({ path: '/' })
       }
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch('commonState/replyComment', null)
+    this.formdata = null
+    next()
   },
   mounted() {
     this.$meta().refresh()
@@ -184,12 +195,26 @@ export default {
       await this.$store.dispatch('article/postComment', sendForm)
       const container = this.$el.querySelector('#articleContainer')
       container.scrollTop = container.scrollHeight
+    },
+    removeReply() {
+      this.$store.dispatch('commonState/replyComment', null)
     }
   }
 }
 </script>
 
 <style scoped>
+.pos-r {
+  position: relative;
+}
+.pos-a {
+  position: absolute;
+}
+.right-menu {
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
 .overflowY-auto {
   overflow-y: auto;
 }

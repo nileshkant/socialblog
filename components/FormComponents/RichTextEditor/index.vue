@@ -168,8 +168,6 @@ export default {
       }
     },
     autofocus(newVal) {
-      console.log('neeeeeeeeeeeee', newVal)
-
       if (newVal) {
         this.editor.focus('end')
       }

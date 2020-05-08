@@ -9,16 +9,7 @@
           Delete!
         </v-btn>
       </v-overlay>
-      <v-btn
-        v-if="closebtn"
-        class="mx-2 right-menu pos-a"
-        icon
-        small
-        @click="removeReply"
-      >
-        <v-icon small>mdi-close</v-icon>
-      </v-btn>
-      <v-menu v-if="!closebtn && user" left open-on-hover offset-y>
+      <v-menu v-if="user" left open-on-hover offset-y>
         <template v-slot:activator="{ on }">
           <v-btn
             v-if="cardcontent._id"
@@ -130,10 +121,6 @@ export default {
     cardcontent: {
       type: Object,
       default: null
-    },
-    closebtn: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -170,9 +157,6 @@ export default {
     },
     deleteComment() {
       this.$store.dispatch('article/deleteComment', this.cardcontent._id)
-    },
-    removeReply() {
-      this.$store.dispatch('commonState/replyComment', null)
     }
   }
 }

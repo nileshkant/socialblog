@@ -73,10 +73,7 @@ router.post('/add-comment', authorized, async (req, res) => {
       const mediaUrl = await cloudinary.uploader.upload(file)
       addComment.mediaUrl = mediaUrl.secure_url
     }
-    console.log('addedComment', addComment)
     const commented = await addComment.save()
-    console.log('addedComment', commented)
-
     if (commented) {
       res.status(200).json({ newComment: commented })
     }
