@@ -3,12 +3,7 @@ import passport from 'passport'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import omit from 'lodash/omit'
-import {
-  SECRET,
-  TOKEN_EXPIRE_TIME,
-  REFRESH_TOKEN_EXPIRE_TIME,
-  REFRESH_TOKEN_SECRET
-} from '../../env'
+import { SECRET, REFRESH_TOKEN_SECRET } from '../../env'
 import { authorized } from '../../utils'
 import { MultiAccountUser } from './modal'
 
@@ -18,15 +13,17 @@ const jwtLogin = (req, res, user, social) => {
   const userDetails = omit(user, ['password'])
   const payload = {
     userDetails,
-    expires: TOKEN_EXPIRE_TIME
+    expires: Date.now() + 3 * 60 * 60 * 1000
   }
-
   req.login(payload, { session: false }, (error) => {
     if (error) res.status(400).json({ message: error })
 
     const token = jwt.sign(JSON.stringify(payload), SECRET)
     const refreshToken = jwt.sign(
-      JSON.stringify({ ...payload, expires: REFRESH_TOKEN_EXPIRE_TIME }),
+      JSON.stringify({
+        ...payload,
+        expires: Date.now() + 30 * 24 * 60 * 60 * 1000
+      }),
       REFRESH_TOKEN_SECRET
     )
     const jsonRes = {
@@ -134,7 +131,10 @@ router.post('/getToken', async (req, res) => {
     if (Date.now() > tokenData.expires)
       return res.status(401).json({ message: 'invalid token' })
     const newToken = jwt.sign(
-      JSON.stringify({ ...tokenData, expires: TOKEN_EXPIRE_TIME }),
+      JSON.stringify({
+        ...tokenData,
+        expires: Date.now() + 3 * 60 * 60 * 1000
+      }),
       SECRET
     )
     res.status(200).json({ token: newToken })
