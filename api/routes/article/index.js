@@ -47,6 +47,15 @@ router.post('/create-category', authorized, async (req, res) => {
   })
 })
 
+/**
+ * Add comment to a post
+ * @date 2020-05-09
+ * @param {any} '/add-comment'
+ * @param {any} authorized
+ * @param {any} { articleId, textComment, file, replyComment }
+ * @returns {any}
+ */
+
 router.post('/add-comment', authorized, async (req, res) => {
   try {
     const { articleId, textComment, file, replyComment } = req.body
@@ -82,6 +91,15 @@ router.post('/add-comment', authorized, async (req, res) => {
   }
 })
 
+/**
+ * Get all comments of a post
+ * @date 2020-05-09
+ * @param {any} '/get-comments'
+ * @param {any} res.query.articleId
+ * @param {any} res.query.limit 'default : all'
+ * @param {any} res.query.page
+ * @returns {any}
+ */
 router.get('/get-comments', async (req, res) => {
   const articleId = req.query.articleId
   const limit = Number(req.query.limit)
@@ -108,6 +126,14 @@ router.get('/get-comments', async (req, res) => {
   res.status(200).json(resArticle)
 })
 
+/**
+ * Delete comment
+ * @date 2020-05-09
+ * @param {any} '/delete-comments'
+ * @param {any} authorized
+ * @param {any} req.query.commentId
+ * @returns {any}
+ */
 router.delete('/delete-comments', authorized, async (req, res) => {
   try {
     const query = { _id: req.query.commentId }
@@ -125,6 +151,40 @@ router.delete('/delete-comments', authorized, async (req, res) => {
   }
 })
 
+router.put('/report-comment', authorized, async (req, res) => {
+  try {
+    const query = {
+      _id: req.query.commentId,
+      commentor: { $ne: req.user._id }
+    }
+    const user = req.user._id
+    const doc = await PostComment.findOneAndUpdate(
+      query,
+      {
+        $addToSet: { reportedBy: user }
+      },
+      {
+        new: true
+      }
+    )
+    if (doc) {
+      res.status(200).json({ reportedComment: doc })
+    } else {
+      res.status(404).json({ msg: 'You cannot report your own comment' })
+    }
+  } catch (err) {
+    res.status(400).json({ msg: err })
+  }
+})
+
+/**
+ * Like / dislike post
+ * @date 2020-05-09
+ * @param {any} '/like'
+ * @param {any} authorized
+ * @param {any} req.query.articleId
+ * @returns {any}
+ */
 router.get('/like', authorized, async (req, res) => {
   try {
     const query = { articleId: req.query.articleId, likedBy: req.user._id }
@@ -254,6 +314,12 @@ router.get('/single-article', async (req, res) => {
   }
 })
 
+/**
+ * Get all categories
+ * @date 2020-05-09
+ * @param {any} '/categories'
+ * @returns {any}
+ */
 router.get('/categories', async (req, res) => {
   try {
     const allCategories = await Category.find()

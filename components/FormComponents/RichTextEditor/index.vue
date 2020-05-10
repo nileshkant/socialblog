@@ -174,6 +174,7 @@ export default {
     }
   },
   mounted() {
+    this.$meta().refresh()
     this.editor = new Editor({
       extensions: [
         new Blockquote(),

@@ -35,7 +35,11 @@
             >
             <v-spacer></v-spacer>
             <v-avatar v-if="user" size="32">
-              <v-img :src="user.userDetails.facebook.profilePic"></v-img>
+              <v-img
+                :src="
+                  `https://graph.facebook.com/${user.userDetails.facebook.id}/picture?type=square`
+                "
+              ></v-img>
             </v-avatar>
           </v-toolbar>
           <v-divider />

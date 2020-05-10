@@ -40,7 +40,8 @@ module.exports = {
    */
   plugins: [
     '~/plugins/axios',
-    '~/plugins/vue-resize'
+    '~/plugins/vue-resize',
+    '~/plugins/notifier.js'
     // '~/plugins/vuex-persist.client.js'
   ],
   /*

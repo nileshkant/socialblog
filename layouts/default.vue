@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-content>
+      <SnackBar />
       <v-container class="py-0" fluid>
         <LoginPopUp />
         <nuxt />
@@ -11,9 +12,11 @@
 
 <script>
 import LoginPopUp from '../components/LoginPopUp'
+import SnackBar from '../components/Snackbar'
 export default {
   components: {
-    LoginPopUp
+    LoginPopUp,
+    SnackBar
   },
   data() {
     return {

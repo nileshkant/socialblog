@@ -28,16 +28,7 @@
             class="py-0 caption"
           >
             <v-list-item
-              v-if="
-                (menu.title === 'Delete' &&
-                  user &&
-                  cardcontent.commentor &&
-                  cardcontent.commentor._id === user.userDetails._id) ||
-                  (user &&
-                    user.userDetails &&
-                    user.userDetails.role === 'admin') ||
-                  (user && menu.title !== 'Delete')
-              "
+              v-if="menu.permission()"
               class="minh-auto py-1 pos-r"
               @click="onClickdropDownMenu(menu, cardcontent._id)"
             >
@@ -128,12 +119,41 @@ export default {
       overlay: '',
       dropDown: [
         {
-          title: 'Delete',
-          icon: 'mdi-delete-outline'
+          title: 'Reply',
+          icon: 'mdi-reply-outline',
+          permission: () => this.user
         },
         {
-          title: 'Reply',
-          icon: 'mdi-reply-outline'
+          title: 'Delete',
+          icon: 'mdi-delete-outline',
+          permission: () =>
+            (this.user &&
+              this.cardcontent.commentor &&
+              this.cardcontent.commentor._id === this.user.userDetails._id) ||
+            (this.user &&
+              this.user.userDetails &&
+              this.user.userDetails.role === 'admin')
+        },
+        {
+          title: 'Report',
+          icon: 'mdi-comment-alert-outline',
+          permission: () => {
+            if (this.user && this.cardcontent) {
+              if (
+                this.cardcontent.reportedBy &&
+                this.cardcontent.reportedBy.length > 0 &&
+                this.cardcontent.reportedBy.includes(this.user.userDetails._id)
+              ) {
+                return false
+              }
+              if (
+                this.user.userDetails._id !== this.cardcontent.commentor._id ||
+                this.cardcontent.commentor._id !== this.singleArticle.author._id
+              ) {
+                return true
+              }
+            }
+          }
         }
       ]
     }
@@ -141,7 +161,8 @@ export default {
   computed: {
     ...mapGetters({
       user: 'user',
-      bookmarks: 'article/bookmarks'
+      bookmarks: 'article/bookmarks',
+      singleArticle: 'article/singleArticle'
     })
   },
   methods: {
@@ -153,6 +174,26 @@ export default {
       if (data.title === 'Reply') {
         this.$store.dispatch('commonState/replyComment', this.cardcontent)
         this.$store.dispatch('commonState/autoFocusComment', true)
+      }
+      if (data.title === 'Report') {
+        this.$store
+          .dispatch('article/reportComment', this.cardcontent._id)
+          .then(() => {
+            this.$notifier.showMessage({
+              message: 'You reported a comment! We will review it soon',
+              color: 'error',
+              timeout: 3000
+            })
+          })
+          .catch((err) => {
+            if (err.response.data.msg) {
+              this.$notifier.showMessage({
+                message: err.response.data.msg,
+                color: 'error',
+                timeout: 3000
+              })
+            }
+          })
       }
     },
     deleteComment() {

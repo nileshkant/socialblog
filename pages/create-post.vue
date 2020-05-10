@@ -87,7 +87,7 @@ import QuoteForm from '../components/ArticleForm/quoteForm'
 import { toBase64 } from '../utilities/common'
 import SelectBox from '../components/FormComponents/selectBox'
 export default {
-  middleware: 'authenticated',
+  middleware: 'adminModerator',
   layout: 'postView',
   components: {
     ArticleCard,

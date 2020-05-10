@@ -5,7 +5,8 @@ export const state = () => ({
   isDarkMode: false,
   loginPopUp: false,
   autoFocusComment: false,
-  replyComment: null
+  replyComment: null,
+  toastMessage: null
 })
 
 export const mutations = {
@@ -29,6 +30,9 @@ export const mutations = {
   },
   replyComment(state, payload) {
     state.replyComment = payload
+  },
+  toastMessage(state, payload) {
+    state.toastMessage = payload
   }
 }
 
@@ -50,6 +54,9 @@ export const actions = {
   },
   replyComment(context, payload) {
     context.commit('replyComment', payload)
+  },
+  toastMessage(context, payload) {
+    context.commit('toastMessage', payload)
   }
 }
 
@@ -71,5 +78,8 @@ export const getters = {
   },
   replyComment: (state) => {
     return state.replyComment
+  },
+  toastMessage: (state) => {
+    return state.toastMessage
   }
 }

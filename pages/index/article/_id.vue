@@ -44,6 +44,7 @@
         </v-row>
         <v-row v-for="comments in allComments" :key="comments._id" class="mx-0">
           <v-col
+            v-if="!comments.reportedBy || comments.reportedBy.length < 4"
             md="8"
             cols="10"
             :class="
@@ -55,6 +56,33 @@
             "
           >
             <MessageCard :cardcontent="comments" />
+          </v-col>
+          <v-col
+            v-if="
+              user &&
+                comments &&
+                comments.commentor._id === user.userDetails._id &&
+                comments.reportedBy &&
+                comments.reportedBy.length > 3
+            "
+            md="8"
+            cols="10"
+            :class="
+              (user &&
+                (user.userDetails._id === comments.commentor._id ||
+                  user.userDetails._id === comments.commentor) &&
+                'ml-auto') ||
+                'mr-auto'
+            "
+          >
+            <v-card class="pa-3" color="error">
+              <v-card-text class="pa-0">
+                This comment is reported by some users!
+              </v-card-text>
+              <v-card-text class="caption pa-0">
+                We are reviewing it!
+              </v-card-text>
+            </v-card>
           </v-col>
         </v-row>
       </div>

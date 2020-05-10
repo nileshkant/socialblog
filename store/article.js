@@ -182,6 +182,9 @@ export const actions = {
       `/article/delete-comments?commentId=${payload}`
     )
     context.commit('deleteComment', deletedComment)
+  },
+  async reportComment(context, payload) {
+    await this.$axios.$put(`/article/report-comment?commentId=${payload}`)
   }
 }
 
