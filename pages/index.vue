@@ -5,7 +5,7 @@
       md="4"
       cols="12"
       class="py-0 border-right-grey"
-      :class="$route.fullPath !== '/' || isTrending ? 'd-none d-md-flex' : ''"
+      :class="$route.path !== '/' || isTrending ? 'd-none d-md-flex' : ''"
     >
       <sidebar @trending="isTrending = true" />
     </v-col>

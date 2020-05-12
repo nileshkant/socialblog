@@ -151,6 +151,8 @@ export default {
                 this.cardcontent.commentor._id !== this.singleArticle.author._id
               ) {
                 return true
+              } else {
+                return false
               }
             }
           }

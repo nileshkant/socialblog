@@ -181,6 +181,24 @@ export default {
       }
     }
   },
+  head() {
+    return {
+      title:
+        this.article.articleType === 'quoteCard'
+          ? this.article.quoteCard.title
+          : this.article.fullDetailsCard.title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            this.article.articleType === 'quoteCard'
+              ? this.article.quoteCard.quote
+              : this.article.fullDetailsCard.subtitle
+        }
+      ]
+    }
+  },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch('commonState/replyComment', null)
     this.formdata = null

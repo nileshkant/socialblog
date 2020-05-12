@@ -95,7 +95,7 @@ export const mutations = {
         return article._id !== payload._id
       })
     } else {
-      state.bookmarks = [...state.bookmarks].concat([payload])
+      state.bookmarks = state.bookmarks.concat([payload])
     }
     localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks))
   },

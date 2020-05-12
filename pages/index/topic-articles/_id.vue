@@ -17,6 +17,24 @@ export default {
       articles: 'article/articles',
       user: 'user'
     })
+  },
+  head() {
+    return {
+      title:
+        this.articles && this.articles[0] && this.articles[0].categories[0]
+          ? this.articles[0].categories[0].name
+          : 'The open stories',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            this.articles && this.articles[0] && this.articles[0].categories[0]
+              ? this.articles[0].categories[0].summary
+              : 'The open stories'
+        }
+      ]
+    }
   }
 }
 </script>

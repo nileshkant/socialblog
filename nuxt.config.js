@@ -7,7 +7,7 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - ',
+    titleTemplate: '%s',
     title: 'The Open Stories',
     meta: [
       { charset: 'utf-8' },
@@ -51,7 +51,13 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
-    '@nuxtjs/date-fns'
+    '@nuxtjs/date-fns',
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-151222977-1'
+      }
+    ]
   ],
   /*
    ** Nuxt.js modules
