@@ -86,6 +86,7 @@ export const mutations = {
     }
   },
   bookmarkArticle(state, payload) {
+    const addBookmark = state.bookmarks || []
     const bookmark =
       state.bookmarks &&
       state.bookmarks.length > 0 &&
@@ -95,7 +96,7 @@ export const mutations = {
         return article._id !== payload._id
       })
     } else {
-      state.bookmarks = state.bookmarks.concat([payload])
+      state.bookmarks = addBookmark.concat([payload])
     }
     localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks))
   },

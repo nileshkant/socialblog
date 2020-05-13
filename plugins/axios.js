@@ -1,7 +1,7 @@
 import https from 'https'
 const Cookie = process.client ? require('js-cookie') : undefined
 
-export default function({ $axios, redirect, store }) {
+export default function({ $axios, redirect, store, app }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.setBaseURL(
     'https://theopenstories.xyz/api'
@@ -19,6 +19,11 @@ export default function({ $axios, redirect, store }) {
       Cookie.remove('user')
       store.commit('setAuth', null)
       store.commit('setUserDetails', null)
+      app.$notifier.showMessage({
+        message: 'Session Expired! You have been logged out',
+        color: 'error',
+        timeout: 3000
+      })
       redirect('/')
     }
   })
