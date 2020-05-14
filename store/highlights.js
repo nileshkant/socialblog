@@ -41,7 +41,7 @@ export const actions = {
     localStorage.setItem('weatherReport', JSON.stringify(weather.weather))
     localStorage.setItem(
       'weatherTimeout',
-      JSON.stringify(new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000))
+      JSON.stringify(new Date(new Date().getTime() + 24 * 60 * 60 * 1000))
     )
     commit('weatherReport', weather.weather)
   }
