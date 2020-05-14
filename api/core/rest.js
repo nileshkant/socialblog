@@ -2,6 +2,7 @@ import { Router } from 'express'
 import authentication from '../routes/auth/index'
 import uploadFile from '../routes/uploadFile'
 import article from '../routes/article'
+import weather from '../routes/weather'
 
 // import blog from '~/blog/rest'
 
@@ -16,5 +17,6 @@ router.get('/', (req, res) => {
 router.use('/authentication', authentication)
 router.use('/upload-file', uploadFile)
 router.use('/article', article)
+router.use('/weather', weather)
 
 export default router

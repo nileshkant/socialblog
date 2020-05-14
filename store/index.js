@@ -16,17 +16,20 @@ export const actions = {
   nuxtServerInit({ commit }, { req }) {
     let auth = null
     let user = null
+    let ipdata = null
     if (req.headers.cookie) {
       const parsed = cookieparser.parse(req.headers.cookie)
       try {
         auth = JSON.parse(parsed.auth)
         user = JSON.parse(parsed.user)
+        ipdata = JSON.parse(parsed.ipdata)
       } catch (err) {
         // No valid cookie found
       }
     }
     commit('setAuth', auth)
     commit('setUserDetails', user)
+    commit('highlights/ipAddressDetails', ipdata, { root: true })
   }
 }
 
