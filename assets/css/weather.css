@@ -1,0 +1,1243 @@
+@font-face {
+  font-family: 'weather';
+  src: url('../weather/weather.eot?3kxclb');
+  src: url('../weather/weather.eot?3kxclb#iefix') format('embedded-opentype'),
+    url('../weather/weather.ttf?3kxclb') format('truetype'),
+    url('../weather/weather.woff?3kxclb') format('woff'),
+    url('../weather/weather.svg?3kxclb#weather') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^='weather-'],
+[class*=' weather-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'weather' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.weather-autumn .path1:before {
+  content: '\e900';
+  color: rgb(240, 188, 94);
+}
+.weather-autumn .path2:before {
+  content: '\e901';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-autumn .path3:before {
+  content: '\e902';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-autumn .path4:before {
+  content: '\e903';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-autumn .path5:before {
+  content: '\e904';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-autumn .path6:before {
+  content: '\e905';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-autumn .path7:before {
+  content: '\e906';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-autumn .path8:before {
+  content: '\e907';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-meditation .path1:before {
+  content: '\e908';
+  color: rgb(240, 188, 94);
+}
+.weather-meditation .path2:before {
+  content: '\e909';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-meditation .path3:before {
+  content: '\e90a';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-meditation .path4:before {
+  content: '\e90b';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path1:before {
+  content: '\e90c';
+  color: rgb(240, 188, 94);
+}
+.weather-celsius .path2:before {
+  content: '\e90d';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-celsius .path3:before {
+  content: '\e90e';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path4:before {
+  content: '\e90f';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path5:before {
+  content: '\e910';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path6:before {
+  content: '\e911';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path7:before {
+  content: '\e912';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path8:before {
+  content: '\e913';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path9:before {
+  content: '\e914';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path10:before {
+  content: '\e915';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path11:before {
+  content: '\e916';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path12:before {
+  content: '\e917';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path13:before {
+  content: '\e918';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path14:before {
+  content: '\e919';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path15:before {
+  content: '\e91a';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path16:before {
+  content: '\e91b';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path17:before {
+  content: '\e91c';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path18:before {
+  content: '\e91d';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path19:before {
+  content: '\e91e';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-celsius .path20:before {
+  content: '\e91f';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-climate .path1:before {
+  content: '\e920';
+  color: rgb(240, 188, 94);
+}
+.weather-climate .path2:before {
+  content: '\e921';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-climate .path3:before {
+  content: '\e922';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-climate .path4:before {
+  content: '\e923';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-climate .path5:before {
+  content: '\e924';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-climate .path6:before {
+  content: '\e925';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-climate .path7:before {
+  content: '\e926';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-climate .path8:before {
+  content: '\e927';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-climate .path9:before {
+  content: '\e928';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-clouds .path1:before {
+  content: '\e929';
+  color: rgb(240, 188, 94);
+}
+.weather-clouds .path2:before {
+  content: '\e92a';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-clouds .path3:before {
+  content: '\e92b';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-clouds .path4:before {
+  content: '\e92c';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-clouds .path5:before {
+  content: '\e92d';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-cloudy .path1:before {
+  content: '\e92e';
+  color: rgb(0, 0, 0);
+}
+.weather-cloudy .path2:before {
+  content: '\e92f';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-cloudy .path3:before {
+  content: '\e930';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-cloudy .path4:before {
+  content: '\e931';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-cloudy .path5:before {
+  content: '\e932';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-woman .path1:before {
+  content: '\e933';
+  color: rgb(240, 188, 94);
+}
+.weather-woman .path2:before {
+  content: '\e934';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-woman .path3:before {
+  content: '\e935';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-woman .path4:before {
+  content: '\e936';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-woman .path5:before {
+  content: '\e937';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path6:before {
+  content: '\e938';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path7:before {
+  content: '\e939';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path8:before {
+  content: '\e93a';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path9:before {
+  content: '\e93b';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path10:before {
+  content: '\e93c';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path11:before {
+  content: '\e93d';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path12:before {
+  content: '\e93e';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path13:before {
+  content: '\e93f';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path14:before {
+  content: '\e940';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path15:before {
+  content: '\e941';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path16:before {
+  content: '\e942';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path17:before {
+  content: '\e943';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-woman .path18:before {
+  content: '\e944';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-farenheit .path1:before {
+  content: '\e945';
+  color: rgb(0, 0, 0);
+}
+.weather-farenheit .path2:before {
+  content: '\e946';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-farenheit .path3:before {
+  content: '\e947';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-farenheit .path4:before {
+  content: '\e948';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-farenheit .path5:before {
+  content: '\e949';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-farenheit .path6:before {
+  content: '\e94a';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-farenheit .path7:before {
+  content: '\e94b';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-farenheit .path8:before {
+  content: '\e94c';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-farenheit .path9:before {
+  content: '\e94d';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path1:before {
+  content: '\e94e';
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path2:before {
+  content: '\e94f';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path3:before {
+  content: '\e950';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path4:before {
+  content: '\e951';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path5:before {
+  content: '\e952';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path6:before {
+  content: '\e953';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path7:before {
+  content: '\e954';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path8:before {
+  content: '\e955';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path9:before {
+  content: '\e956';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-foggy .path10:before {
+  content: '\e957';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-forecast .path1:before {
+  content: '\e958';
+  color: rgb(0, 0, 0);
+}
+.weather-forecast .path2:before {
+  content: '\e959';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-forecast .path3:before {
+  content: '\e95a';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-forecast .path4:before {
+  content: '\e95b';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-forecast .path5:before {
+  content: '\e95c';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-temperature .path1:before {
+  content: '\e95d';
+  color: rgb(0, 0, 0);
+}
+.weather-temperature .path2:before {
+  content: '\e95e';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-temperature .path3:before {
+  content: '\e95f';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-temperature .path4:before {
+  content: '\e960';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-temperature .path5:before {
+  content: '\e961';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-temperature .path6:before {
+  content: '\e962';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-temperature .path7:before {
+  content: '\e963';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path1:before {
+  content: '\e964';
+  color: rgb(240, 188, 94);
+}
+.weather-full-moon .path2:before {
+  content: '\e965';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path3:before {
+  content: '\e966';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path4:before {
+  content: '\e967';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path5:before {
+  content: '\e968';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path6:before {
+  content: '\e969';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path7:before {
+  content: '\e96a';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path8:before {
+  content: '\e96b';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path9:before {
+  content: '\e96c';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path10:before {
+  content: '\e96d';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path11:before {
+  content: '\e96e';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-full-moon .path12:before {
+  content: '\e96f';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-hailstorm .path1:before {
+  content: '\e970';
+  color: rgb(0, 0, 0);
+}
+.weather-hailstorm .path2:before {
+  content: '\e971';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-hailstorm .path3:before {
+  content: '\e972';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-hailstorm .path4:before {
+  content: '\e973';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-hailstorm .path5:before {
+  content: '\e974';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-hailstorm .path6:before {
+  content: '\e975';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-hailstorm .path7:before {
+  content: '\e976';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-meteorology .path1:before {
+  content: '\e977';
+  color: rgb(240, 188, 94);
+}
+.weather-meteorology .path2:before {
+  content: '\e978';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-meteorology .path3:before {
+  content: '\e979';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-meteorology .path4:before {
+  content: '\e97a';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-meteorology .path5:before {
+  content: '\e97b';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-meteorology .path6:before {
+  content: '\e97c';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-meteorology .path7:before {
+  content: '\e97d';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path1:before {
+  content: '\e97e';
+  color: rgb(240, 188, 94);
+}
+.weather-overcast .path2:before {
+  content: '\e97f';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path3:before {
+  content: '\e980';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path4:before {
+  content: '\e981';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path5:before {
+  content: '\e982';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path6:before {
+  content: '\e983';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path7:before {
+  content: '\e984';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path8:before {
+  content: '\e985';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path9:before {
+  content: '\e986';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path10:before {
+  content: '\e987';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-overcast .path11:before {
+  content: '\e988';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-cloudy-1 .path1:before {
+  content: '\e989';
+  color: rgb(240, 188, 94);
+}
+.weather-cloudy-1 .path2:before {
+  content: '\e98a';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-cloudy-1 .path3:before {
+  content: '\e98b';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-cloudy-1 .path4:before {
+  content: '\e98c';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-raining .path1:before {
+  content: '\e98d';
+  color: rgb(0, 0, 0);
+}
+.weather-raining .path2:before {
+  content: '\e98e';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-raining .path3:before {
+  content: '\e98f';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-raining .path4:before {
+  content: '\e990';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-raining .path5:before {
+  content: '\e991';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-raining .path6:before {
+  content: '\e992';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-raining .path7:before {
+  content: '\e993';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-rainbow .path1:before {
+  content: '\e994';
+  color: rgb(240, 188, 94);
+}
+.weather-rainbow .path2:before {
+  content: '\e995';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-rainbow .path3:before {
+  content: '\e996';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-winter .path1:before {
+  content: '\e997';
+  color: rgb(240, 188, 94);
+}
+.weather-winter .path2:before {
+  content: '\e998';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-winter .path3:before {
+  content: '\e999';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-winter .path4:before {
+  content: '\e99a';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-winter .path5:before {
+  content: '\e99b';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-winter .path6:before {
+  content: '\e99c';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-winter .path7:before {
+  content: '\e99d';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-winter .path8:before {
+  content: '\e99e';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-winter .path9:before {
+  content: '\e99f';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-winter .path10:before {
+  content: '\e9a0';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-winter .path11:before {
+  content: '\e9a1';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake .path1:before {
+  content: '\e9a2';
+  color: rgb(0, 0, 0);
+}
+.weather-snowflake .path2:before {
+  content: '\e9a3';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-snowflake .path3:before {
+  content: '\e9a4';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-snowflake .path4:before {
+  content: '\e9a5';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-snowflake .path5:before {
+  content: '\e9a6';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-snowflake .path6:before {
+  content: '\e9a7';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-snowflake .path7:before {
+  content: '\e9a8';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake .path8:before {
+  content: '\e9a9';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake .path9:before {
+  content: '\e9aa';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake .path10:before {
+  content: '\e9ab';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake .path11:before {
+  content: '\e9ac';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake .path12:before {
+  content: '\e9ad';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-snowflake .path13:before {
+  content: '\e9ae';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-snowflake-1 .path1:before {
+  content: '\e9af';
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake-1 .path2:before {
+  content: '\e9b0';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake-1 .path3:before {
+  content: '\e9b1';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake-1 .path4:before {
+  content: '\e9b2';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake-1 .path5:before {
+  content: '\e9b3';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake-1 .path6:before {
+  content: '\e9b4';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-snowflake-1 .path7:before {
+  content: '\e9b5';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-snowflake-1 .path8:before {
+  content: '\e9b6';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-spring .path1:before {
+  content: '\e9b7';
+  color: rgb(240, 188, 94);
+}
+.weather-spring .path2:before {
+  content: '\e9b8';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-spring .path3:before {
+  content: '\e9b9';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-spring .path4:before {
+  content: '\e9ba';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-spring .path5:before {
+  content: '\e9bb';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-summer .path1:before {
+  content: '\e9bc';
+  color: rgb(240, 188, 94);
+}
+.weather-summer .path2:before {
+  content: '\e9bd';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-summer .path3:before {
+  content: '\e9be';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-summer .path4:before {
+  content: '\e9bf';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-summer .path5:before {
+  content: '\e9c0';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sun-cloud .path1:before {
+  content: '\e9c1';
+  color: rgb(240, 188, 94);
+}
+.weather-sun-cloud .path2:before {
+  content: '\e9c2';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-light-rain .path1:before {
+  content: '\e9c3';
+  color: rgb(240, 188, 94);
+}
+.weather-light-rain .path2:before {
+  content: '\e9c4';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-light-rain .path3:before {
+  content: '\e9c5';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-light-rain .path4:before {
+  content: '\e9c6';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-light-rain .path5:before {
+  content: '\e9c7';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-light-rain .path6:before {
+  content: '\e9c8';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-light-rain .path7:before {
+  content: '\e9c9';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-light-rain .path8:before {
+  content: '\e9ca';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-light-rain .path9:before {
+  content: '\e9cb';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-light-rain .path10:before {
+  content: '\e9cc';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-light-rain .path11:before {
+  content: '\e9cd';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-light-rain .path12:before {
+  content: '\e9ce';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path1:before {
+  content: '\e9cf';
+  color: rgb(240, 188, 94);
+}
+.weather-sunny .path2:before {
+  content: '\e9d0';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path3:before {
+  content: '\e9d1';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path4:before {
+  content: '\e9d2';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path5:before {
+  content: '\e9d3';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path6:before {
+  content: '\e9d4';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path7:before {
+  content: '\e9d5';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path8:before {
+  content: '\e9d6';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path9:before {
+  content: '\e9d7';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path10:before {
+  content: '\e9d8';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path11:before {
+  content: '\e9d9';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunny .path12:before {
+  content: '\e9da';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunrise .path1:before {
+  content: '\e9db';
+  color: rgb(240, 188, 94);
+}
+.weather-sunrise .path2:before {
+  content: '\e9dc';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunrise .path3:before {
+  content: '\e9dd';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunrise .path4:before {
+  content: '\e9de';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-sunrise .path5:before {
+  content: '\e9df';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-summer-1 .path1:before {
+  content: '\e9e0';
+  color: rgb(240, 188, 94);
+}
+.weather-summer-1 .path2:before {
+  content: '\e9e1';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-summer-1 .path3:before {
+  content: '\e9e2';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-thunder .path1:before {
+  content: '\e9e3';
+  color: rgb(240, 188, 94);
+}
+.weather-thunder .path2:before {
+  content: '\e9e4';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-thunder .path3:before {
+  content: '\e9e5';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-thunder .path4:before {
+  content: '\e9e6';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path1:before {
+  content: '\e9e7';
+  color: rgb(240, 188, 94);
+}
+.weather-windy .path2:before {
+  content: '\e9e8';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-windy .path3:before {
+  content: '\e9e9';
+  margin-left: -1em;
+  color: rgb(240, 188, 94);
+}
+.weather-windy .path4:before {
+  content: '\e9ea';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path5:before {
+  content: '\e9eb';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path6:before {
+  content: '\e9ec';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path7:before {
+  content: '\e9ed';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path8:before {
+  content: '\e9ee';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path9:before {
+  content: '\e9ef';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path10:before {
+  content: '\e9f0';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path11:before {
+  content: '\e9f1';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path12:before {
+  content: '\e9f2';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path13:before {
+  content: '\e9f3';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path14:before {
+  content: '\e9f4';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path15:before {
+  content: '\e9f5';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path16:before {
+  content: '\e9f6';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path17:before {
+  content: '\e9f7';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.weather-windy .path18:before {
+  content: '\e9f8';
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}

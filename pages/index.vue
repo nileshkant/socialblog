@@ -53,10 +53,7 @@
           cols="12"
         >
           <div>
-            <quote-card></quote-card>
-          </div>
-          <div class="my-6">
-            <trending-card></trending-card>
+            <Hightlights />
           </div>
         </v-col>
       </v-row>
@@ -67,13 +64,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import sidebar from '../components/Sidebar'
-import QuoteCard from '../components/ChatCard/QuoteCard'
-import TrendingCard from '../components/TrendingCard'
+import Hightlights from '../components/Highlights'
 export default {
   components: {
     sidebar,
-    'quote-card': QuoteCard,
-    'trending-card': TrendingCard
+    Hightlights
   },
   async fetch({ store, params }) {
     await store.dispatch('article/getCategories')

@@ -34,7 +34,11 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['~/assets/css/main.css', '~/assets/css/tiptap.css'],
+  css: [
+    '~/assets/css/main.css',
+    '~/assets/css/tiptap.css',
+    '~/assets/css/weather.css'
+  ],
   /*
    ** Plugins to load before mounting the App
    */
