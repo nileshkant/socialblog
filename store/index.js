@@ -20,9 +20,13 @@ export const actions = {
     if (req.headers.cookie) {
       const parsed = cookieparser.parse(req.headers.cookie)
       try {
+        ipdata = JSON.parse(parsed.ipdata)
+      } catch (err) {
+        // No valid cookie found
+      }
+      try {
         auth = JSON.parse(parsed.auth)
         user = JSON.parse(parsed.user)
-        ipdata = JSON.parse(parsed.ipdata)
       } catch (err) {
         // No valid cookie found
       }

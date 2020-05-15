@@ -40,6 +40,7 @@ export default {
     }
   },
   async mounted() {
+    console.log('this.ipDetails', this.ipDetails)
     if (!this.ipDetails) {
       await this.$store.dispatch('highlights/ipAddressDetails')
     }
@@ -54,8 +55,8 @@ export default {
     }
     if (this.ipDetails && !this.weatherReport) {
       await this.$store.dispatch('highlights/weatherReport', {
-        lat: this.ipDetails.lat,
-        lon: this.ipDetails.lon
+        lat: this.ipDetails.latitude,
+        lon: this.ipDetails.longitude
       })
     }
   }
