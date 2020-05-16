@@ -31,7 +31,7 @@
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
             <v-toolbar-title class="title pl-0"
-              >#Trending Today</v-toolbar-title
+              >Highlights Today</v-toolbar-title
             >
             <v-spacer></v-spacer>
             <v-avatar v-if="user" size="32">

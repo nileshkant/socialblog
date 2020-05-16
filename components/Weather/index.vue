@@ -2,8 +2,20 @@
   <v-card
     v-if="weather"
     :dark="false"
+    class="pos-r"
     :class="isDarkMode ? 'bg-card-dark color-white' : 'color-black bg-card'"
   >
+    <v-overlay absolute :opacity="0.9" :value="overlay">
+      <WeatherInput @closeInput="overlay = false" />
+    </v-overlay>
+    <v-btn small icon class="pos-a edit-icon" @click="overlay = !overlay">
+      <v-icon v-if="!overlay" small>
+        mdi-pencil
+      </v-icon>
+      <v-icon v-else small color="error">
+        mdi-close
+      </v-icon>
+    </v-btn>
     <v-row class="mx-0">
       <v-col>
         <div v-if="weather.list" class="headline ">
@@ -17,7 +29,7 @@
       <v-col class="text-center" cols="5">
         <Icons v-if="weather.list" :icon="weather.list.weather[0].icon" />
         <div v-if="weather.list" class="caption mt-2">
-          {{ weather.list.weather[0].main }}
+          {{ weather.list.weather[0].description | capitalizeFirstLetter }}
         </div>
       </v-col>
     </v-row>
@@ -53,16 +65,28 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import WeatherInput from './weatherInput'
 import Icons from './icons'
 
 export default {
   components: {
-    Icons
+    Icons,
+    WeatherInput
+  },
+  filters: {
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1)
+    }
   },
   props: {
     weather: {
       type: Object,
       default: null
+    }
+  },
+  data: () => {
+    return {
+      overlay: false
     }
   },
   computed: {
@@ -93,5 +117,16 @@ export default {
     rgba(163, 217, 207, 1) 0.1%,
     rgba(4, 178, 217, 1) 100.2%
   );
+}
+.pos-a {
+  position: absolute;
+}
+.pos-r {
+  position: relative;
+}
+.edit-icon {
+  right: 0;
+  margin: auto;
+  z-index: 20;
 }
 </style>

@@ -40,12 +40,12 @@ export default {
     }
   },
   async mounted() {
-    console.log('this.ipDetails', this.ipDetails)
     if (!this.ipDetails) {
       await this.$store.dispatch('highlights/ipAddressDetails')
     }
     const weatherReport = JSON.parse(localStorage.getItem('weatherReport'))
     const weatherTimeout = JSON.parse(localStorage.getItem('weatherTimeout'))
+    const userZipCode = JSON.parse(localStorage.getItem('userZipCode'))
     if (this.$dateFns.isPast(new Date(weatherTimeout))) {
       localStorage.removeItem('weatherReport')
       localStorage.removeItem('weatherTimeout')
@@ -54,10 +54,16 @@ export default {
       this.$store.commit('highlights/weatherReport', weatherReport)
     }
     if (this.ipDetails && !this.weatherReport) {
-      await this.$store.dispatch('highlights/weatherReport', {
-        lat: this.ipDetails.latitude,
-        lon: this.ipDetails.longitude
-      })
+      if (userZipCode) {
+        await this.$store.dispatch('highlights/weatherReport', {
+          zip: userZipCode
+        })
+      } else {
+        await this.$store.dispatch('highlights/weatherReport', {
+          lat: this.ipDetails.latitude,
+          lon: this.ipDetails.longitude
+        })
+      }
     }
   }
 }

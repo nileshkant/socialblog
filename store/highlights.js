@@ -2,7 +2,8 @@ const Cookie = process.client ? require('js-cookie') : undefined
 
 export const state = () => ({
   ipDetails: null,
-  weatherReport: null
+  weatherReport: null,
+  loadingHighlights: false
 })
 
 export const mutations = {
@@ -11,6 +12,9 @@ export const mutations = {
   },
   weatherReport(state, payload) {
     state.weatherReport = payload
+  },
+  loadingHighlights(state, payload) {
+    state.loadingHighlights = payload
   }
 }
 
@@ -34,16 +38,22 @@ export const actions = {
     }
   },
   async weatherReport({ commit }, payload) {
-    const weather = await this.$axios.$get(
-      `/weather?lat=${payload.lat}&lon=${payload.lon}`,
-      payload
-    )
+    commit('loadingHighlights', true)
+    let weather = null
+    if (payload.zip) {
+      weather = await this.$axios.$get(`/weather?zip=${payload.zip}`)
+    } else {
+      weather = await this.$axios.$get(
+        `/weather?lat=${payload.lat}&lon=${payload.lon}`
+      )
+    }
     localStorage.setItem('weatherReport', JSON.stringify(weather.weather))
     localStorage.setItem(
       'weatherTimeout',
       JSON.stringify(new Date(new Date().getTime() + 24 * 60 * 60 * 1000))
     )
     commit('weatherReport', weather.weather)
+    commit('loadingHighlights', false)
   }
 }
 
@@ -53,5 +63,8 @@ export const getters = {
   },
   weatherReport: (state) => {
     return state.weatherReport
+  },
+  loadingHighlights: (state) => {
+    return state.loadingHighlights
   }
 }

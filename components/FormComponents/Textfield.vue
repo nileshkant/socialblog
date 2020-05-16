@@ -6,6 +6,8 @@
         slot-scope="{ errors, valid }"
         :error-messages="errors"
         :success="valid"
+        :autofocus="autofocus"
+        :loading="loading"
         v-bind="$attrs"
         v-on="$listeners"
       ></v-text-field>
@@ -33,6 +35,14 @@ export default {
     value: {
       type: null,
       default: ''
+    },
+    autofocus: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
