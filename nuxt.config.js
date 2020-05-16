@@ -37,7 +37,8 @@ module.exports = {
   css: [
     '~/assets/css/main.css',
     '~/assets/css/tiptap.css',
-    '~/assets/css/weather.css'
+    '~/assets/css/weather.css',
+    '~/assets/css/weather-dark.css'
   ],
   /*
    ** Plugins to load before mounting the App

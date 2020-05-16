@@ -1,10 +1,5 @@
 <template>
-  <v-card
-    v-if="weather"
-    :dark="false"
-    class="pos-r"
-    :class="isDarkMode ? 'bg-card-dark color-white' : 'color-black bg-card'"
-  >
+  <v-card v-if="weather" class="pos-r">
     <v-overlay absolute :opacity="0.9" :value="overlay">
       <WeatherInput @closeInput="overlay = false" />
     </v-overlay>
@@ -33,7 +28,7 @@
         </div>
       </v-col>
     </v-row>
-    <v-divider light></v-divider>
+    <v-divider></v-divider>
     <v-row class="mx-0">
       <v-col>
         <div v-if="weather.city" class="caption">
