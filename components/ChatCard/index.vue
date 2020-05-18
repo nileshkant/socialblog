@@ -76,7 +76,7 @@
     <div class="title pt-0 px-4">
       <NLink
         :to="'/article/' + cardcontent._id"
-        class="link"
+        class="link in-color"
         @click.native="redirectTo"
       >
         {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.title }}
@@ -86,6 +86,22 @@
     <v-card-subtitle>
       {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.subtitle }}
     </v-card-subtitle>
+    <div class="ml-4">
+      <span
+        v-for="(tag, index) in cardcontent.hashtags"
+        :key="index"
+        class="pr-2"
+      >
+        <NLink
+          text
+          small
+          color="primary"
+          class="tt-none nlink link"
+          :to="`/search?search=%23${tag}&type=article`"
+          >#{{ tag }}</NLink
+        >
+      </span>
+    </div>
     <v-card-actions>
       <v-btn icon :disabled="!cardcontent._id" @click="likeArticle">
         <v-icon v-if="likes" color="error">mdi-heart</v-icon>
@@ -329,6 +345,13 @@ export default {
 .over-h {
   overflow: hidden !important;
 }
+.tt-none {
+  text-transform: none;
+}
+.nlink {
+  text-decoration: none;
+  font-weight: bold;
+}
 .card-height {
   min-height: 250px;
   max-height: 250px;
@@ -348,8 +371,10 @@ export default {
   background-repeat: no-repeat;
   background-position: 0 1em;
   background-position: -10000px 1em;
-  color: inherit;
   cursor: pointer;
+}
+.in-color {
+  color: inherit;
 }
 .l-h4 {
   line-height: 4;

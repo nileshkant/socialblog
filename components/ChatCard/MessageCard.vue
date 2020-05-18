@@ -64,7 +64,7 @@
             text
             small
             color="primary"
-            class="tt-none nlink"
+            class="tt-none nlink link"
             :to="`/search?search=%23${tag}&type=comment`"
             >#{{ tag }}</NLink
           >
@@ -249,6 +249,20 @@ export default {
 }
 .para ::v-deep p {
   margin-bottom: 0 !important;
+}
+
+.link {
+  text-decoration: none;
+  background-image: linear-gradient(#37b2b2 50%, #37b2b2 50%);
+  background-size: 10000px 1px;
+  background-repeat: no-repeat;
+  background-position: 0 1em;
+  background-position: -10000px 1em;
+  cursor: pointer;
+}
+.link:hover {
+  background-position: 0 1em;
+  transition: background-position 2s ease-in-out;
 }
 .zi-1 {
   z-index: 1;
