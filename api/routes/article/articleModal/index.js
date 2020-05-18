@@ -25,21 +25,24 @@ const articleSchema = new Schema({
     type: Boolean,
     default: true
   },
-
+  hashtags: [{ type: String }],
   // All Card types according to post
   // Full details Card
   fullDetailsCard: {
     title: {
       type: String,
-      min: [5, 'Minimum 5 charaters required']
+      min: [5, 'Minimum 5 charaters required'],
+      index: true
     },
     subtitle: {
       type: String,
-      min: [5, 'Minimum 5 charaters required']
+      min: [5, 'Minimum 5 charaters required'],
+      index: true
     },
     articleBody: {
       type: String,
-      min: [5, 'Minimum 5 charaters required']
+      min: [5, 'Minimum 5 charaters required'],
+      index: true
     },
     mediaUrl: {
       type: String
@@ -56,11 +59,13 @@ const articleSchema = new Schema({
   quoteCard: {
     title: {
       type: String,
-      min: [5, 'Minimum 5 charaters required']
+      min: [5, 'Minimum 5 charaters required'],
+      index: true
     },
     quote: {
       type: String,
-      min: [5, 'Minimum 5 charaters required']
+      min: [5, 'Minimum 5 charaters required'],
+      index: true
     },
     color: {
       type: String,

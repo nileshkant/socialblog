@@ -42,49 +42,7 @@
             <chat-card :cardcontent="article" showfullcard> </chat-card>
           </v-col>
         </v-row>
-        <v-row v-for="comments in allComments" :key="comments._id" class="mx-0">
-          <v-col
-            v-if="!comments.reportedBy || comments.reportedBy.length < 4"
-            md="8"
-            cols="10"
-            :class="
-              (user &&
-                (user.userDetails._id === comments.commentor._id ||
-                  user.userDetails._id === comments.commentor) &&
-                'ml-auto') ||
-                'mr-auto'
-            "
-          >
-            <MessageCard :cardcontent="comments" />
-          </v-col>
-          <v-col
-            v-if="
-              user &&
-                comments &&
-                comments.commentor._id === user.userDetails._id &&
-                comments.reportedBy &&
-                comments.reportedBy.length > 3
-            "
-            md="8"
-            cols="10"
-            :class="
-              (user &&
-                (user.userDetails._id === comments.commentor._id ||
-                  user.userDetails._id === comments.commentor) &&
-                'ml-auto') ||
-                'mr-auto'
-            "
-          >
-            <v-card class="pa-3" color="error">
-              <v-card-text class="pa-0">
-                This comment is reported by some users!
-              </v-card-text>
-              <v-card-text class="caption pa-0">
-                We are reviewing it!
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
+        <AllCommentList :user="user" :all-comments="allComments" />
       </div>
       <v-divider />
       <div class="editor-pos">
@@ -139,9 +97,9 @@
 import { mapGetters } from 'vuex'
 import { toBase64 } from '~/utilities/common'
 import ChatCard from '~/components/ChatCard'
+import AllCommentList from '~/components/AllCommentList'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
 import CommentForm from '~/components/CommentForm'
-import MessageCard from '~/components/ChatCard/MessageCard'
 import ReplyCard from '~/components/ChatCard/ReplyCard'
 
 export default {
@@ -149,7 +107,7 @@ export default {
     'chat-card': ChatCard,
     QuoteCard,
     CommentForm,
-    MessageCard,
+    AllCommentList,
     ReplyCard
   },
   async fetch({ store, params, route }) {

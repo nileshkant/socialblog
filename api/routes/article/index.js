@@ -16,6 +16,55 @@ router.post('/', authorized, async (req, res) => {
       articleType,
       author: req.user && req.user._id
     })
+    const regexp = new RegExp('#', 'g')
+    const titleTag =
+      article[articleType].title && article[articleType].title.match(/#\w+/g)
+    const subtitleTag =
+      article[articleType].subtitle &&
+      article[articleType].subtitle.match(/#\w+/g)
+    const quoteTag =
+      article[articleType].quote && article[articleType].quote.match(/#\w+/g)
+    const articleBodyTag =
+      article[articleType].articleBody &&
+      article[articleType].articleBody.match(/#\w+/g)
+    const allhashtags = [
+      ...(titleTag || []),
+      ...(subtitleTag || []),
+      ...(quoteTag || []),
+      ...(articleBodyTag || [])
+    ]
+    if (allhashtags) {
+      article.hashtags = allhashtags.map((hash) => {
+        return hash.replace('#', '')
+      })
+      article.hashtags = article.hashtags.filter((hash) => {
+        return hash
+      })
+      article.hashtags = uniq(article.hashtags)
+      if (titleTag) {
+        article[articleType].title = article[articleType].title.replace(
+          regexp,
+          ''
+        )
+      }
+      if (subtitleTag) {
+        article[articleType].subtitle = article[articleType].subtitle.replace(
+          regexp,
+          ''
+        )
+      }
+      if (quoteTag) {
+        article[articleType].quote = article[articleType].quote.replace(
+          regexp,
+          ''
+        )
+      }
+      if (articleBodyTag) {
+        article[articleType].articleBody = article[
+          articleType
+        ].articleBody.replace(regexp, '')
+      }
+    }
     if (req.user.role === 'user') {
       article.isVerified = false
     }
@@ -328,6 +377,80 @@ router.get('/categories', async (req, res) => {
       categories.push(doc)
     })
     res.status(200).json(categories)
+  } catch (err) {
+    res.status(400).json({ msg: err })
+  }
+})
+
+router.get('/search', async (req, res) => {
+  try {
+    const comment = req.query.comment
+    const limit = Number(req.query.limit)
+    const page = Number(req.query.page)
+    const article = req.query.article
+    let query = {}
+    if (comment) {
+      if (comment.includes('#')) {
+        query = { hashtags: comment.match(/#\w+/g)[0].replace('#', '') }
+      } else {
+        query = { $text: { $search: comment } }
+      }
+    }
+    if (article) {
+      if (article.includes('#')) {
+        query = { hashtags: article.match(/#\w+/g)[0].replace('#', '') }
+      } else {
+        query = { $text: { $search: article } }
+      }
+    }
+    let searchResult = null
+    if (comment) {
+      searchResult = await PostComment.find(query)
+        .populate({
+          path: 'commentor',
+          model: 'MultiAccountUser',
+          select: { password: 0, permissions: 0 }
+        })
+        .populate({
+          path: 'replyComment',
+          model: 'postComment'
+        })
+        .sort({ createdDate: -1 })
+        .limit(limit)
+        .skip(limit * (page - 1))
+        .exec()
+      const resArticle = []
+      searchResult.forEach((doc) => {
+        resArticle.push(doc)
+      })
+    }
+    if (article) {
+      searchResult = await Article.find(query)
+        .populate('categories')
+        .populate([{ path: 'likes' }])
+        .populate({
+          path: 'author',
+          model: 'MultiAccountUser',
+          select: { password: 0, permissions: 0 }
+        })
+        .populate({
+          path: 'categories',
+          populate: {
+            path: 'createdBy',
+            model: 'MultiAccountUser',
+            select: { password: 0, permissions: 0 }
+          }
+        })
+        .sort({ createdDate: -1 })
+        .limit(limit)
+        .skip(limit * (page - 1))
+        .exec()
+      const resArticle = []
+      searchResult.forEach((doc) => {
+        resArticle.push(doc)
+      })
+    }
+    res.status(200).json({ result: searchResult })
   } catch (err) {
     res.status(400).json({ msg: err })
   }

@@ -110,6 +110,17 @@ export const mutations = {
     state.allComments = state.allComments.filter((value) => {
       return value._id !== payload.deletedcomment._id
     })
+  },
+  search(state, payload) {
+    if (payload.type === 'article') {
+      state.articles = payload.searchData
+    } else {
+      state.allComments = payload.searchData
+    }
+  },
+  removeSearchState(state) {
+    state.articles = []
+    state.allComments = []
   }
 }
 
@@ -186,6 +197,21 @@ export const actions = {
   },
   async reportComment(context, payload) {
     await this.$axios.$put(`/article/report-comment?commentId=${payload}`)
+  },
+  async search(context, payload) {
+    context.commit('loading', true)
+    context.commit('removeSearchState')
+    const searchData = await this.$axios.$get(
+      `/article/search?${payload.type}=${encodeURIComponent(payload.search)}`
+    )
+    context.commit('search', {
+      searchData: searchData.result,
+      type: payload.type
+    })
+    context.commit('loading', false)
+  },
+  removeSearchState(context) {
+    context.commit('removeSearchState')
   }
 }
 

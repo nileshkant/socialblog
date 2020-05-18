@@ -60,7 +60,12 @@
           :key="index"
           class="pr-2"
         >
-          <NLink text small color="primary" class="tt-none nlink" to="#"
+          <NLink
+            text
+            small
+            color="primary"
+            class="tt-none nlink"
+            :to="`/search?search=%23${tag}&type=comment`"
             >#{{ tag }}</NLink
           >
         </span>
@@ -95,6 +100,16 @@
           }}</span
         >
       </v-card-text>
+      <NLink
+        v-if="showArticleLink"
+        :to="{
+          path: `article/${cardcontent.articleId}`,
+          hash: `#${cardcontent._id}`
+        }"
+        class="caption"
+      >
+        Read related article
+      </NLink>
     </v-card>
   </div>
 </template>
@@ -112,6 +127,10 @@ export default {
     cardcontent: {
       type: Object,
       default: null
+    },
+    showArticleLink: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -121,7 +140,7 @@ export default {
         {
           title: 'Reply',
           icon: 'mdi-reply-outline',
-          permission: () => this.user
+          permission: () => !this.showArticleLink && this.user
         },
         {
           title: 'Delete',
@@ -147,8 +166,10 @@ export default {
                 return false
               }
               if (
-                this.user.userDetails._id !== this.cardcontent.commentor._id ||
-                this.cardcontent.commentor._id !== this.singleArticle.author._id
+                this.singleArticle &&
+                (this.user.userDetails._id !== this.cardcontent.commentor._id ||
+                  this.cardcontent.commentor._id !==
+                    this.singleArticle.author._id)
               ) {
                 return true
               } else {

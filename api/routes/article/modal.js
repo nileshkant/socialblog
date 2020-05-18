@@ -11,7 +11,8 @@ const postComment = new Schema({
     default: Date.now
   },
   textComment: {
-    type: String
+    type: String,
+    index: true
   },
   mediaUrl: {
     type: String
@@ -59,6 +60,7 @@ const category = new Schema({
     default: false
   }
 })
+postComment.index({ textComment: 'text' })
 
 export const Category = mongoose.model('category', category)
 export const PostComment = mongoose.model('postComment', postComment)

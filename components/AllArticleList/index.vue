@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat>
+    <v-toolbar v-if="!removeToolbar" flat>
       <v-btn icon large class="d-flex d-md-none" to="/">
         <v-icon>mdi-home-outline</v-icon>
       </v-btn>
@@ -15,7 +15,12 @@
       >
         + Article
       </v-btn>
-      <v-btn icon large to="/bookmarks" class="ml-2">
+      <v-btn icon to="/search">
+        <v-icon>
+          mdi-magnify
+        </v-icon>
+      </v-btn>
+      <v-btn icon large to="/bookmarks">
         <v-badge color="green" dot offset-x="5" offset-y="5">
           <v-icon v-if="$route.path !== '/bookmarks'"
             >mdi-bookmark-check-outline</v-icon
@@ -57,6 +62,12 @@
           <chat-card :cardcontent="article"> </chat-card>
         </v-col>
       </v-row>
+      <AllCommentList
+        v-if="allComments"
+        :user="user"
+        :all-comments="allComments"
+        :show-article-link="showArticleLink"
+      />
     </div>
   </div>
 </template>
@@ -65,11 +76,12 @@
 import { mapGetters } from 'vuex'
 import ChatCard from '~/components/ChatCard'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
-
+import AllCommentList from '~/components/AllCommentList'
 export default {
   components: {
     'chat-card': ChatCard,
-    QuoteCard
+    QuoteCard,
+    AllCommentList
   },
   props: {
     articles: {
@@ -79,6 +91,18 @@ export default {
     user: {
       type: Object,
       default: null
+    },
+    allComments: {
+      type: Array,
+      default: null
+    },
+    removeToolbar: {
+      type: Boolean,
+      default: false
+    },
+    showArticleLink: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -94,8 +118,10 @@ export default {
   },
   mounted() {
     this.$meta().refresh()
-    const container = this.$el.querySelector('#articleContainer')
-    container.scrollTop = container.scrollHeight
+    if (!this.showArticleLink) {
+      const container = this.$el.querySelector('#articleContainer')
+      container.scrollTop = container.scrollHeight
+    }
   }
 }
 </script>
