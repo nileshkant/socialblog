@@ -63,6 +63,22 @@
     >
       " {{ cardcontent.quoteCard.quote }} "
     </v-card-text>
+    <div class="ml-4">
+      <span
+        v-for="(tag, index) in cardcontent.hashtags"
+        :key="index"
+        class="pr-2"
+      >
+        <NLink
+          text
+          small
+          color="primary"
+          class="tt-none nlink link"
+          :to="`/search?search=%23${tag}&type=article`"
+          >#{{ tag }}</NLink
+        >
+      </span>
+    </div>
     <v-card-actions>
       <v-btn icon :disabled="!cardcontent._id" @click="likeArticle">
         <v-icon v-if="likes" color="error">mdi-heart</v-icon>
@@ -256,5 +272,18 @@ export default {
 <style scoped>
 .l-h4 {
   line-height: 4;
+}
+.link {
+  text-decoration: none;
+  background-image: linear-gradient(#37b2b2 50%, #37b2b2 50%);
+  background-size: 10000px 1px;
+  background-repeat: no-repeat;
+  background-position: 0 1em;
+  background-position: -10000px 1em;
+  cursor: pointer;
+}
+.link:hover {
+  background-position: 0 1em;
+  transition: background-position 2s ease-in-out;
 }
 </style>
