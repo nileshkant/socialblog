@@ -72,7 +72,7 @@
         <NLink
           text
           small
-          color="primary"
+          :class="!checkColor && 'black--text'"
           class="tt-none nlink link"
           :to="`/search?search=%23${tag}&type=article`"
           >#{{ tag }}</NLink
