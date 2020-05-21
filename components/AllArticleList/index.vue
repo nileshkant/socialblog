@@ -37,6 +37,7 @@
         'max-height': windowHeight - 66 + 'px'
       }"
       class="overflowY-auto scrollBar"
+      @scroll="ondivScroll"
     >
       <v-row
         v-for="(article, index) in articles"
@@ -74,6 +75,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
 import ChatCard from '~/components/ChatCard'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
 import AllCommentList from '~/components/AllCommentList'
@@ -118,10 +120,20 @@ export default {
   },
   mounted() {
     this.$meta().refresh()
-    if (!this.showArticleLink) {
-      const container = this.$el.querySelector('#articleContainer')
-      container.scrollTop = container.scrollHeight
-    }
+    // const container = this.$el.querySelector('#articleContainer')
+    // if (container && !this.showArticleLink) {
+    //   setTimeout(() => {
+    //     container.scrollTop = container.scrollHeight
+    //   }, 0)
+    // }
+  },
+  methods: {
+    ondivScroll: debounce(function(e) {
+      this.$emit('scrolled', {
+        scrolledTop: e.target.scrollTop,
+        totalHeight: e.target.scrollHeight
+      })
+    }, 500)
   }
 }
 </script>

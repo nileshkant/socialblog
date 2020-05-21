@@ -10,7 +10,7 @@
       <sidebar @trending="isTrending = true" />
     </v-col>
     <v-col class="pa-0 border-right-grey middle-col" sm="12" md="5" cols="12">
-      <NuxtChild :key="$route.params.id" />
+      <NuxtChild :key="$route.params.id" keep-alive />
     </v-col>
     <v-col
       sm="12"

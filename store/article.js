@@ -2,6 +2,7 @@ export const state = () => ({
   loading: false,
   error: false,
   articles: [],
+  articleDetails: null,
   categories: [],
   dropdownCategories: [],
   latestArticle: {},
@@ -16,8 +17,17 @@ export const mutations = {
   loading(state, payload) {
     state.loading = payload
   },
-  getArticle(state, payload) {
-    state.articles = payload
+  getArticle(state, { articles, page, pageSize }) {
+    if (!page || page === 1) {
+      state.articles = articles
+    } else {
+      state.articles = [...state.articles, ...articles]
+    }
+    state.articleDetails = {
+      page,
+      pageSize,
+      isLastPage: articles.length < pageSize
+    }
     state.titleSection =
       state.articles &&
       state.articles[0] &&
@@ -113,9 +123,21 @@ export const mutations = {
   },
   search(state, payload) {
     if (payload.type === 'article') {
-      state.articles = payload.searchData
+      if (payload.searchData.page < 2) {
+        state.articles = payload.searchData.result
+      } else {
+        state.articles = [...state.articles, ...payload.searchData.result]
+      }
     } else {
-      state.allComments = payload.searchData
+      state.allComments =
+        payload.searchData.page < 2
+          ? payload.searchData.result
+          : [...state.allComments, ...payload.searchData.result]
+    }
+    state.articleDetails = {
+      page: payload.searchData.page,
+      pageSize: payload.searchData.pageSize,
+      isLastPage: payload.searchData.result.length < payload.searchData.pageSize
     }
   },
   removeSearchState(state) {
@@ -127,9 +149,13 @@ export const mutations = {
 export const actions = {
   async getArticles(context, payload) {
     const ip = await this.$axios.$get(
-      `/article/get-articles?categoryid=${payload}`
+      `/article/get-articles?categoryid=${payload.id}&page=${payload.page}&pageSize=${payload.pageSize}`
     )
-    context.commit('getArticle', ip)
+    context.commit('getArticle', {
+      articles: ip.articles,
+      page: ip.page,
+      pageSize: ip.pageSize
+    })
   },
   async getCategories(context) {
     const categories = await this.$axios.$get('/article/categories')
@@ -200,12 +226,16 @@ export const actions = {
   },
   async search(context, payload) {
     context.commit('loading', true)
-    context.commit('removeSearchState')
+    if (payload.page < 2) {
+      context.commit('removeSearchState')
+    }
     const searchData = await this.$axios.$get(
-      `/article/search?${payload.type}=${encodeURIComponent(payload.search)}`
+      `/article/search?${payload.type}=${encodeURIComponent(
+        payload.search
+      )}&limit=${payload.pageSize}&page=${payload.page}`
     )
     context.commit('search', {
-      searchData: searchData.result,
+      searchData,
       type: payload.type
     })
     context.commit('loading', false)
@@ -245,5 +275,8 @@ export const getters = {
   },
   bookmarks(state) {
     return state.bookmarks
+  },
+  articleDetails(state) {
+    return state.articleDetails
   }
 }

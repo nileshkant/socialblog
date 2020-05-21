@@ -269,8 +269,8 @@ router.get('/like', authorized, async (req, res) => {
 router.get('/get-articles', async (req, res) => {
   try {
     const categoryPosts = req.query.categoryid
-    const limit = Number(req.query.limit)
-    const page = Number(req.query.page)
+    const limit = Number(req.query.pageSize) || 30
+    const page = Number(req.query.page) || 1
     const allArticles = await Article.find({
       categories: mongoose.Types.ObjectId(categoryPosts),
       isPublished: true
@@ -298,7 +298,7 @@ router.get('/get-articles', async (req, res) => {
     allArticles.forEach((doc) => {
       resArticle.push(doc)
     })
-    res.status(200).json(resArticle.reverse())
+    res.status(200).json({ articles: resArticle, pageSize: limit, page })
   } catch (err) {
     res.status(400).json({ msg: err })
   }
@@ -385,8 +385,8 @@ router.get('/categories', async (req, res) => {
 router.get('/search', async (req, res) => {
   try {
     const comment = req.query.comment
-    const limit = Number(req.query.limit)
-    const page = Number(req.query.page)
+    const limit = Number(req.query.limit) || 30
+    const page = Number(req.query.page) || 1
     const article = req.query.article
     let query = {}
     if (comment) {
@@ -450,7 +450,7 @@ router.get('/search', async (req, res) => {
         resArticle.push(doc)
       })
     }
-    res.status(200).json({ result: searchResult })
+    res.status(200).json({ result: searchResult, pageSize: limit, page })
   } catch (err) {
     res.status(400).json({ msg: err })
   }

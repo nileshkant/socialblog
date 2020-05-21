@@ -51,7 +51,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loading: 'article/loading'
+      loading: 'article/loading',
+      articleDetails: 'article/articleDetails'
     })
   },
   mounted() {
@@ -63,13 +64,17 @@ export default {
   methods: {
     submitSearch() {
       if (this.search && this.search.length < 15) {
+        this.$emit('searched', { text: this.search, type: this.type })
         this.$store.dispatch('article/search', {
           type: this.type,
-          search: this.search
+          search: this.search,
+          pageSize: 30,
+          page: 1
         })
       }
     },
     onChangeType() {
+      this.$emit('searched', { text: this.search, type: this.type })
       this.type = this.type === 'article' ? 'comment' : 'article'
       this.submitSearch()
     }

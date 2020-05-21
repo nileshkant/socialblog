@@ -1,5 +1,5 @@
 <template>
-  <AllArticleList :articles="articles" :user="user" />
+  <AllArticleList :articles="articles" :user="user" @scrolled="scrolled" />
 </template>
 
 <script>
@@ -10,13 +10,32 @@ export default {
     AllArticleList
   },
   async fetch({ store, params, route }) {
-    await store.dispatch('article/getArticles', route.params.id)
+    await store.dispatch('article/getArticles', {
+      id: route.params.id,
+      page: (this.articleDetails && this.articleDetails.page) || 1,
+      pageSize: (this.articleDetails && this.articleDetails.pageSize) || 30
+    })
   },
   computed: {
     ...mapGetters({
       articles: 'article/articles',
-      user: 'user'
+      user: 'user',
+      articleDetails: 'article/articleDetails'
     })
+  },
+  methods: {
+    scrolled({ scrolledTop, totalHeight }) {
+      if (
+        scrolledTop + window.innerHeight - 50 > totalHeight &&
+        !this.articleDetails.isLastPage
+      ) {
+        this.$store.dispatch('article/getArticles', {
+          id: this.$route.params.id,
+          page: this.articleDetails && this.articleDetails.page + 1,
+          pageSize: 30
+        })
+      }
+    }
   },
   head() {
     return {
