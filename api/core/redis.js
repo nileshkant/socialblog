@@ -1,8 +1,9 @@
+// import { REDIS_URL } from '../env'
 const util = require('util')
 const mongoose = require('mongoose')
 const redis = require('redis')
 
-const client = redis.createClient('redis://127.0.0.1:6379')
+const client = redis.createClient()
 client.hget = util.promisify(client.hget)
 console.log('redis connected')
 
