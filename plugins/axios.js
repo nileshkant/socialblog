@@ -1,11 +1,11 @@
-import https from 'https'
+// import https from 'https'
 const Cookie = process.client ? require('js-cookie') : undefined
 
 export default function({ $axios, redirect, store, app }) {
-  $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
+  // $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.setBaseURL(
-    'https://theopenstories.xyz/api'
-    // 'http://localhost:3000/api'
+    // 'https://theopenstories.xyz/api'
+    `${process.env.BASE_URL}/api`
   )
   $axios.onRequest((request) => {
     const tokenData = store.state.auth && store.state.auth.accessToken

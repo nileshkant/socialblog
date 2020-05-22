@@ -7,7 +7,7 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s',
+    titleTemplate: 'The Open Stories',
     title: 'The Open Stories',
     meta: [
       { charset: 'utf-8' },
@@ -71,6 +71,7 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    '@nuxtjs/proxy',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
     '@nuxtjs/style-resources'
@@ -139,5 +140,13 @@ module.exports = {
   serverMiddleware: [
     // API middleware
     '~/api/index.js'
-  ]
+  ],
+
+  proxy: {
+    // With options
+    '/api2': {
+      target: 'https://json.geoiplookup.io/',
+      pathRewrite: { '^/api2/': '' }
+    }
+  }
 }

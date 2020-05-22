@@ -33,7 +33,7 @@ const jwtLogin = (req, res, user, social) => {
     }
     if (social) {
       res.redirect(
-        `https://theopenstories.xyz/callback?res=${JSON.stringify(jsonRes)}`
+        `${process.env.BASE_URL}/callback?res=${JSON.stringify(jsonRes)}`
       )
       return
     }
@@ -82,7 +82,7 @@ router.get(
   '/auth/facebook/callback',
   passport.authenticate('facebook', {
     session: false,
-    failureRedirect: 'https://theopenstories.xyz/'
+    failureRedirect: process.env.BASE_URL
   }),
   (req, res) => {
     jwtLogin(req, res, req.user, true)

@@ -10,6 +10,7 @@ import routes from './core/rest'
 import { RATE_LIMIT, SENTRY_DNS } from './env'
 import passport from './core/passport'
 import './core/mongoose'
+import './core/redis'
 const app = express()
 if (process.env.NODE_ENV === 'production') Sentry.init({ dsn: SENTRY_DNS })
 
