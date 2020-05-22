@@ -357,7 +357,7 @@ router.get('/single-article', async (req, res) => {
           select: { password: 0, permissions: 0 }
         }
       })
-      .cache({ expire: 60 })
+      .cache({ expire: 60, key: req.query.articleid })
     res.status(200).json(article)
   } catch (err) {
     res.status(400).json({ msg: err })

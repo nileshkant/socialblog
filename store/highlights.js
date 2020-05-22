@@ -1,3 +1,4 @@
+import { BASE_URL } from '../utilities/constant'
 const Cookie = process.client ? require('js-cookie') : undefined
 
 export const state = () => ({
@@ -23,7 +24,7 @@ export const actions = {
     try {
       const ipDetails = await this.$axios({
         url: '/',
-        baseURL: `${process.env.BASE_URL}/api2`,
+        baseURL: `${BASE_URL}/api2`,
         transformRequest: [
           (data, headers) => {
             delete headers.common.Authorization

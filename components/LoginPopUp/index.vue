@@ -31,11 +31,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { BASE_URL } from '../../utilities/constant'
 
 export default {
   data() {
     return {
-      baseUrl: process.env.BASE_URL
+      baseUrl: BASE_URL
     }
   },
   computed: {

@@ -3,6 +3,7 @@ import passport from 'passport'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import omit from 'lodash/omit'
+import { BASE_URL } from '../../../utilities/constant'
 import { SECRET, REFRESH_TOKEN_SECRET } from '../../env'
 import { authorized } from '../../utils'
 import { MultiAccountUser } from './modal'
@@ -32,9 +33,7 @@ const jwtLogin = (req, res, user, social) => {
       refreshToken
     }
     if (social) {
-      res.redirect(
-        `${process.env.BASE_URL}/callback?res=${JSON.stringify(jsonRes)}`
-      )
+      res.redirect(`${BASE_URL}/callback?res=${JSON.stringify(jsonRes)}`)
       return
     }
     res.status(200).json(jsonRes)
@@ -82,7 +81,7 @@ router.get(
   '/auth/facebook/callback',
   passport.authenticate('facebook', {
     session: false,
-    failureRedirect: process.env.BASE_URL
+    failureRedirect: BASE_URL
   }),
   (req, res) => {
     jwtLogin(req, res, req.user, true)

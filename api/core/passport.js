@@ -3,6 +3,7 @@ import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
 import { Strategy as FacebookStrategy } from 'passport-facebook'
 import { SECRET, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../env'
 import { MultiAccountUser } from '../routes/auth/modal'
+import { BASE_URL } from '../../utilities/constant'
 
 passport.use(
   new JWTStrategy(
@@ -26,7 +27,7 @@ passport.use(
     {
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
-      callbackURL: `${process.env.BASE_URL}/api/authentication/auth/facebook/callback`,
+      callbackURL: `${BASE_URL}/api/authentication/auth/facebook/callback`,
       profileFields: [
         'id',
         'displayName',
