@@ -23,7 +23,7 @@ export const actions = {
     try {
       const ipDetails = await this.$axios({
         url: '/',
-        baseURL: 'https://json.geoiplookup.io/',
+        baseURL: `${process.env.BASE_URL}/api2`,
         transformRequest: [
           (data, headers) => {
             delete headers.common.Authorization

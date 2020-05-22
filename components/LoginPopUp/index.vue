@@ -13,7 +13,7 @@
         <v-row>
           <v-col align-self="center" class="text-center">
             <v-btn
-              href="https://theopenstories.xyz/api/authentication/auth/facebook"
+              :href="`${baseUrl}/api/authentication/auth/facebook`"
               color="blue darken-3"
               dark
             >
@@ -33,6 +33,11 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  data() {
+    return {
+      baseUrl: process.env.BASE_URL
+    }
+  },
   computed: {
     ...mapGetters({
       overlay: 'commonState/loginPopUp',

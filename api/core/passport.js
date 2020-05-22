@@ -26,8 +26,7 @@ passport.use(
     {
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
-      callbackURL:
-        'https://theopenstories.xyz/api/authentication/auth/facebook/callback',
+      callbackURL: `${process.env.BASE_URL}/api/authentication/auth/facebook/callback`,
       profileFields: [
         'id',
         'displayName',

@@ -357,6 +357,7 @@ router.get('/single-article', async (req, res) => {
           select: { password: 0, permissions: 0 }
         }
       })
+      .cache({ expire: 60 })
     res.status(200).json(article)
   } catch (err) {
     res.status(400).json({ msg: err })
@@ -371,7 +372,7 @@ router.get('/single-article', async (req, res) => {
  */
 router.get('/categories', async (req, res) => {
   try {
-    const allCategories = await Category.find()
+    const allCategories = await Category.find().cache({ expire: 60 * 60 * 24 })
     const categories = []
     allCategories.forEach((doc) => {
       categories.push(doc)
