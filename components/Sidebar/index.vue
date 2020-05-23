@@ -64,6 +64,21 @@
           </template>
         </v-list>
       </div>
+      <v-snackbar
+        v-model="snackbar"
+        bottom
+        color="cyan darken-2"
+        left
+        :timeout="0"
+      >
+        <span class="mr-1">By using our website you agree to our </span>
+        <NLink class="text--secondary" to="/privacy-policies">
+          Cookie policy
+        </NLink>
+        <v-btn dark icon @click="acceptCookie">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-snackbar>
     </v-col>
   </v-row>
 </template>
@@ -80,6 +95,11 @@ export default {
       return value.charAt(0).toUpperCase()
     }
   },
+  data() {
+    return {
+      snackbar: false
+    }
+  },
   computed: {
     ...mapGetters({
       isDarkMode: 'commonState/isDarkMode',
@@ -87,6 +107,11 @@ export default {
       categories: 'article/categories',
       user: 'user'
     })
+  },
+  mounted() {
+    this.snackbar = localStorage.getItem('cookiePolicy')
+      ? JSON.parse(localStorage.getItem('cookiePolicy'))
+      : true
   },
   methods: {
     onThemeChange() {
@@ -106,6 +131,10 @@ export default {
     },
     clickedTopic(item) {
       this.$router.push({ path: `/topic-articles/${item._id}` })
+    },
+    acceptCookie() {
+      localStorage.setItem('cookiePolicy', JSON.stringify(false))
+      this.snackbar = false
     }
   }
 }

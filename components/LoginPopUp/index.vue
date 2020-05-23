@@ -23,7 +23,14 @@
         </v-row>
       </v-card-actions>
       <v-card-text class="caption text-disabled text-center">
-        Privacy Policy and Terms of Service apply.
+        <NLink class="text--secondary" to="/privacy-policies">
+          Privacy Policy
+        </NLink>
+        and
+        <NLink class="text--secondary" to="/terms-of-services"
+          >Terms of Service</NLink
+        >
+        apply.
       </v-card-text>
     </v-card>
   </v-overlay>

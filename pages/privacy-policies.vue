@@ -472,7 +472,7 @@
             has been collected, we will deactivate the account and take
             reasonable measures to promptly delete such data from our records.
             If you become aware of any data we have collected from children
-            under age 18, please contact us at privacy@termly.com.
+            under age 18, please contact us at privacy@theopenstories.com.
           </p>
 
           <p></p>

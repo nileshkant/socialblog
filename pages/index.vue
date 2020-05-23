@@ -72,7 +72,6 @@ export default {
   },
   async fetch({ store, params }) {
     await store.dispatch('article/getCategories')
-    await store.dispatch('covid19/covidSummary')
   },
   data() {
     return {
@@ -89,6 +88,7 @@ export default {
   },
   mounted() {
     this.$meta().refresh()
+    this.$store.dispatch('covid19/covidSummary')
   },
   methods: {
     closeModel() {

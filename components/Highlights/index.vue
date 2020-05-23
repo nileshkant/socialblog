@@ -2,6 +2,19 @@
   <div>
     <Weather v-if="weatherReport" :weather="weatherNow" />
     <Covid19 />
+    <div class="caption my-2 text-center">
+      <span class="mr-3">
+        <NLink class="link text--secondary" to="/terms-of-services">
+          Terms
+        </NLink>
+      </span>
+      <span class="mr-3">
+        <NLink class="link text--secondary" to="/privacy-policies">
+          Privacy policy
+        </NLink>
+      </span>
+      <span class="text--disabled">© 2020 TheOpenStories</span>
+    </div>
   </div>
 </template>
 
@@ -73,3 +86,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.link {
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+}
+</style>
