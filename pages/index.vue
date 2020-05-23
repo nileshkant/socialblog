@@ -72,6 +72,7 @@ export default {
   },
   async fetch({ store, params }) {
     await store.dispatch('article/getCategories')
+    await store.dispatch('covid19/covidSummary')
   },
   data() {
     return {

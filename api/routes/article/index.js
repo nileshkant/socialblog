@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import mongoose from 'mongoose'
 import uniq from 'lodash/uniq'
+import { clearHash } from '../../core/redis'
 import cloudinary from '../../core/cloudinary'
 import { authorized } from '../../utils'
 import { Article } from './articleModal'
@@ -85,15 +86,20 @@ router.post('/', authorized, async (req, res) => {
 })
 
 router.post('/create-category', authorized, async (req, res) => {
-  const { name, summary } = req.body
-  const category = new Category({
-    name,
-    summary,
-    createdBy: req.user._id
-  })
-  await category.save((_, data) => {
-    res.status(200).json({ category: data })
-  })
+  try {
+    const { name, summary } = req.body
+    const category = new Category({
+      name,
+      summary,
+      createdBy: req.user._id
+    })
+    await category.save((_, data) => {
+      clearHash('categories')
+      res.status(200).json({ category: data })
+    })
+  } catch (err) {
+    res.status(400).json({ msg: err })
+  }
 })
 
 /**

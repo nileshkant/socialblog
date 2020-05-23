@@ -1,14 +1,19 @@
 <template>
-  <Weather v-if="weatherReport" :weather="weatherNow" />
+  <div>
+    <Weather v-if="weatherReport" :weather="weatherNow" />
+    <Covid19 />
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Weather from '../Weather'
+import Covid19 from '../covid19'
 
 export default {
   components: {
-    Weather
+    Weather,
+    Covid19
   },
   data() {
     return {

@@ -5,6 +5,7 @@ const redis = require('redis')
 
 const client = redis.createClient()
 client.hget = util.promisify(client.hget)
+export const redisClient = client
 console.log('redis connected')
 
 // create reference for .exec
@@ -50,8 +51,6 @@ mongoose.Query.prototype.exec = async function() {
     : Object.assign({}, doc)
 }
 
-module.exports = {
-  clearHash(hashKey) {
-    client.del(JSON.stringify(hashKey))
-  }
+export const clearHash = (hashKey) => {
+  client.del(JSON.stringify(hashKey))
 }
