@@ -4,6 +4,23 @@
       <SnackBar />
       <v-container class="py-0" fluid>
         <LoginPopUp />
+        <v-snackbar
+          v-model="snackbar"
+          bottom
+          color="cyan darken-2"
+          left
+          :timeout="0"
+        >
+          <span class="mr-1"
+            >By using our website you agree to our
+            <NLink class="white--text" to="/privacy-policies">
+              Cookie policy
+            </NLink></span
+          >
+          <v-btn dark icon @click="acceptCookie">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-snackbar>
         <nuxt />
       </v-container>
     </v-content>
@@ -23,7 +40,8 @@ export default {
       window: {
         height: 0,
         width: 0
-      }
+      },
+      snackbar: false
     }
   },
   mounted() {
@@ -34,6 +52,9 @@ export default {
       JSON.parse(localStorage.getItem('isDarkMode'))
     )
     this.$store.commit('article/loadBookmark')
+    this.snackbar = localStorage.getItem('cookiePolicy')
+      ? JSON.parse(localStorage.getItem('cookiePolicy'))
+      : true
   },
   destroyed() {
     window.removeEventListener('resize', this.handleResize)
@@ -44,6 +65,10 @@ export default {
       this.window.width = window.innerWidth
       this.$store.dispatch('commonState/setWindowHeight', this.window.height)
       this.$store.dispatch('commonState/setWindowWidth', this.window.width)
+    },
+    acceptCookie() {
+      localStorage.setItem('cookiePolicy', JSON.stringify(false))
+      this.snackbar = false
     }
   }
 }
