@@ -88,7 +88,8 @@
       </v-btn>
       <div
         v-if="cardcontent.likes && cardcontent.likes.length > 0"
-        class="text--disabled mr-2"
+        class="mr-2"
+        :class="!checkColor && 'black--text'"
       >
         {{ cardcontent.likes && cardcontent.likes.length }}
       </div>
