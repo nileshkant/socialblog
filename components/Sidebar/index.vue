@@ -2,10 +2,15 @@
   <v-row>
     <v-col class="pa-0">
       <v-toolbar flat>
-        <v-toolbar-title class="title">All Topics</v-toolbar-title>
+        <v-toolbar-title class="title">The Open Stories</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon large class="d-flex d-md-none" @click="trending">
-          <v-icon>mdi-trending-up</v-icon>
+        <!-- <v-btn icon large class="d-flex d-md-none" @click="trending">
+          <v-badge color="green" dot offset-x="5" offset-y="5">
+            <v-icon>mdi-trending-up</v-icon>
+          </v-badge>
+        </v-btn> -->
+        <v-btn icon large class="d-flex d-md-none" @click="OpenDrawer">
+          <v-icon>mdi-menu</v-icon>
         </v-btn>
       </v-toolbar>
       <v-divider />
@@ -45,6 +50,20 @@
             </v-list-item>
           </template>
         </v-list>
+        <v-fab-transition>
+          <v-btn
+            color="primary"
+            rounded
+            dark
+            bottom
+            left
+            class="pos-a fab-button d-flex d-md-none"
+            @click="trending"
+          >
+            <span>Highlights</span>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-btn>
+        </v-fab-transition>
       </div>
     </v-col>
   </v-row>
@@ -75,6 +94,9 @@ export default {
     },
     clickedTopic(item) {
       this.$router.push({ path: `/topic-articles/${item._id}` })
+    },
+    OpenDrawer() {
+      this.$store.dispatch('commonState/isDrawerOpen', true)
     }
   }
 }
@@ -82,5 +104,15 @@ export default {
 <style scoped>
 .overflowY-auto {
   overflow-y: auto;
+}
+.pos-a {
+  position: absolute;
+}
+.pos-r {
+  position: relative;
+}
+.fab-button {
+  bottom: 30px;
+  right: 30px;
 }
 </style>

@@ -5,9 +5,15 @@
     absolute
     dark
     bottom
+    hide-overlay
+    floating
     width="25%"
     right
     class="menu-drawer"
+    :style="{
+      height: styleDrawer
+    }"
+    @transitionend="transitionend"
     @input="drawerAction"
   >
     <v-list dense nav class="py-0">
@@ -75,24 +81,34 @@ export default {
   data() {
     return {
       drawer: false,
+      styleDrawer: 0,
       items: [
+        // {
+        //   title: 'Profile',
+        //   icon: () => 'mdi-view-dashboard',
+        //   action: () => {
+        //     this.closeDrawer()
+        //   },
+        //   visible: () => this.user || false,
+        //   to: null
+        // },
         {
-          title: 'Profile',
-          icon: () => 'mdi-view-dashboard',
+          title: 'Add New Story',
+          icon: () => 'mdi-note-plus-outline',
           action: () => {
             this.closeDrawer()
           },
           visible: () => this.user || false,
-          to: null
+          to: '/create-post'
         },
         {
-          title: 'Photos',
-          icon: () => 'mdi-image',
+          title: 'My BookMarks',
+          icon: () => 'mdi-bookmark-check-outline',
           action: () => {
             this.closeDrawer()
           },
           visible: () => true,
-          to: null
+          to: '/bookmarks'
         },
         {
           title: 'Change Theme',
@@ -128,15 +144,21 @@ export default {
     },
     onThemeChange() {
       this.$store.dispatch('commonState/changeTheme')
+      this.closeDrawer()
     },
     loginPopUp() {
       this.$store.dispatch('commonState/loginPopUp')
+      this.closeDrawer()
     },
     logout() {
       Cookie.remove('auth')
       Cookie.remove('user')
       this.$store.commit('setAuth', null)
       this.$store.commit('setUserDetails', null)
+      this.closeDrawer()
+    },
+    transitionend() {
+      this.styleDrawer = this.drawer ? '100%' : 0
     }
   }
 }

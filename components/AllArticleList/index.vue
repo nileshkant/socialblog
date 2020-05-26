@@ -8,25 +8,10 @@
         titleSection || 'Sorry no content found'
       }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        v-if="user && user.userDetails.role != user"
-        color="accent"
-        to="/create-post"
-      >
-        + Article
-      </v-btn>
       <v-btn icon to="/search">
         <v-icon>
           mdi-magnify
         </v-icon>
-      </v-btn>
-      <v-btn icon large to="/bookmarks">
-        <v-badge color="green" dot offset-x="5" offset-y="5">
-          <v-icon v-if="$route.path !== '/bookmarks'"
-            >mdi-bookmark-check-outline</v-icon
-          >
-          <v-icon v-else>mdi-bookmark-check</v-icon>
-        </v-badge>
       </v-btn>
     </v-toolbar>
     <v-divider />
