@@ -8,17 +8,6 @@
         <v-toolbar-title class="title pl-0">{{
           titleSection || 'Please select a topic'
         }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn
-          v-if="user && user.userDetails.role != user"
-          color="accent"
-          to="/create-post"
-        >
-          + Article
-        </v-btn>
-        <v-btn icon large>
-          <v-icon>mdi-bookmark-check-outline</v-icon>
-        </v-btn>
       </v-toolbar>
       <v-divider />
       <div
