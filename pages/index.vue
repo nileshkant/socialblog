@@ -2,14 +2,14 @@
   <v-row>
     <v-col
       sm="12"
-      md="4"
+      md="3"
       cols="12"
       class="py-0 border-right-grey"
       :class="$route.path !== '/' || isTrending ? 'd-none d-md-flex' : ''"
     >
       <sidebar @trending="isTrending = true" />
     </v-col>
-    <v-col class="pa-0 border-right-grey middle-col" sm="12" md="5" cols="12">
+    <v-col class="pa-0 border-right-grey middle-col" sm="12" md="6" cols="12">
       <NuxtChild :key="$route.params.id" keep-alive />
     </v-col>
     <v-col
@@ -34,13 +34,9 @@
               >Highlights Today</v-toolbar-title
             >
             <v-spacer></v-spacer>
-            <v-avatar v-if="user" size="32">
-              <v-img
-                :src="
-                  `https://graph.facebook.com/${user.userDetails.facebook.id}/picture?type=square`
-                "
-              ></v-img>
-            </v-avatar>
+            <v-btn icon large @click="drawer">
+              <v-icon>mdi-menu</v-icon>
+            </v-btn>
           </v-toolbar>
           <v-divider />
         </v-col>
@@ -93,6 +89,9 @@ export default {
   methods: {
     closeModel() {
       this.overlay = false
+    },
+    drawer(item) {
+      this.$store.dispatch('commonState/isDrawerOpen', true)
     }
   }
 }

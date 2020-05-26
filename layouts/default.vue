@@ -21,6 +21,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-snackbar>
+        <MenuDrawer />
         <nuxt />
       </v-container>
     </v-content>
@@ -30,10 +31,13 @@
 <script>
 import LoginPopUp from '../components/LoginPopUp'
 import SnackBar from '../components/Snackbar'
+import MenuDrawer from '../components/MenuDrawer'
+
 export default {
   components: {
     LoginPopUp,
-    SnackBar
+    SnackBar,
+    MenuDrawer
   },
   data() {
     return {

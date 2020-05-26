@@ -6,7 +6,8 @@ export const state = () => ({
   loginPopUp: false,
   autoFocusComment: false,
   replyComment: null,
-  toastMessage: null
+  toastMessage: null,
+  isDrawerOpen: false
 })
 
 export const mutations = {
@@ -33,6 +34,9 @@ export const mutations = {
   },
   toastMessage(state, payload) {
     state.toastMessage = payload
+  },
+  isDrawerOpen(state, payload) {
+    state.isDrawerOpen = payload
   }
 }
 
@@ -57,6 +61,9 @@ export const actions = {
   },
   toastMessage(context, payload) {
     context.commit('toastMessage', payload)
+  },
+  isDrawerOpen(context, payload) {
+    context.commit('isDrawerOpen', payload)
   }
 }
 
@@ -81,5 +88,8 @@ export const getters = {
   },
   toastMessage: (state) => {
     return state.toastMessage
+  },
+  isDrawerOpen: (state) => {
+    return state.isDrawerOpen
   }
 }
