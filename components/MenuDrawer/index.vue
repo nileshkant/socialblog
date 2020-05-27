@@ -5,8 +5,6 @@
     absolute
     dark
     bottom
-    hide-overlay
-    floating
     width="25%"
     right
     class="menu-drawer"
