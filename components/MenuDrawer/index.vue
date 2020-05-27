@@ -8,6 +8,7 @@
     width="25%"
     right
     class="menu-drawer"
+    mobile-break-point="960"
     :style="{
       height: styleDrawer
     }"
