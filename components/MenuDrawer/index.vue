@@ -57,6 +57,7 @@
         <v-list-item
           v-if="item.visible()"
           link
+          class=" py-2"
           :to="item.to"
           @click="item.action() || ''"
         >
@@ -65,7 +66,9 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="subtitle-1">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </div>

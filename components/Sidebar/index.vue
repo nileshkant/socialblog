@@ -112,7 +112,7 @@ export default {
   position: relative;
 }
 .fab-button {
-  bottom: 30px;
+  bottom: 12%;
   right: 30px;
 }
 </style>
