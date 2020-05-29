@@ -43,7 +43,7 @@
         </v-col>
         <v-col cols="6">
           <v-card flat class="ma-1 pa-2 deceased-background">
-            <div class="mb-1 title deceased">TotalDeaths</div>
+            <div class="mb-1 title deceased">Total Deaths</div>
             {{ covidSummary.Global.TotalRecovered | numberWithCommas }}
             <div class="caption deceased font-weight-bold">
               + {{ covidSummary.Global.NewDeaths | numberWithCommas }}
