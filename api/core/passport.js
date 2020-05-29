@@ -28,6 +28,7 @@ passport.use(
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
       callbackURL: `${BASE_URL}/api/authentication/auth/facebook/callback`,
+      authType: 'rerequest',
       profileFields: [
         'id',
         'displayName',
@@ -51,7 +52,9 @@ passport.use(
                 profilePic:
                   profile.photos &&
                   profile.photos.length > 0 &&
-                  profile.photos[0].value
+                  profile.photos[0].value,
+                gender: profile.gender || '',
+                email: profile.email || ''
               }
             },
             (err, user) => {

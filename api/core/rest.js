@@ -4,6 +4,7 @@ import uploadFile from '../routes/uploadFile'
 import article from '../routes/article'
 import weather from '../routes/weather'
 import covid19 from '../routes/covid19'
+import userProfile from '../routes/userProfile'
 
 // import blog from '~/blog/rest'
 
@@ -20,5 +21,6 @@ router.use('/upload-file', uploadFile)
 router.use('/article', article)
 router.use('/weather', weather)
 router.use('/covid19', covid19)
+router.use('/user-profile', userProfile)
 
 export default router

@@ -1,78 +1,76 @@
 <template>
-  <v-navigation-drawer
-    v-model="drawer"
-    color="primary"
-    absolute
-    dark
-    bottom
-    width="25%"
-    right
-    class="menu-drawer"
-    mobile-break-point="960"
-    :style="{
-      height: styleDrawer
-    }"
-    @transitionend="transitionend"
-    @input="drawerAction"
-  >
-    <v-list dense nav class="py-0">
-      <div class="mb-2">
-        <v-list-item class="px-0 pt-2">
-          <v-list-item-avatar v-if="user">
-            <img
-              :src="
-                `https://graph.facebook.com/${user.userDetails.facebook.id}/picture?type=square`
-              "
-            />
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-row class="mx-0" no-gutters>
-              <v-col v-if="user" align-self="center">
-                {{ user.userDetails.facebook.displayName }}
-              </v-col>
-              <v-col v-if="!user">
-                <v-btn outlined block type="button" @click="loginPopUp">
-                  Login / SignUp
-                </v-btn>
-              </v-col>
-              <v-col v-else cols="auto">
-                <v-btn outlined type="button" @click="logout">
-                  Logout
-                </v-btn>
-              </v-col>
-              <v-col cols="auto" @click="closeDrawer">
-                <v-btn icon>
-                  <v-icon>
-                    mdi-close
-                  </v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-list-item-content>
-        </v-list-item>
-        <v-divider></v-divider>
-      </div>
-      <div v-for="item in items" :key="item.title">
-        <v-list-item
-          v-if="item.visible()"
-          link
-          class=" py-2"
-          :to="item.to"
-          @click="item.action() || ''"
-        >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon() }}</v-icon>
-          </v-list-item-icon>
+  <client-only>
+    <v-navigation-drawer
+      v-model="drawer"
+      color="primary"
+      app
+      dark
+      width="22%"
+      right
+      bottom
+      mobile-break-point="960"
+      class="menu-drawer"
+      @input="drawerAction"
+    >
+      <v-list dense nav class="py-0">
+        <div class="mb-2">
+          <v-list-item class="px-0 pt-2">
+            <v-list-item-avatar v-if="user">
+              <img
+                :src="
+                  `https://graph.facebook.com/${user.userDetails.facebook.id}/picture?type=square`
+                "
+              />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-row class="mx-0" no-gutters>
+                <v-col v-if="user" align-self="center">
+                  {{ user.userDetails.facebook.displayName }}
+                </v-col>
+                <v-col v-if="!user">
+                  <v-btn outlined block type="button" @click="loginPopUp">
+                    Login / SignUp
+                  </v-btn>
+                </v-col>
+                <v-col cols="auto" @click="closeDrawer">
+                  <v-btn icon>
+                    <v-icon>
+                      mdi-close
+                    </v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-list-item-content>
+          </v-list-item>
+          <v-divider />
+        </div>
+        <div v-for="item in items" :key="item.title">
+          <v-list-item
+            v-if="item.visible()"
+            link
+            class=" py-2"
+            :to="item.to"
+            @click="item.action() || ''"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon() }}</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title class="subtitle-1">{{
-              item.title
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </div>
-    </v-list>
-  </v-navigation-drawer>
+            <v-list-item-content>
+              <v-list-item-title class="subtitle-1">{{
+                item.title
+              }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </div>
+      </v-list>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn outlined block @click="logout">Logout</v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
+  </client-only>
 </template>
 
 <script>
@@ -85,15 +83,15 @@ export default {
       drawer: false,
       styleDrawer: 0,
       items: [
-        // {
-        //   title: 'Profile',
-        //   icon: () => 'mdi-view-dashboard',
-        //   action: () => {
-        //     this.closeDrawer()
-        //   },
-        //   visible: () => this.user || false,
-        //   to: null
-        // },
+        {
+          title: 'My Profile',
+          icon: () => 'mdi-view-dashboard',
+          action: () => {
+            this.closeDrawer()
+          },
+          visible: () => this.user || false,
+          to: '/profile'
+        },
         {
           title: 'Add New Story',
           icon: () => 'mdi-note-plus-outline',
@@ -158,9 +156,6 @@ export default {
       this.$store.commit('setAuth', null)
       this.$store.commit('setUserDetails', null)
       this.closeDrawer()
-    },
-    transitionend() {
-      this.styleDrawer = this.drawer ? '100%' : 0
     }
   }
 }

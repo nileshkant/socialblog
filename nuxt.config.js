@@ -46,7 +46,8 @@ module.exports = {
   plugins: [
     '~/plugins/axios',
     '~/plugins/vue-resize',
-    '~/plugins/notifier.js'
+    '~/plugins/notifier.js',
+    { src: '~/plugins/vue-masonry', ssr: false }
     // '~/plugins/vuex-persist.client.js'
   ],
   /*

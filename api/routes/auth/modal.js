@@ -32,7 +32,9 @@ const userMultiAccountSchema = new Schema({
   facebook: {
     id: { type: String },
     profilePic: { type: String },
-    displayName: { type: String }
+    displayName: { type: String },
+    email: { type: String },
+    gender: { type: String }
   },
 
   google: {
