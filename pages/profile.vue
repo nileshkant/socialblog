@@ -128,10 +128,6 @@ export default {
     await store.dispatch('userProfile/userPosts')
   },
   fetchOnServer: false,
-  beforeRouteEnter(to, from, next) {
-    console.log('from', from)
-    next()
-  },
   computed: {
     ...mapGetters({
       userPosts: 'userProfile/userPosts',
