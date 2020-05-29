@@ -39,7 +39,7 @@
             </div>
           </client-only>
         </v-col>
-        <v-col md="4" cols="12" order-md="2" order="1">
+        <v-col v-if="user" md="4" cols="12" order-md="2" order="1">
           <div class="pos-s">
             <v-row align="center" justify="center">
               <v-col cols="auto">

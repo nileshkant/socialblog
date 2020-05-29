@@ -65,8 +65,8 @@
         </div>
       </v-list>
       <template v-slot:append>
-        <div class="pa-2">
-          <v-btn outlined block @click="logout">Logout</v-btn>
+        <div v-if="user" class="pa-2">
+          <v-btn outlined block to="/" @click="logout">Logout</v-btn>
         </div>
       </template>
     </v-navigation-drawer>
