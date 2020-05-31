@@ -1,18 +1,51 @@
 <template>
   <div :class="$attrs.classes">
-    <ValidationProvider ref="provider" :name="$attrs.label" :rules="rules">
-      <v-file-input
-        v-model="innerValue"
-        slot-scope="{ errors, valid }"
-        :error-messages="errors"
-        :success="valid"
-        show-size
-        accept="image/*"
-        v-bind="$attrs"
-        v-on="$listeners"
-        @change="handleFileChange"
-      />
-    </ValidationProvider>
+    <div v-if="!isIcon">
+      <ValidationProvider ref="provider" :name="$attrs.label" :rules="rules">
+        <v-file-input
+          v-model="innerValue"
+          slot-scope="{ errors, valid }"
+          :error-messages="errors"
+          :success="valid"
+          show-size
+          accept="image/*"
+          v-bind="$attrs"
+          v-on="$listeners"
+          @change="handleFileChange"
+        />
+      </ValidationProvider>
+    </div>
+    <div v-if="isIcon">
+      <!-- <v-btn
+        :fab="!iconLabel && !(showFileName && innerValue)"
+        rounded
+        dark
+        small
+        color="accent"
+        @click="onButtonClick"
+      >
+        <v-icon>{{ iconName }}</v-icon>
+        <span v-if="showFileName && innerValue && innerValue.name">{{
+          innerValue.name
+        }}</span>
+        <span v-else>{{ iconLabel }}</span>
+      </v-btn> -->
+      <ValidationProvider
+        ref="uploadIcon"
+        v-slot="{ errors }"
+        :name="$attrs.label"
+        :rules="rules"
+      >
+        <input
+          ref="uploader"
+          class="d-none"
+          type="file"
+          accept="image/*"
+          @change="onFileChanged"
+        />
+        <div v-if="iconLabel" class="caption error--text">{{ errors[0] }}</div>
+      </ValidationProvider>
+    </div>
   </div>
 </template>
 
@@ -35,6 +68,26 @@ export default {
     value: {
       type: null,
       default: null
+    },
+    isIcon: {
+      type: Boolean,
+      default: false
+    },
+    clear: {
+      type: Boolean,
+      default: false
+    },
+    iconName: {
+      type: String,
+      default: 'mdi-attachment'
+    },
+    iconLabel: {
+      type: String,
+      default: ''
+    },
+    showFileName: {
+      type: Boolean,
+      default: true
     }
   },
   data: () => ({
@@ -48,6 +101,9 @@ export default {
     // Handles external model changes.
     value(newVal) {
       this.innerValue = newVal
+      if (this.isIcon && !this.innerValue) {
+        this.$refs.uploadIcon.reset()
+      }
     }
   },
   created() {
@@ -56,6 +112,26 @@ export default {
     }
   },
   methods: {
+    onButtonClick() {
+      this.isSelecting = true
+      window.addEventListener(
+        'focus',
+        () => {
+          this.isSelecting = false
+        },
+        { once: true }
+      )
+      console.log('this.$refs.uploader', this.$refs.uploadIcon)
+
+      this.$refs.uploader.click()
+    },
+    async onFileChanged(e) {
+      this.$refs.uploadIcon.syncValue(e.target.files[0])
+      this.valid = await this.$refs.uploadIcon.validate(e.target.files[0])
+      this.innerValue = e.target.files[0]
+      console.log('inneeeeeee', this.innerValue)
+      // do something
+    },
     async handleFileChange(e) {
       this.$refs.provider.syncValue(e)
       this.valid = await this.$refs.provider.validate(e)

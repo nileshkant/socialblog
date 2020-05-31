@@ -48,6 +48,7 @@
         height="200px"
       >
       </v-img>
+      <div v-if="cardcontent.embedUrl" v-html="htmlContent()"></div>
       <v-card-text
         v-if="cardcontent && cardcontent.textComment"
         class="pa-0 para"
@@ -189,6 +190,16 @@ export default {
     })
   },
   methods: {
+    htmlContent() {
+      let jsonData = ''
+      jsonData = JSON.stringify(this.cardcontent.embedUrl.html).replace(
+        'width=\\"500\\"',
+        'width=\\"100%\\"'
+      )
+      jsonData = jsonData.replace('width=\\" 500\\"', 'width=\\"100%\\"')
+
+      return JSON.parse(jsonData)
+    },
     transform: cloudinarytransformUrl,
     onClickdropDownMenu(data, id) {
       if (data.title === 'Delete') {

@@ -45,7 +45,6 @@
             ><v-icon small>mdi-close</v-icon>
           </v-btn>
           <ReplyCard v-if="replyComment" :replycontent="replyComment" />
-          <v-img v-if="formdata && formdata.file" :src="formdata.file"></v-img>
           <resize-observer @notify="handleResize" />
           <CommentForm
             v-if="user && user.userDetails && isAllowed()"
@@ -181,6 +180,7 @@ export default {
       this.$store.dispatch('commonState/loginPopUp')
     },
     async onSubmit() {
+      console.log('this.formdata', this.formdata)
       if (this.replyComment) {
         this.formdata.replyComment = this.replyComment._id
       }

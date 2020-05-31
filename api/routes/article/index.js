@@ -113,14 +113,15 @@ router.post('/create-category', authorized, async (req, res) => {
 
 router.post('/add-comment', authorized, async (req, res) => {
   try {
-    const { articleId, textComment, file, replyComment } = req.body
+    const { articleId, textComment, file, replyComment, embedUrl } = req.body
     const regexp = new RegExp('#', 'g')
-    const allhashtags = textComment.match(/#\w+/g)
+    const allhashtags = textComment && textComment.match(/#\w+/g)
     const addComment = new PostComment({
       articleId,
       textComment,
       hashtags: [],
       replyComment,
+      embedUrl,
       commentor: req.user._id
     })
     if (allhashtags) {
