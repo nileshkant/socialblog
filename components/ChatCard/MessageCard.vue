@@ -1,5 +1,27 @@
 <template>
   <div>
+    <v-overlay v-if="overlayImage" :value="overlayImage">
+      <v-img
+        :src="transform(overlayImage, 'q_auto:eco')"
+        max-height="80vh"
+        opacity="0.80"
+        max-width="90vw"
+        contain
+      >
+        <v-btn
+          fab
+          small
+          color="error"
+          absolute
+          class="closeBtn"
+          @click="overlayImage = false"
+        >
+          <v-icon>
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </v-img>
+    </v-overlay>
     <v-card class="pos-r pa-3 pt-5">
       <v-overlay absolute :opacity="0.7" :value="overlay === cardcontent._id">
         <v-btn class="mr-2" @click.stop.prevent="overlay = false">
@@ -42,12 +64,16 @@
         v-if="cardcontent.replyComment"
         :replycontent="cardcontent.replyComment"
       />
-      <v-img
+      <div
         v-if="cardcontent && cardcontent.mediaUrl"
-        :src="transform(cardcontent.mediaUrl, 'q_auto:eco')"
-        height="200px"
+        @click="onImageClick(cardcontent.mediaUrl)"
       >
-      </v-img>
+        <v-img
+          :src="transform(cardcontent.mediaUrl, 'q_auto:eco')"
+          height="200px"
+        >
+        </v-img>
+      </div>
       <div v-if="cardcontent.embedUrl" v-html="htmlContent()"></div>
       <v-card-text
         v-if="cardcontent && cardcontent.textComment"
@@ -137,6 +163,7 @@ export default {
   data() {
     return {
       overlay: '',
+      overlayImage: '',
       dropDown: [
         {
           title: 'Reply',
@@ -190,6 +217,9 @@ export default {
     })
   },
   methods: {
+    onImageClick(value) {
+      this.overlayImage = value
+    },
     htmlContent() {
       let jsonData = ''
       jsonData = JSON.stringify(this.cardcontent.embedUrl.html).replace(
@@ -277,5 +307,11 @@ export default {
 }
 .zi-1 {
   z-index: 1;
+}
+.closeBtn {
+  right: 0;
+  left: 0;
+  margin: auto;
+  bottom: 10px;
 }
 </style>

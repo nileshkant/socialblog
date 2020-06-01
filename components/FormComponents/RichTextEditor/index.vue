@@ -214,7 +214,7 @@ export default {
       }
     })
     this.editor.setContent(this.value)
-    this.editor.focus('end')
+    // this.editor.focus('end')
   },
   beforeDestroy() {
     this.editor.destroy()

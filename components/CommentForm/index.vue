@@ -3,7 +3,7 @@
     <ValidationObserver ref="obs">
       <v-row>
         <v-col align-self="end" class="py-0">
-          <v-img v-if="base64File" :src="base64File">
+          <v-img v-if="base64File" :src="base64File" height="300" contain>
             <v-btn
               small
               fab
@@ -19,11 +19,10 @@
           </v-img>
           <div v-if="noembedLink" v-html="noembedLink.html"></div>
           <v-form>
-            <v-row>
+            <v-row :class="!showMore && 'd-none'">
               <v-col align-self="center" cols="auto" class="pb-0">
                 <v-btn
                   rounded
-                  dark
                   outlined
                   small
                   title="Upload image"
@@ -50,6 +49,22 @@
             </v-row>
             <v-divider></v-divider>
             <v-row>
+              <v-btn
+                absolute
+                fab
+                x-small
+                color="greyAccent"
+                class="showMore"
+                :class="base64File && 'd-none'"
+                @click="extraClick"
+              >
+                <v-icon v-if="!showMore">
+                  mdi-plus
+                </v-icon>
+                <v-icon v-else small>
+                  mdi-close
+                </v-icon>
+              </v-btn>
               <v-col class="py-0">
                 <RichtextEditor
                   v-model="formData.textComment"
@@ -60,7 +75,10 @@
               </v-col>
               <v-col cols="auto" class="pl-0 py-0">
                 <v-row class="ma-0 fill-height" align="end" justify="end">
-                  <v-col cols="auto" class="px-0">
+                  <v-col cols="auto" class="px-0 pt-0 text-center">
+                    <!-- <div class="pb-2 pt-1">
+
+                    </div> -->
                     <v-btn
                       fab
                       small
@@ -123,6 +141,7 @@ export default {
     totalCharBody: 0,
     activeField: 'mdi-comment-text-outline',
     linkEmbeded: null,
+    showMore: false,
     formData: {
       file: null,
       textComment: null,
@@ -148,6 +167,11 @@ export default {
     }
   },
   methods: {
+    extraClick() {
+      this.showMore = !this.showMore
+      this.formData.embedUrl = this.linkEmbeded = null
+      this.$store.commit('noembed/noembedLink', null)
+    },
     fieldChange(icon) {
       this.activeField = icon
     },
@@ -207,7 +231,7 @@ export default {
           (this.formData.textComment && this.totalCharBody <= 250)
         ) {
           this.$emit('onSubmit')
-          this.formData.file = this.formData.textComment = this.linkEmbeded = this.formData.embedUrl = null
+          this.formData.file = this.formData.textComment = this.linkEmbeded = this.formData.embedUrl = this.base64File = null
           this.$store.commit('noembed/noembedLink', null)
         }
       }
@@ -221,5 +245,9 @@ export default {
   right: 8px;
   position: absolute;
   top: 8px;
+}
+.showMore {
+  right: 18px;
+  top: -15px;
 }
 </style>
