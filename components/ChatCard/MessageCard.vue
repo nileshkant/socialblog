@@ -222,12 +222,15 @@ export default {
     },
     htmlContent() {
       let jsonData = ''
+      // const script =
+      //   '<script async src=\\"https://platform.twitter.com/widgets.js\\" charset=\\"utf-8\\"></scr' +
+      //   'ipt>'
       jsonData = JSON.stringify(this.cardcontent.embedUrl.html).replace(
         'width=\\"500\\"',
         'width=\\"100%\\"'
       )
       jsonData = jsonData.replace('width=\\" 500\\"', 'width=\\"100%\\"')
-
+      // jsonData = jsonData.replace(script, '')
       return JSON.parse(jsonData)
     },
     transform: cloudinarytransformUrl,

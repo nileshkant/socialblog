@@ -8,6 +8,7 @@
 const Cookie = process.client ? require('js-cookie') : undefined
 export default {
   mounted() {
+    this.$meta().refresh()
     const urlParams = location.search.slice(5)
     const data = JSON.parse(decodeURIComponent(urlParams))
     const auth = {
