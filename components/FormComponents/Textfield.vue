@@ -1,11 +1,14 @@
 <template>
   <div :class="$attrs.classes">
-    <ValidationProvider :name="$attrs.label" :rules="rules">
+    <ValidationProvider
+      v-slot="{ errors, valid }"
+      :name="$attrs.label"
+      :rules="rules"
+    >
       <v-text-field
         v-model="innerValue"
-        slot-scope="{ errors, valid }"
         :error-messages="errors"
-        :success="rules ? valid : null"
+        :success="valid"
         :autofocus="autofocus"
         :loading="loading"
         :hint="hint"

@@ -3,6 +3,11 @@
     <v-content>
       <SnackBar />
       <v-container class="py-0" fluid>
+        <v-overlay>
+          <v-card class="pa-5">
+            <UpdateUser />
+          </v-card>
+        </v-overlay>
         <LoginPopUp />
         <v-snackbar
           v-model="snackbar"
@@ -32,12 +37,14 @@
 import LoginPopUp from '../components/LoginPopUp'
 import SnackBar from '../components/Snackbar'
 import MenuDrawer from '../components/MenuDrawer'
+import UpdateUser from '../components/UpdateUser'
 
 export default {
   components: {
     LoginPopUp,
     SnackBar,
-    MenuDrawer
+    MenuDrawer,
+    UpdateUser
   },
   data() {
     return {
