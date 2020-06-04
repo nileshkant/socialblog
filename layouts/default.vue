@@ -3,6 +3,11 @@
     <v-content>
       <SnackBar />
       <v-container class="py-0" fluid>
+        <v-overlay :value="user && !user.userDetails.username">
+          <v-card class="pa-5" width="400" max-width="100vw">
+            <UpdateUser />
+          </v-card>
+        </v-overlay>
         <LoginPopUp />
         <v-snackbar
           v-model="snackbar"
@@ -29,15 +34,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import LoginPopUp from '../components/LoginPopUp'
 import SnackBar from '../components/Snackbar'
 import MenuDrawer from '../components/MenuDrawer'
+import UpdateUser from '../components/UpdateUser'
 
 export default {
   components: {
     LoginPopUp,
     SnackBar,
-    MenuDrawer
+    MenuDrawer,
+    UpdateUser
   },
   data() {
     return {
@@ -47,6 +55,11 @@ export default {
       },
       snackbar: false
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'user'
+    })
   },
   mounted() {
     window.addEventListener('resize', this.handleResize)

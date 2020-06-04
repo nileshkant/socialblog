@@ -327,6 +327,8 @@ router.delete('/delete-article', authorized, async (req, res) => {
     const deleteArticle = await Article.findOneAndDelete(query).exec()
     if (deleteArticle) {
       await PostComment.deleteMany({ articleId: req.query.articleId }).exec()
+      await LikeArticle.deleteMany({ articleId: req.query.articleId }).exec()
+      clearHash(req.query.articleId)
       res
         .status(200)
         .json({ message: `${req.query.articleId} deleted successfully` })

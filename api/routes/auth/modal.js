@@ -3,8 +3,17 @@ import mongoose, { Schema } from 'mongoose'
 const userMultiAccountSchema = new Schema({
   username: {
     type: String,
-    lowercase: true,
-    trim: true
+    trim: true,
+    unique: true,
+    sparse: true,
+    validate: {
+      validator(value) {
+        return /^(?=[a-zA-Z0-9._]{3,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/i.test(
+          value
+        )
+      },
+      message: ({ value }) => `${value} is not a valid`
+    }
   },
   email: {
     type: String,

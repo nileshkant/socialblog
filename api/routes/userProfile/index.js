@@ -1,7 +1,9 @@
 import { Router } from 'express'
 import mongoose from 'mongoose'
+import omit from 'lodash/omit'
 import { Article } from '../article/articleModal'
 import { authorized } from '../../utils'
+import { MultiAccountUser } from '../auth/modal'
 
 const router = Router()
 
@@ -25,6 +27,26 @@ router.get('/get-posts', authorized, async (req, res) => {
     res.status(200).json({ articles: resArticle, pageSize: limit, page })
   } catch (err) {
     res.status(404).json({ msg: err })
+  }
+})
+
+router.put('/update-profile', authorized, async (req, res) => {
+  try {
+    const { username } = req.body
+    const query = { _id: req.user._id }
+    const update = {}
+    if (username) {
+      update.username = username
+    }
+    const updateUser = await MultiAccountUser.findOneAndUpdate(query, update, {
+      runValidators: true,
+      new: true
+    })
+    if (updateUser) {
+      res.status(200).json(omit(updateUser, ['password']))
+    }
+  } catch {
+    res.status(404).json({ msg: 'Username already taken' })
   }
 })
 
