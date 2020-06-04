@@ -98,9 +98,15 @@ export default {
     AllCommentList,
     ReplyCard
   },
-  async fetch({ store, params, route }) {
-    await store.dispatch('article/getSingleArticle', route.params.id)
-    await store.dispatch('article/getComments', { articleId: route.params.id })
+  async fetch({ store, params, route, redirect }) {
+    try {
+      await store.dispatch('article/getSingleArticle', route.params.id)
+      await store.dispatch('article/getComments', {
+        articleId: route.params.id
+      })
+    } catch (err) {
+      redirect('/')
+    }
   },
   data() {
     return {

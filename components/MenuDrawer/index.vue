@@ -15,7 +15,7 @@
       <v-list dense nav class="py-0">
         <div class="mb-2">
           <v-list-item class="px-0 pt-2">
-            <v-list-item-avatar v-if="user">
+            <v-list-item-avatar v-if="user && user.userDetails">
               <img
                 :src="
                   `https://graph.facebook.com/${user.userDetails.facebook.id}/picture?type=square`

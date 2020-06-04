@@ -3,7 +3,7 @@
     <v-form @submit.prevent="updateProfile">
       <v-row>
         <v-col cols="12" class="mb-2">
-          Continue with Username
+          Continue with a username
           <v-divider></v-divider>
         </v-col>
         <v-col cols="12" class="mt-2">
@@ -22,17 +22,19 @@
             counter="20"
           />
         </v-col>
-        <v-col cols="12" class="mt-2 text-right">
-          <v-btn type="submit" @click.prevent="updateProfile">
-            Update
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="py-0">
+        <v-col cols="12" class="py-0">
           <div class="caption error--text">
             {{ error }}
           </div>
+        </v-col>
+        <v-col cols="12" class="mt-2 text-right">
+          <v-btn
+            type="submit"
+            :loading="loading"
+            @click.prevent="updateProfile"
+          >
+            Update
+          </v-btn>
         </v-col>
       </v-row>
     </v-form>
@@ -72,13 +74,26 @@ export default {
   computed: {
     ...mapGetters({
       ipDetails: 'highlights/ipDetails',
-      loadingHighlights: 'highlights/loadingHighlights'
+      loadingHighlights: 'highlights/loadingHighlights',
+      loading: 'loading'
     })
   },
   methods: {
     async updateProfile() {
+      if (this.error) {
+        this.error = null
+      }
       const isValid = await this.$refs.obs.validate()
-      if (isValid) console.log('username', this.username)
+      if (isValid) {
+        try {
+          await this.$store.dispatch('updateProfile', {
+            username: this.username
+          })
+        } catch (err) {
+          this.error = err.response.data.msg
+          this.$store.commit('loading', false)
+        }
+      }
     }
   }
 }
