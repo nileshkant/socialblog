@@ -142,4 +142,10 @@ router.post('/getToken', async (req, res) => {
   }
 })
 
+router.get('/check-session', authorized, (req, res) => {
+  if (req.user) {
+    res.status(200).json({ msg: 'Logged in user' })
+  }
+})
+
 export default router

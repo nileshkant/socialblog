@@ -3,10 +3,10 @@
     <v-content>
       <v-container class="pa-0" fluid>
         <v-toolbar flat>
-          <v-btn icon @click="$router.go(-1)">
-            <v-icon>mdi-arrow-left</v-icon>
+          <v-btn icon to="/">
+            <v-icon>mdi-home-outline</v-icon>
           </v-btn>
-          <v-toolbar-title class="title">Create Post</v-toolbar-title>
+          <v-toolbar-title class="title pl-0">Create Story</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn color="accent" outlined @click="logout">
             Logout

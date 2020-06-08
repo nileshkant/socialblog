@@ -27,11 +27,16 @@
           <QuoteCard :cardcontent="article"> </QuoteCard>
         </v-col>
         <v-col v-else md="8" cols="10" class="mr-auto">
-          <chat-card v-if="isStripeLoaded" :cardcontent="article" showfullcard>
-          </chat-card>
+          <chat-card :cardcontent="article" showfullcard> </chat-card>
         </v-col>
       </v-row>
-      <AllCommentList :user="user" :all-comments="allComments" />
+      <AllCommentList
+        :user="user"
+        :all-comments="allComments"
+        :is-twitter-loaded="isInstaLoaded"
+        :is-insta-loaded="isInstaLoaded"
+        :is-fb-loaded="isFbLoaded"
+      />
     </div>
     <v-divider />
     <div class="editor-pos">
@@ -114,7 +119,9 @@ export default {
       editorHeight: 0,
       comment: '',
       formdata: null,
-      isStripeLoaded: false
+      isTwitterLoaded: false,
+      isInstaLoaded: false,
+      isFbLoaded: false
     }
   },
   computed: {
@@ -164,7 +171,6 @@ export default {
       this.$store.dispatch('commonState/loginPopUp')
     },
     async onSubmit() {
-      console.log('this.formdata', this.formdata)
       if (this.replyComment) {
         this.formdata.replyComment = this.replyComment._id
       }
@@ -189,7 +195,23 @@ export default {
           async: true,
           defer: true,
           callback: () => {
-            this.isStripeLoaded = true
+            this.isTwitterLoaded = true
+          }
+        },
+        {
+          src: '//www.instagram.com/embed.js',
+          async: true,
+          defer: true,
+          callback: () => {
+            this.isInstaLoaded = true
+          }
+        },
+        {
+          src: '//connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v7.0',
+          async: true,
+          defer: true,
+          callback: () => {
+            this.isFbLoaded = true
           }
         }
       ],

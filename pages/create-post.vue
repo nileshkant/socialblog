@@ -1,81 +1,96 @@
 <template>
-  <v-row>
-    <v-col md="6" cols="12" :class="preview ? 'd-none d-md-flex' : ''">
-      <v-row>
-        <v-col>
-          <h3 class="mb-3">
-            Add Post Details
-          </h3>
-        </v-col>
-        <v-col cols="auto">
-          <v-btn icon large class="d-flex d-md-none" @click="preview = true">
-            <v-icon>mdi-eye-outline</v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-card>
-        <v-col>
-          <SelectBox
-            v-model="formdata.articleType"
-            :items="cardoption"
-            label="Article Type"
-            classes="mt-4"
-            @change="changeCard"
-          />
-          <SelectBox
-            v-model="formdata.categories"
-            :items="dropdownCategories"
-            label="Categories"
-            classes="mt-4"
-            multiple
-            chips
-          />
-          <article-form
-            v-if="formdata.articleType === 'fullDetailsCard'"
-            @formData="formUpdate"
-            @file="uploadFile"
-            @onSubmit="onSubmit"
-          />
-          <QuoteForm
-            v-if="formdata.articleType === 'quoteCard'"
-            @formData="formUpdate"
-            @onSubmit="onSubmit"
-          />
-        </v-col>
-      </v-card>
-    </v-col>
-    <v-col md="5" cols="12" class="ml-auto">
-      <v-row :class="!preview ? 'd-none d-md-flex' : ''">
-        <v-col cols="12" class="py-0">
+  <div>
+    <v-slide-x-reverse-transition hide-on-leave>
+      <SelectPostType v-if="!formdata.articleType" @selectedCard="changeCard" />
+    </v-slide-x-reverse-transition>
+    <v-slide-y-transition hide-on-leave>
+      <v-row v-if="formdata.articleType">
+        <v-col md="6" cols="12" :class="preview ? 'd-none d-md-flex' : ''">
           <v-row>
             <v-col>
-              <h3>
-                Preview Post
+              <h3 class="mb-3">
+                Add Story Details
               </h3>
             </v-col>
             <v-col cols="auto">
               <v-btn
                 icon
                 large
-                class="text-right d-flex d-md-none"
-                @click="preview = false"
+                class="d-flex d-md-none"
+                @click="preview = true"
               >
-                <v-icon>mdi-close</v-icon>
+                <v-icon>mdi-eye-outline</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-card>
+            <v-col>
+              <v-chip-group
+                multiple
+                mandatory
+                active-class="primary--text"
+                @change="changeCategory"
+              >
+                <v-chip
+                  v-for="category in dropdownCategories"
+                  :key="category.text"
+                >
+                  {{ category.text }}
+                </v-chip>
+              </v-chip-group>
+              <article-form
+                v-if="formdata.articleType === 'fullDetailsCard'"
+                @formData="formUpdate"
+                @file="uploadFile"
+                @onSubmit="onSubmit"
+              />
+              <QuoteForm
+                v-if="formdata.articleType === 'quoteCard'"
+                @formData="formUpdate"
+                @onSubmit="onSubmit"
+              />
+            </v-col>
+          </v-card>
+        </v-col>
+        <v-col md="5" cols="12" class="ml-auto">
+          <v-row :class="!preview ? 'd-none d-md-flex' : ''">
+            <v-col cols="12" class="py-0">
+              <v-row>
+                <v-col>
+                  <h3>
+                    Preview Post
+                  </h3>
+                </v-col>
+                <v-col cols="auto">
+                  <v-btn
+                    icon
+                    large
+                    class="text-right d-flex d-md-none"
+                    @click="preview = false"
+                  >
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col cols="12">
+              <ArticleCard
+                v-if="formdata.articleType === 'fullDetailsCard'"
+                :cardcontent="formdata"
+                showfullcard
+              />
+              <QuoteCard v-else :cardcontent="formdata" />
+            </v-col>
+            <v-col cols="12" class="text-center">
+              <v-btn outlined @click="formdata.articleType = null">
+                Change Story Card
               </v-btn>
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12">
-          <ArticleCard
-            v-if="formdata.articleType === 'fullDetailsCard'"
-            :cardcontent="formdata"
-            showfullcard
-          />
-          <QuoteCard v-else :cardcontent="formdata" />
-        </v-col>
       </v-row>
-    </v-col>
-  </v-row>
+    </v-slide-y-transition>
+  </div>
 </template>
 
 <script>
@@ -84,8 +99,9 @@ import ArticleForm from '../components/ArticleForm'
 import ArticleCard from '../components/ChatCard'
 import QuoteCard from '../components/ChatCard/QuoteCard'
 import QuoteForm from '../components/ArticleForm/quoteForm'
+import SelectPostType from '../components/SelectPostType'
 import { toBase64 } from '../utilities/common'
-import SelectBox from '../components/FormComponents/selectBox'
+// import SelectBox from '../components/FormComponents/selectBox'
 export default {
   middleware: 'adminModerator',
   layout: 'postView',
@@ -94,7 +110,8 @@ export default {
     'article-form': ArticleForm,
     QuoteCard,
     QuoteForm,
-    SelectBox
+    SelectPostType
+    // SelectBox
   },
   async fetch({ store, params }) {
     await store.dispatch('article/getCategories')
@@ -107,8 +124,8 @@ export default {
       ],
       preview: false,
       formdata: {
-        articleType: 'fullDetailsCard',
-        categories: null,
+        articleType: null,
+        categories: [],
         fileURL: ''
       }
     }
@@ -123,11 +140,19 @@ export default {
   },
   methods: {
     changeCard(value) {
+      this.formdata.articleType = value
+      this.preview = false
       if (value === 'fullDetailsCard') {
         this.formdata.quoteCard = null
       } else {
         this.formdata.fullDetailsCard = null
       }
+    },
+    changeCategory(value) {
+      const selectedValue = value.map((val) => {
+        return this.dropdownCategories[val].value
+      })
+      this.formdata.categories = selectedValue
     },
     formUpdate(data) {
       this.formdata = { ...this.formdata, [this.formdata.articleType]: data }
@@ -141,7 +166,7 @@ export default {
         this.formdata.file = await toBase64(this.fileData)
       }
       this.formdata.isPublished = data === 'publish'
-      if (this.formdata.categories) {
+      if (this.formdata.categories.length > 0) {
         this.$store.dispatch('article/postArticle', this.formdata)
       }
     }

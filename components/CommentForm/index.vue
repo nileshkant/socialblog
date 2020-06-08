@@ -40,7 +40,7 @@
                   :rules="{
                     regex: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/
                   }"
-                  label="Link of tweet, video, etc."
+                  label="Link of social media posts"
                   clearable
                   :disabled="base64File && true"
                   @blur="onChange"
@@ -227,7 +227,7 @@ export default {
       if (success && !this.error) {
         if (
           this.formData.file ||
-          this.formData.embedUrl ||
+          (this.linkEmbeded && this.formData.embedUrl) ||
           (this.formData.textComment && this.totalCharBody <= 250)
         ) {
           this.$emit('onSubmit')

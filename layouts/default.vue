@@ -62,6 +62,9 @@ export default {
     })
   },
   mounted() {
+    if (this.user) {
+      this.$store.dispatch('users/isLoggedin')
+    }
     window.addEventListener('resize', this.handleResize)
     this.handleResize()
     this.$store.dispatch(
