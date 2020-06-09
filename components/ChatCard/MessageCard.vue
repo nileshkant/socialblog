@@ -242,6 +242,7 @@ export default {
         'width=\\"100%\\"'
       )
       jsonData = jsonData.replace('width=\\" 500\\"', 'width=\\"100%\\"')
+      jsonData = jsonData.replace('min-width:', '')
       // jsonData = jsonData.replace(script, '')
       return JSON.parse(jsonData)
     },
@@ -331,5 +332,8 @@ export default {
 }
 img {
   width: 100% !important;
+}
+div ::v-deep > iframe {
+  min-width: 0 !important;
 }
 </style>
