@@ -3,94 +3,114 @@
   <div class="editor py-3">
     <editor-menu-bar v-slot="{ commands, isActive }" :editor="editor">
       <div class="menubar is-focused">
-        <button
+        <v-btn
+          icon
+          title="Bold"
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.bold() }"
           @click="commands.bold"
         >
           <icon name="bold" />
-        </button>
+        </v-btn>
 
-        <button
+        <v-btn
+          icon
+          title="Italic"
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.italic() }"
           @click="commands.italic"
         >
           <icon name="italic" />
-        </button>
+        </v-btn>
 
-        <button
+        <v-btn
+          icon
+          title="Strike"
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.strike() }"
           @click="commands.strike"
         >
           <icon name="strike" />
-        </button>
+        </v-btn>
 
-        <button
+        <!-- <v-btn
+          icon
+          title=""
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.underline() }"
           @click="commands.underline"
         >
           <icon name="underline" />
-        </button>
+        </v-btn> -->
 
-        <button
+        <v-btn
+          icon
+          title="Code"
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.code() }"
           @click="commands.code"
         >
           <icon name="code" />
-        </button>
+        </v-btn>
 
-        <button
+        <!-- <v-btn
+          icon
+          title=""
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.paragraph() }"
           @click="commands.paragraph"
         >
           <icon name="paragraph" />
-        </button>
-        <button
+        </v-btn> -->
+        <v-btn
+          icon
+          title="List"
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.bullet_list() }"
           @click="commands.bullet_list"
         >
           <icon name="ul" />
-        </button>
+        </v-btn>
 
-        <button
+        <!-- <v-btn
+          icon
+          title=""
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.ordered_list() }"
           @click="commands.ordered_list"
         >
           <icon name="ol" />
-        </button>
+        </v-btn> -->
 
-        <button
+        <v-btn
+          icon
+          title="Quote"
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.blockquote() }"
           @click="commands.blockquote"
         >
           <icon name="quote" />
-        </button>
+        </v-btn>
 
-        <button
+        <v-btn
+          icon
+          title="Code block"
           type="button"
           class="menubar__button"
           :class="{ 'is-active': isActive.code_block() }"
           @click="commands.code_block"
         >
-          <icon name="code" />
-        </button>
+          <span class="subtitle-1 font-weight-medium">[...]</span>
+        </v-btn>
         <span
           v-if="limitcharcount"
           class="px-3"

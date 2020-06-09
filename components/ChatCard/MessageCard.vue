@@ -74,7 +74,19 @@
         >
         </v-img>
       </div>
-      <div v-if="cardcontent.embedUrl" v-html="htmlContent()"></div>
+      <div
+        v-if="
+          cardcontent.embedUrl && cardcontent.embedUrl.provider_name !== 'GIPHY'
+        "
+        v-html="htmlContent()"
+      ></div>
+      <v-img
+        v-if="
+          cardcontent.embedUrl && cardcontent.embedUrl.provider_name === 'GIPHY'
+        "
+        :src="cardcontent.embedUrl.media_url"
+      >
+      </v-img>
       <v-card-text
         v-if="cardcontent && cardcontent.textComment"
         class="pa-0 para"
@@ -316,5 +328,8 @@ export default {
   left: 0;
   margin: auto;
   bottom: 10px;
+}
+img {
+  width: 100% !important;
 }
 </style>

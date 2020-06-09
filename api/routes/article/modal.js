@@ -19,46 +19,49 @@ const postComment = new Schema({
   },
   embedUrl: {
     html: {
-      type: 'String'
+      type: String
     },
     version: {
-      type: 'String'
+      type: String
     },
     provider_url: {
-      type: 'String'
+      type: String
     },
     thumbnail_height: {
-      type: 'Number'
+      type: Number
     },
     type: {
-      type: 'String'
+      type: String
     },
     author_url: {
-      type: 'String'
+      type: String
     },
     height: {
-      type: 'Number'
+      type: Number
     },
     thumbnail_url: {
-      type: 'String'
+      type: String
     },
     thumbnail_width: {
-      type: 'Number'
+      type: Number
     },
     author_name: {
-      type: 'String'
+      type: String
     },
     title: {
-      type: 'String'
+      type: String
     },
     url: {
-      type: 'String'
+      type: String
     },
     provider_name: {
-      type: 'String'
+      type: String
     },
     width: {
-      type: 'Number'
+      type: Number
+    },
+    media_url: {
+      type: String
     }
   },
   replyComment: {
