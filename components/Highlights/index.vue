@@ -13,7 +13,12 @@
           Privacy policy
         </NLink>
       </span>
-      <span class="text--disabled">© 2020 TheOpenStories</span>
+      <span class="mr-3">
+        <NLink class="link text--secondary" to="/contact-us">
+          Contact us
+        </NLink>
+      </span>
+      <div class="text--disabled">© 2020 TheOpenStories</div>
     </div>
   </div>
 </template>

@@ -6,6 +6,7 @@ import weather from '../routes/weather'
 import covid19 from '../routes/covid19'
 import userProfile from '../routes/userProfile'
 import noembed from '../routes/noembed'
+import contactUs from '../routes/contactUs'
 
 // import blog from '~/blog/rest'
 
@@ -24,5 +25,6 @@ router.use('/weather', weather)
 router.use('/covid19', covid19)
 router.use('/user-profile', userProfile)
 router.use('/noembed', noembed)
+router.use('/contact-us', contactUs)
 
 export default router

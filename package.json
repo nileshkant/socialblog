@@ -1,6 +1,6 @@
 {
   "name": "theopenstories",
-  "version": "1.11.1",
+  "version": "1.11.2",
   "description": "Explore your thoughtful mind",
   "author": "Nilesh Kant",
   "private": true,
@@ -29,6 +29,7 @@
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "chalk": "^4.0.0",
+    "cheerio": "^1.0.0-rc.3",
     "cloudinary": "^1.21.0",
     "compression": "^1.7.4",
     "connect-mongo": "^3.2.0",

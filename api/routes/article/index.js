@@ -4,6 +4,7 @@ import uniq from 'lodash/uniq'
 import { clearHash } from '../../core/redis'
 import cloudinary from '../../core/cloudinary'
 import { authorized } from '../../utils'
+import { websiteDetails } from '../noembed/fetchWebsite'
 import { Article } from './articleModal'
 import { LikeArticle } from './articleModal/otherModal'
 import { Category, PostComment } from './modal'
@@ -116,6 +117,8 @@ router.post('/add-comment', authorized, async (req, res) => {
     const { articleId, textComment, file, replyComment, embedUrl } = req.body
     const regexp = new RegExp('#', 'g')
     const allhashtags = textComment && textComment.match(/#\w+/g)
+    const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/g
+    const foundUrl = textComment.match(urlRegex)
     const addComment = new PostComment({
       articleId,
       textComment,
@@ -124,6 +127,12 @@ router.post('/add-comment', authorized, async (req, res) => {
       embedUrl,
       commentor: req.user._id
     })
+    if (foundUrl && foundUrl.length > 0) {
+      const data = await websiteDetails(foundUrl[0])
+      if (data) {
+        addComment.embedUrl = data
+      }
+    }
     if (allhashtags) {
       addComment.hashtags = allhashtags.map((hash) => {
         return hash.replace('#', '')

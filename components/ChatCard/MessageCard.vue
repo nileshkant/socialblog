@@ -64,6 +64,10 @@
         v-if="cardcontent.replyComment"
         :replycontent="cardcontent.replyComment"
       />
+      <EmbedCard
+        v-if="cardcontent.embedUrl && !cardcontent.embedUrl.embedJson"
+        :embed-data="cardcontent.embedUrl"
+      />
       <div
         v-if="cardcontent && cardcontent.mediaUrl"
         @click="onImageClick(cardcontent.mediaUrl)"
@@ -76,13 +80,17 @@
       </div>
       <div
         v-if="
-          cardcontent.embedUrl && cardcontent.embedUrl.provider_name !== 'GIPHY'
+          cardcontent.embedUrl &&
+            cardcontent.embedUrl.embedJson &&
+            cardcontent.embedUrl.embedJson.provider_name !== 'GIPHY'
         "
         v-html="htmlContent()"
       ></div>
       <v-img
         v-if="
-          cardcontent.embedUrl && cardcontent.embedUrl.provider_name === 'GIPHY'
+          cardcontent.embedUrl &&
+            cardcontent.embedUrl.embedJson &&
+            cardcontent.embedUrl.embedJson.provider_name === 'GIPHY'
         "
         :src="cardcontent.embedUrl.media_url"
       >
@@ -156,11 +164,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import ReplyCard from './ReplyCard'
+import EmbedCard from './embedCard'
 import { cloudinarytransformUrl } from '~/utilities/common'
 
 export default {
   components: {
-    ReplyCard
+    ReplyCard,
+    EmbedCard
   },
   props: {
     cardcontent: {
@@ -234,16 +244,11 @@ export default {
     },
     htmlContent() {
       let jsonData = ''
-      // const script =
-      //   '<script async src=\\"https://platform.twitter.com/widgets.js\\" charset=\\"utf-8\\"></scr' +
-      //   'ipt>'
-      jsonData = JSON.stringify(this.cardcontent.embedUrl.html).replace(
-        'width=\\"500\\"',
-        'width=\\"100%\\"'
-      )
+      jsonData = JSON.stringify(
+        this.cardcontent.embedUrl.embedJson.html
+      ).replace('width=\\"500\\"', 'width=\\"100%\\"')
       jsonData = jsonData.replace('width=\\" 500\\"', 'width=\\"100%\\"')
       jsonData = jsonData.replace('min-width:', '')
-      // jsonData = jsonData.replace(script, '')
       return JSON.parse(jsonData)
     },
     transform: cloudinarytransformUrl,

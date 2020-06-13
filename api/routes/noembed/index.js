@@ -1,8 +1,7 @@
 import { Router } from 'express'
-import axios from 'axios'
+import { embedObj, websiteDetails } from './fetchWebsite'
 
 const router = Router()
-
 /**
  * get embed Url object from noEmbed
  * @date 2020-06-01
@@ -13,14 +12,24 @@ const router = Router()
 router.get('/', async (req, res) => {
   try {
     const url = req.query.url
-    const embedUrl = await axios.get(
-      `https://noembed.com/embed?url=${url}&maxwidth=500`
-    )
+    const embedUrl = await embedObj(url)
     if (embedUrl) {
       res.status(200).json(embedUrl.data)
     }
   } catch (err) {
     res.status(404).json({ msg: 'Url not found' })
+  }
+})
+
+router.get('/url-info', async (req, res) => {
+  try {
+    const url = req.query.url
+    const data = await websiteDetails(url)
+    if (data) {
+      res.status(200).json(data)
+    }
+  } catch (err) {
+    res.status(400).json({ msg: err })
   }
 })
 
