@@ -34,7 +34,7 @@
                   <span></span>
                 </v-btn>
               </v-col>
-              <v-col class="py-0">
+              <!-- <v-col class="py-0">
                 <VTextFieldWithValidation
                   v-model="linkEmbeded"
                   :rules="{
@@ -45,7 +45,7 @@
                   :disabled="base64File && true"
                   @blur="onChange"
                 />
-              </v-col>
+              </v-col> -->
             </v-row>
             <v-divider></v-divider>
             <v-row>
@@ -84,7 +84,6 @@
                       small
                       color="primary"
                       type="submit"
-                      :disabled="error"
                       @click="submit"
                     >
                       <v-icon>mdi-arrow-right</v-icon>
@@ -113,7 +112,6 @@ import { mapGetters } from 'vuex'
 import { image, size, regex } from 'vee-validate/dist/rules'
 import { toBase64 } from '../../utilities/common'
 import RichtextEditor from '../FormComponents/RichTextEditor'
-import VTextFieldWithValidation from '../FormComponents/Textfield'
 import FileUpload from '../FormComponents/fileUpload'
 extend('image', image)
 extend('size', {
@@ -130,29 +128,24 @@ export default {
     ValidationObserver,
     // VTextFieldWithValidation,
     RichtextEditor,
-    FileUpload,
-    VTextFieldWithValidation
+    FileUpload
   },
   data: () => ({
     fab: '',
-    error: false,
     isSelecting: false,
     base64File: null,
     totalCharBody: 0,
     activeField: 'mdi-comment-text-outline',
-    linkEmbeded: null,
     showMore: false,
     formData: {
       file: null,
-      textComment: null,
-      embedUrl: null
+      textComment: null
     }
   }),
   computed: {
     ...mapGetters({
       dropdownCategories: 'article/dropdownCategories',
-      initValue: 'article/latestArticle',
-      noembedLink: 'noembed/noembedLink'
+      initValue: 'article/latestArticle'
     })
   },
   watch: {
@@ -175,31 +168,31 @@ export default {
     fieldChange(icon) {
       this.activeField = icon
     },
-    async onChange() {
-      const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/
-      const regex = new RegExp(expression, 'g')
-      if (this.linkEmbeded && regex.test(this.linkEmbeded)) {
-        try {
-          await this.$store.dispatch(
-            'noembed/noembedLink',
-            encodeURIComponent(this.linkEmbeded)
-          )
-          if (this.noembedLink.error) {
-            this.error = true
-            this.$store.commit('noembed/noembedLink', null)
-          } else {
-            this.formData.embedUrl = Object.assign({}, this.noembedLink)
-            this.error = false
-          }
-        } catch (err) {
-          this.error = true
-          this.$store.commit('noembed/noembedLink', null)
-        }
-      } else {
-        this.error = false
-        this.$store.commit('noembed/noembedLink', null)
-      }
-    },
+    // async onChange() {
+    //   const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/
+    //   const regex = new RegExp(expression, 'g')
+    //   if (this.linkEmbeded && regex.test(this.linkEmbeded)) {
+    //     try {
+    //       await this.$store.dispatch(
+    //         'noembed/noembedLink',
+    //         encodeURIComponent(this.linkEmbeded)
+    //       )
+    //       if (this.noembedLink.error) {
+    //         this.error = true
+    //         this.$store.commit('noembed/noembedLink', null)
+    //       } else {
+    //         this.formData.embedUrl = Object.assign({}, this.noembedLink)
+    //         this.error = false
+    //       }
+    //     } catch (err) {
+    //       this.error = true
+    //       this.$store.commit('noembed/noembedLink', null)
+    //     }
+    //   } else {
+    //     this.error = false
+    //     this.$store.commit('noembed/noembedLink', null)
+    //   }
+    // },
     onButtonClick() {
       this.isSelecting = true
       window.addEventListener(
@@ -224,14 +217,13 @@ export default {
     async submit(e) {
       e.preventDefault()
       const success = await this.$refs.obs.validate()
-      if (success && !this.error) {
+      if (success) {
         if (
           this.formData.file ||
-          (this.linkEmbeded && this.formData.embedUrl) ||
           (this.formData.textComment && this.totalCharBody <= 250)
         ) {
           this.$emit('onSubmit')
-          this.formData.file = this.formData.textComment = this.linkEmbeded = this.formData.embedUrl = this.base64File = null
+          this.formData.file = this.formData.textComment = this.base64File = null
           this.$store.commit('noembed/noembedLink', null)
         }
       }

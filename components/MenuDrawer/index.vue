@@ -8,6 +8,7 @@
       width="22%"
       right
       bottom
+      disable-resize-watcher
       mobile-break-point="960"
       class="menu-drawer"
       @input="drawerAction"
