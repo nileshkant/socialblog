@@ -193,7 +193,9 @@ export default {
           permission: () =>
             (this.user &&
               this.cardcontent.commentor &&
-              this.cardcontent.commentor._id === this.user.userDetails._id) ||
+              (this.cardcontent.commentor === this.user.userDetails._id ||
+                this.cardcontent.commentor._id ===
+                  this.user.userDetails._id)) ||
             (this.user &&
               this.user.userDetails &&
               this.user.userDetails.role === 'admin')
@@ -211,6 +213,7 @@ export default {
                 return false
               }
               if (
+                this.user.userDetails._id !== this.cardcontent.commentor &&
                 this.user.userDetails._id !== this.cardcontent.commentor._id
               ) {
                 return true

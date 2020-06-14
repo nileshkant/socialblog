@@ -149,8 +149,12 @@ export default {
       if (this.user.userDetails.role === 'admin') return true
       if (this.article.author._id === this.user.userDetails._id) return true
       const filterComment = this.allComments.filter((comment) => {
-        return comment.commentor._id === this.user.userDetails._id
+        return (
+          comment.commentor === this.user.userDetails._id ||
+          comment.commentor._id === this.user.userDetails._id
+        )
       })
+
       if (filterComment.length >= 1) {
         this.commentDisable = true
         return false
@@ -176,7 +180,6 @@ export default {
       await this.$store.dispatch('article/postComment', sendForm)
       const container = this.$el.querySelector('#articleContainer')
       container.scrollTop = container.scrollHeight
-      this.isAllowed()
     },
     removeReply() {
       this.$store.dispatch('commonState/replyComment', null)
