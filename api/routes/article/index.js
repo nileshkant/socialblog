@@ -115,7 +115,7 @@ router.post('/add-comment', authorized, async (req, res) => {
     const regexp = new RegExp('#', 'g')
     const allhashtags = textComment && textComment.match(/#\w+/g)
     const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/g
-    const foundUrl = textComment.match(urlRegex)
+    const foundUrl = textComment && textComment.match(urlRegex)
     const addComment = new PostComment({
       articleId,
       textComment,

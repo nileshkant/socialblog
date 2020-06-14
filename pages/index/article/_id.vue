@@ -176,6 +176,7 @@ export default {
       await this.$store.dispatch('article/postComment', sendForm)
       const container = this.$el.querySelector('#articleContainer')
       container.scrollTop = container.scrollHeight
+      this.isAllowed()
     },
     removeReply() {
       this.$store.dispatch('commonState/replyComment', null)
@@ -183,10 +184,44 @@ export default {
   },
   head() {
     return {
-      title:
+      titleTemplate:
         this.article.articleType === 'quoteCard'
           ? this.article.quoteCard.title
           : this.article.fullDetailsCard.title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content:
+            this.article.articleType === 'quoteCard'
+              ? this.article.quoteCard.title
+              : this.article.fullDetailsCard.title
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            this.article.articleType === 'quoteCard'
+              ? this.article.quoteCard.quote
+              : this.article.fullDetailsCard.subtitle
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content:
+            this.article.articleType === 'quoteCard'
+              ? this.article.quoteCard.quote
+              : this.article.fullDetailsCard.subtitle
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          content:
+            this.article.articleType === 'fullDetailsCard'
+              ? this.article.fullDetailsCard.mediaUrl
+              : ''
+        }
+      ],
       script: [
         {
           src: '//platform.twitter.com/widgets.js',
@@ -195,16 +230,6 @@ export default {
           callback: () => {
             this.isTwitterLoaded = true
           }
-        }
-      ],
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content:
-            this.article.articleType === 'quoteCard'
-              ? this.article.quoteCard.quote
-              : this.article.fullDetailsCard.subtitle
         }
       ]
     }
