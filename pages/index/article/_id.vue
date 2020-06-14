@@ -33,9 +33,7 @@
       <AllCommentList
         :user="user"
         :all-comments="allComments"
-        :is-twitter-loaded="isInstaLoaded"
-        :is-insta-loaded="isInstaLoaded"
-        :is-fb-loaded="isFbLoaded"
+        :is-twitter-loaded="isTwitterLoaded"
       />
     </div>
     <v-divider />
@@ -57,7 +55,6 @@
           @onSubmit="onSubmit"
         />
         <v-row v-else-if="user">
-          s
           <v-col class="pa-0">
             <v-card-text color="accent" class="subtitle-1 text--disabled">
               <resize-observer @notify="handleResize" />
@@ -119,9 +116,7 @@ export default {
       editorHeight: 0,
       comment: '',
       formdata: null,
-      isTwitterLoaded: false,
-      isInstaLoaded: false,
-      isFbLoaded: false
+      isTwitterLoaded: false
     }
   },
   computed: {
@@ -149,7 +144,6 @@ export default {
       this.editorHeight = height
     },
     isAllowed() {
-      if (this.article.articleType === 'quoteCard') return false
       if (this.user.userDetails.role === 'admin') return true
       if (this.article.author._id === this.user.userDetails._id) return true
       const filterComment = this.allComments.filter((comment) => {
@@ -196,22 +190,6 @@ export default {
           defer: true,
           callback: () => {
             this.isTwitterLoaded = true
-          }
-        },
-        {
-          src: '//www.instagram.com/embed.js',
-          async: true,
-          defer: true,
-          callback: () => {
-            this.isInstaLoaded = true
-          }
-        },
-        {
-          src: '//connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v7.0',
-          async: true,
-          defer: true,
-          callback: () => {
-            this.isFbLoaded = true
           }
         }
       ],

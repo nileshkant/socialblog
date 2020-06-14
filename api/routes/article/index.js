@@ -67,9 +67,6 @@ router.post('/', authorized, async (req, res) => {
         ].articleBody.replace(regexp, '')
       }
     }
-    if (req.user.role === 'user') {
-      article.isVerified = false
-    }
     if (file) {
       const mediaUrl = await cloudinary.uploader.upload(file)
       article[articleType].mediaUrl = mediaUrl.secure_url
@@ -289,7 +286,8 @@ router.get('/get-articles', async (req, res) => {
     const page = Number(req.query.page) || 1
     const allArticles = await Article.find({
       categories: mongoose.Types.ObjectId(categoryPosts),
-      isPublished: true
+      isPublished: true,
+      isVerified: true
     })
       .populate('categories')
       .populate([{ path: 'likes' }])
@@ -359,7 +357,7 @@ router.delete('/delete-article', authorized, async (req, res) => {
 router.get('/single-article', async (req, res) => {
   try {
     const articleid = req.query.articleid
-    const article = await Article.findById(articleid)
+    const article = await Article.findById({ _id: articleid, isVerified: true })
       .populate('categories')
       .populate({
         path: 'author',

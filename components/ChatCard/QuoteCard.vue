@@ -50,10 +50,13 @@
       >
     </v-card-text>
     <v-card-title class="pt-0">
-      <span
-        class="title font-weight-light"
-        :class="!checkColor && 'black--text'"
-        >{{ cardcontent.quoteCard && cardcontent.quoteCard.title }}</span
+      <NLink
+        :class="!cardcontent._id && 'disable-click'"
+        :to="'/article/' + cardcontent._id"
+        class="title font-weight-light link"
+        ><span :class="!checkColor && 'black--text'">{{
+          cardcontent.quoteCard && cardcontent.quoteCard.title
+        }}</span></NLink
       >
     </v-card-title>
     <v-card-text
@@ -70,8 +73,6 @@
         class="pr-2"
       >
         <NLink
-          text
-          small
           :class="!checkColor && 'black--text'"
           class="tt-none nlink link"
           :to="`/search?search=%23${tag}&type=article`"
@@ -279,12 +280,16 @@ export default {
   background-image: linear-gradient(#37b2b2 50%, #37b2b2 50%);
   background-size: 10000px 1px;
   background-repeat: no-repeat;
-  background-position: 0 1em;
-  background-position: -10000px 1em;
+  background-position: 0 1.2em;
+  background-position: -10000px 1.2em;
   cursor: pointer;
+  color: inherit;
 }
 .link:hover {
-  background-position: 0 1em;
+  background-position: 0 1.2em;
   transition: background-position 2s ease-in-out;
+}
+.disable-click {
+  pointer-events: none;
 }
 </style>

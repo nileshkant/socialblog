@@ -1,126 +1,7 @@
 <template>
   <!-- <client-only placeholder="Loading..."> -->
-  <div class="editor py-3">
-    <editor-menu-bar v-slot="{ commands, isActive }" :editor="editor">
-      <div class="menubar is-focused">
-        <v-btn
-          icon
-          title="Bold"
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.bold() }"
-          @click="commands.bold"
-        >
-          <icon name="bold" />
-        </v-btn>
-
-        <v-btn
-          icon
-          title="Italic"
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.italic() }"
-          @click="commands.italic"
-        >
-          <icon name="italic" />
-        </v-btn>
-
-        <v-btn
-          icon
-          title="Strike"
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.strike() }"
-          @click="commands.strike"
-        >
-          <icon name="strike" />
-        </v-btn>
-
-        <!-- <v-btn
-          icon
-          title=""
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.underline() }"
-          @click="commands.underline"
-        >
-          <icon name="underline" />
-        </v-btn> -->
-
-        <v-btn
-          icon
-          title="Code"
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.code() }"
-          @click="commands.code"
-        >
-          <icon name="code" />
-        </v-btn>
-
-        <!-- <v-btn
-          icon
-          title=""
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.paragraph() }"
-          @click="commands.paragraph"
-        >
-          <icon name="paragraph" />
-        </v-btn> -->
-        <v-btn
-          icon
-          title="List"
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.bullet_list() }"
-          @click="commands.bullet_list"
-        >
-          <icon name="ul" />
-        </v-btn>
-
-        <!-- <v-btn
-          icon
-          title=""
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.ordered_list() }"
-          @click="commands.ordered_list"
-        >
-          <icon name="ol" />
-        </v-btn> -->
-
-        <v-btn
-          icon
-          title="Quote"
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.blockquote() }"
-          @click="commands.blockquote"
-        >
-          <icon name="quote" />
-        </v-btn>
-
-        <v-btn
-          icon
-          title="Code block"
-          type="button"
-          class="menubar__button"
-          :class="{ 'is-active': isActive.code_block() }"
-          @click="commands.code_block"
-        >
-          <span class="subtitle-1 font-weight-medium">[...]</span>
-        </v-btn>
-        <span
-          v-if="limitcharcount"
-          class="px-3"
-          :class="{ 'error--text': charcount > limitcharcount }"
-        >
-          {{ charcount }}/{{ limitcharcount }}
-        </span>
-      </div>
-    </editor-menu-bar>
-    <editor-menu-bubble
+  <div class="editor">
+    <!-- <editor-menu-bubble
       v-slot="{ commands, isActive, getMarkAttrs, menu }"
       class="menububble"
       :editor="editor"
@@ -156,9 +37,115 @@
           </v-btn>
         </template>
       </div>
-    </editor-menu-bubble>
-    <v-row>
-      <v-col>
+    </editor-menu-bubble> -->
+    <v-row no-gutters class="pos-r" justify="end" align="end">
+      <resize-observer />
+      <v-col cols="2" md="1">
+        <v-btn text x-small class="pa-0" @click="hideMenu = !hideMenu">
+          <v-icon v-if="hideMenu">mdi-format-text</v-icon>
+          <v-icon v-else>mdi-close</v-icon>
+        </v-btn>
+        <v-expand-x-transition>
+          <div v-if="!hideMenu">
+            <editor-menu-bar
+              v-slot="{ commands, isActive }"
+              :editor="editor"
+              class="menuItemBar"
+            >
+              <div class="menubar is-focused">
+                <v-btn
+                  icon
+                  small
+                  title="Bold"
+                  type="button"
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.bold() }"
+                  @click="commands.bold"
+                >
+                  <icon name="bold" />
+                </v-btn>
+
+                <v-btn
+                  icon
+                  small
+                  title="Italic"
+                  type="button"
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.italic() }"
+                  @click="commands.italic"
+                >
+                  <icon name="italic" />
+                </v-btn>
+
+                <v-btn
+                  icon
+                  small
+                  title="Strike"
+                  type="button"
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.strike() }"
+                  @click="commands.strike"
+                >
+                  <icon name="strike" />
+                </v-btn>
+                <v-btn
+                  icon
+                  small
+                  title="Code"
+                  type="button"
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.code() }"
+                  @click="commands.code"
+                >
+                  <icon name="code" />
+                </v-btn>
+                <v-btn
+                  icon
+                  small
+                  title="List"
+                  type="button"
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.bullet_list() }"
+                  @click="commands.bullet_list"
+                >
+                  <icon name="ul" />
+                </v-btn>
+                <v-btn
+                  icon
+                  small
+                  title="Quote"
+                  type="button"
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.blockquote() }"
+                  @click="commands.blockquote"
+                >
+                  <icon name="quote" />
+                </v-btn>
+
+                <v-btn
+                  icon
+                  small
+                  title="Code block"
+                  type="button"
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.code_block() }"
+                  @click="commands.code_block"
+                >
+                  <span class="subtitle-1 font-weight-medium">[...]</span>
+                </v-btn>
+                <span
+                  v-if="limitcharcount"
+                  class="px-1 caption"
+                  :class="{ 'error--text': charcount > limitcharcount }"
+                >
+                  {{ charcount }}/{{ limitcharcount }}
+                </span>
+              </div>
+            </editor-menu-bar>
+          </div>
+        </v-expand-x-transition>
+      </v-col>
+      <v-col cols="10" md="11">
         <editor-content
           class="editor__content"
           :class="{ errorContent: charcount > limitcharcount }"
@@ -174,7 +161,7 @@
 </template>
 
 <script>
-import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap'
+import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
   Blockquote,
   BulletList,
@@ -194,8 +181,8 @@ export default {
   components: {
     EditorContent,
     EditorMenuBar,
-    Icon,
-    EditorMenuBubble
+    Icon
+    // EditorMenuBubble
   },
   props: {
     limitcharcount: {
@@ -216,6 +203,7 @@ export default {
       editor: null,
       charcount: 0,
       linkUrl: null,
+      hideMenu: true,
       linkMenuIsActive: false
     }
   },
@@ -309,53 +297,52 @@ export default {
 <style lang="scss" scoped>
 $color-black: #000000;
 
-.menubar {
-  margin-bottom: 1rem;
-  transition: visibility 0.2s 0.4s, opacity 0.2s 0.4s;
+// .menubar {
+//   transition: visibility 0.2s 0.4s, opacity 0.2s 0.4s;
 
-  &.is-hidden {
-    visibility: hidden;
-    opacity: 0;
-  }
+//   &.is-hidden {
+//     visibility: hidden;
+//     opacity: 0;
+//   }
 
-  &.is-focused {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0.2s, opacity 0.2s;
-  }
+//   &.is-focused {
+//     visibility: visible;
+//     opacity: 1;
+//     transition: visibility 0.2s, opacity 0.2s;
+//   }
 
-  &__button {
-    font-weight: bold;
-    display: inline-flex;
-    background: transparent;
-    border: 0;
-    color: var(--v-colorTheme-base);
-    padding: 0.2rem 0.5rem;
-    margin-right: 0.2rem;
-    border-radius: 3px;
-    cursor: pointer;
+//   &__button {
+//     font-weight: bold;
+//     display: inline-flex;
+//     background: transparent;
+//     border: 0;
+//     color: var(--v-colorTheme-base);
+//     padding: 0.2rem 0.5rem;
+//     margin-right: 0.2rem;
+//     border-radius: 3px;
+//     cursor: pointer;
 
-    &:hover {
-      background-color: var(--v-colorTheme-base);
-      color: var(--v-colorReverseTheme-base);
-      .iconColor {
-        color: var(--v-colorReverseTheme-base);
-      }
-    }
+//     &:hover {
+//       background-color: var(--v-colorTheme-base);
+//       color: var(--v-colorReverseTheme-base);
+//       .iconColor {
+//         color: var(--v-colorReverseTheme-base);
+//       }
+//     }
 
-    &.is-active {
-      background-color: var(--v-colorTheme-base);
-      color: var(--v-colorReverseTheme-base);
-      .iconColor {
-        color: var(--v-colorReverseTheme-base);
-      }
-    }
-  }
+//     &.is-active {
+//       background-color: var(--v-colorTheme-base);
+//       color: var(--v-colorReverseTheme-base);
+//       .iconColor {
+//         color: var(--v-colorReverseTheme-base);
+//       }
+//     }
+//   }
 
-  span#{&}__button {
-    font-size: 13.3333px;
-  }
-}
+//   span#{&}__button {
+//     font-size: 13.3333px;
+//   }
+// }
 
 .editor__content {
   border-bottom: 1px solid var(--v-colorTheme-base);
@@ -390,6 +377,7 @@ $color-black: #000000;
   border-radius: 5px;
   background-color: inherit;
   padding: 0.3rem 0.5rem;
+  word-break: break-all;
 }
 .menububble {
   position: absolute;
@@ -419,6 +407,25 @@ $color-black: #000000;
     border: none;
     background-color: transparent;
     color: var(--v-colorTheme-base);
+  }
+}
+.pos-r {
+  position: relative;
+}
+.menuItemBar {
+  position: absolute;
+  width: 350px;
+  top: -50px;
+  left: 0;
+  padding: 2px;
+  background: var(--v-colorReverseTheme-base);
+  z-index: 5;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+@media (max-width: 960px) {
+  .menuItemBar {
+    max-width: 100vw;
   }
 }
 </style>

@@ -79,22 +79,9 @@
         </v-img>
       </div>
       <div
-        v-if="
-          cardcontent.embedUrl &&
-            cardcontent.embedUrl.embedJson &&
-            cardcontent.embedUrl.embedJson.provider_name !== 'GIPHY'
-        "
+        v-if="cardcontent.embedUrl && cardcontent.embedUrl.embedJson"
         v-html="htmlContent()"
       ></div>
-      <v-img
-        v-if="
-          cardcontent.embedUrl &&
-            cardcontent.embedUrl.embedJson &&
-            cardcontent.embedUrl.embedJson.provider_name === 'GIPHY'
-        "
-        :src="cardcontent.embedUrl.media_url"
-      >
-      </v-img>
       <v-card-text
         v-if="cardcontent && cardcontent.textComment"
         class="pa-0 para"
