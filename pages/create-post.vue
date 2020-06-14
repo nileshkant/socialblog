@@ -103,7 +103,7 @@ import SelectPostType from '../components/SelectPostType'
 import { toBase64 } from '../utilities/common'
 // import SelectBox from '../components/FormComponents/selectBox'
 export default {
-  middleware: 'adminModerator',
+  middleware: 'authenticated',
   layout: 'postView',
   components: {
     ArticleCard,

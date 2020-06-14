@@ -56,6 +56,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
+          v-if="post.isVerified"
           :class="!checkColor && 'black--text'"
           outlined
           text
@@ -63,6 +64,9 @@
         >
           View Story
         </v-btn>
+        <v-card-text v-else class="pa-0 caption px-2">
+          This Story is blocked!
+        </v-card-text>
         <v-spacer></v-spacer>
         <v-card-text
           v-if="post.quoteCard && post.quoteCard.source"

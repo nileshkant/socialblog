@@ -21,26 +21,8 @@
         <MessageCard
           v-if="
             comments.embedUrl &&
-              comments.embedUrl.provider_name === 'Instagram' &&
-              isInstaLoaded
-          "
-          :show-article-link="showArticleLink"
-          :cardcontent="comments"
-        />
-        <MessageCard
-          v-else-if="
-            comments.embedUrl &&
               comments.embedUrl.provider_name === 'Twitter' &&
               isTwitterLoaded
-          "
-          :show-article-link="showArticleLink"
-          :cardcontent="comments"
-        />
-        <MessageCard
-          v-else-if="
-            comments.embedUrl &&
-              comments.embedUrl.provider_name === 'Facebook' &&
-              isFbLoaded
           "
           :show-article-link="showArticleLink"
           :cardcontent="comments"
@@ -101,15 +83,7 @@ export default {
       type: Boolean,
       default: false
     },
-    isInstaLoaded: {
-      type: Boolean,
-      default: false
-    },
     isTwitterLoaded: {
-      type: Boolean,
-      default: false
-    },
-    isFbLoaded: {
       type: Boolean,
       default: false
     }

@@ -75,6 +75,7 @@
     </v-card-text>
     <div class="title pt-0 px-4">
       <NLink
+        :class="!cardcontent._id && 'disable-click'"
         :to="'/article/' + cardcontent._id"
         class="link in-color"
         @click.native="redirectTo"
@@ -382,5 +383,8 @@ export default {
 .link:hover {
   background-position: 0 1em;
   transition: background-position 2s ease-in-out;
+}
+.disable-click {
+  pointer-events: none;
 }
 </style>

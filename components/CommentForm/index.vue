@@ -2,7 +2,7 @@
   <client-only>
     <ValidationObserver ref="obs">
       <v-row>
-        <v-col align-self="end" class="py-0">
+        <v-col align-self="end" class="pt-0">
           <v-img v-if="base64File" :src="base64File" height="300" contain>
             <v-btn
               small
@@ -17,39 +17,9 @@
               </v-icon>
             </v-btn>
           </v-img>
-          <div v-if="noembedLink" v-html="noembedLink.html"></div>
           <v-form>
-            <v-row :class="!showMore && 'd-none'">
-              <v-col align-self="center" cols="auto" class="pb-0">
-                <v-btn
-                  rounded
-                  outlined
-                  small
-                  title="Upload image"
-                  :disabled="isSelecting || (noembedLink && true)"
-                  class="mb-2"
-                  @click="onButtonClick"
-                >
-                  <v-icon>mdi-attachment</v-icon>
-                  <span></span>
-                </v-btn>
-              </v-col>
-              <!-- <v-col class="py-0">
-                <VTextFieldWithValidation
-                  v-model="linkEmbeded"
-                  :rules="{
-                    regex: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/
-                  }"
-                  label="Link of social media posts"
-                  clearable
-                  :disabled="base64File && true"
-                  @blur="onChange"
-                />
-              </v-col> -->
-            </v-row>
-            <v-divider></v-divider>
-            <v-row>
-              <v-btn
+            <v-row align="end" justify="center">
+              <!-- <v-btn
                 absolute
                 fab
                 x-small
@@ -64,8 +34,8 @@
                 <v-icon v-else small>
                   mdi-close
                 </v-icon>
-              </v-btn>
-              <v-col class="py-0">
+              </v-btn> -->
+              <v-col cols="8" md="10" sm="9" class="pa-0">
                 <RichtextEditor
                   v-model="formData.textComment"
                   :limitcharcount="250"
@@ -73,9 +43,23 @@
                   @richContent="richContent"
                 />
               </v-col>
-              <v-col cols="auto" class="pl-0 py-0">
+              <v-col cols="4" md="2" sm="3" class="pb-0">
                 <v-row class="ma-0 fill-height" align="end" justify="end">
-                  <v-col cols="auto" class="px-0 pt-0 text-center">
+                  <v-col cols="auto" class="py-0">
+                    <v-btn
+                      icon
+                      outlined
+                      small
+                      title="Upload image"
+                      :disabled="isSelecting"
+                      class="mb-2"
+                      @click="onButtonClick"
+                    >
+                      <v-icon>mdi-attachment</v-icon>
+                      <span></span>
+                    </v-btn>
+                  </v-col>
+                  <v-col cols="auto" class="px-0 py-0 text-center">
                     <!-- <div class="pb-2 pt-1">
 
                     </div> -->
