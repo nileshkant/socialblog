@@ -34,6 +34,7 @@
         :user="user"
         :all-comments="allComments"
         :is-twitter-loaded="isTwitterLoaded"
+        :comment-disable="commentDisable"
       />
     </div>
     <v-divider />
@@ -116,7 +117,8 @@ export default {
       editorHeight: 0,
       comment: '',
       formdata: null,
-      isTwitterLoaded: false
+      isTwitterLoaded: false,
+      commentDisable: false
     }
   },
   computed: {
@@ -150,8 +152,10 @@ export default {
         return comment.commentor._id === this.user.userDetails._id
       })
       if (filterComment.length >= 1) {
+        this.commentDisable = true
         return false
       } else {
+        this.commentDisable = false
         return true
       }
     },

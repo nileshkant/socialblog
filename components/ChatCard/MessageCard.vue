@@ -167,6 +167,10 @@ export default {
     showArticleLink: {
       type: Boolean,
       default: false
+    },
+    commentDisabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -177,7 +181,11 @@ export default {
         {
           title: 'Reply',
           icon: 'mdi-reply-outline',
-          permission: () => !this.showArticleLink && this.user
+          permission: () =>
+            this.user &&
+            !this.commentDisabled &&
+            this.user &&
+            !this.showArticleLink
         },
         {
           title: 'Delete',
@@ -203,10 +211,7 @@ export default {
                 return false
               }
               if (
-                this.singleArticle &&
-                (this.user.userDetails._id !== this.cardcontent.commentor._id ||
-                  this.cardcontent.commentor._id !==
-                    this.singleArticle.author._id)
+                this.user.userDetails._id !== this.cardcontent.commentor._id
               ) {
                 return true
               } else {

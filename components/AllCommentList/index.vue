@@ -26,11 +26,13 @@
           "
           :show-article-link="showArticleLink"
           :cardcontent="comments"
+          :comment-disabled="commentDisable"
         />
         <MessageCard
           v-else
           :show-article-link="showArticleLink"
           :cardcontent="comments"
+          :comment-disabled="commentDisable"
         />
       </v-col>
       <v-col
@@ -84,6 +86,10 @@ export default {
       default: false
     },
     isTwitterLoaded: {
+      type: Boolean,
+      default: false
+    },
+    commentDisable: {
       type: Boolean,
       default: false
     }
