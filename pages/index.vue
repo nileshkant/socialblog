@@ -5,12 +5,15 @@
       md="3"
       cols="12"
       class="py-0 border-right-grey"
-      :class="$route.path !== '/' || isTrending ? 'd-none d-md-flex' : ''"
+      :class="isViewCategory && !isTrending ? '' : 'd-none d-md-flex'"
     >
       <sidebar @trending="isTrending = true" />
     </v-col>
     <v-col class="pa-0 border-right-grey middle-col" sm="12" md="6" cols="12">
-      <NuxtChild :key="$route.params.id" keep-alive />
+      <NuxtChild v-if="!isViewCategory" :key="$route.params.id" keep-alive />
+      <div v-if="$route.path === '/' && !isViewCategory">
+        <AllArticleList :articles="articles" :user="user" />
+      </div>
     </v-col>
     <v-col
       sm="12"
@@ -61,24 +64,45 @@
 import { mapGetters } from 'vuex'
 import sidebar from '../components/Sidebar'
 import Hightlights from '../components/Highlights'
+import AllArticleList from '../components/AllArticleList'
+
 export default {
   components: {
     sidebar,
-    Hightlights
+    Hightlights,
+    AllArticleList
   },
-  async fetch({ store, params }) {
+  async fetch({ store, params, route }) {
     await store.dispatch('article/getCategories')
+    if (route.path === '/') {
+      await store.dispatch('article/getArticles', {
+        page: 1,
+        pageSize: 30
+      })
+    }
   },
   data() {
     return {
       isTrending: false
     }
   },
+  watch: {
+    $route(to, from) {
+      if (to.path === '/') {
+        this.$store.dispatch('article/getArticles', {
+          page: 1,
+          pageSize: 30
+        })
+      }
+    }
+  },
   computed: {
     ...mapGetters({
       windowHeight: 'commonState/windowHeight',
       isDarkMode: 'commonState/isDarkMode',
+      isViewCategory: 'commonState/isViewCategory',
       titleSection: 'article/titleSection',
+      articles: 'article/articles',
       user: 'user'
     })
   },
@@ -92,6 +116,9 @@ export default {
     },
     drawer(item) {
       this.$store.dispatch('commonState/isDrawerOpen', true)
+    },
+    menuClicked(value) {
+      this.viewCategory = value
     }
   }
 }

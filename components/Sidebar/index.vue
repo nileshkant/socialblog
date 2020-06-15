@@ -9,8 +9,8 @@
             <v-icon>mdi-trending-up</v-icon>
           </v-badge>
         </v-btn> -->
-        <v-btn icon large class="d-flex d-md-none" @click="OpenDrawer">
-          <v-icon>mdi-menu</v-icon>
+        <v-btn icon large class="d-flex d-md-none" @click="closeCategory">
+          <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
       <v-divider />
@@ -94,9 +94,10 @@ export default {
     },
     clickedTopic(item) {
       this.$router.push({ path: `/topic-articles/${item._id}` })
+      this.closeCategory()
     },
-    OpenDrawer() {
-      this.$store.dispatch('commonState/isDrawerOpen', true)
+    closeCategory() {
+      this.$store.dispatch('commonState/isViewCategory', false)
     }
   }
 }

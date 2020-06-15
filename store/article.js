@@ -28,13 +28,17 @@ export const mutations = {
       pageSize,
       isLastPage: articles.length < pageSize
     }
-    const data =
-      articles &&
-      articles[0] &&
-      articles[0].categories.filter((value) => {
-        return value._id === categoryId
-      })
-    state.titleSection = { title: (data && data[0].name) || null }
+    if (categoryId) {
+      const data =
+        articles &&
+        articles[0] &&
+        articles[0].categories.filter((value) => {
+          return value._id === categoryId
+        })
+      state.titleSection = { title: (data && data[0].name) || null }
+    } else {
+      state.titleSection = { title: 'Latest Stories' }
+    }
   },
   getCategories(state, payload) {
     state.categories = payload
@@ -159,7 +163,9 @@ export const mutations = {
 export const actions = {
   async getArticles(context, payload) {
     const ip = await this.$axios.$get(
-      `/article/get-articles?categoryid=${payload.id}&page=${payload.page}&pageSize=${payload.pageSize}`
+      `/article/get-articles?categoryid=${payload.id || ''}&page=${
+        payload.page
+      }&pageSize=${payload.pageSize}`
     )
     context.commit('getArticle', {
       articles: ip.articles,

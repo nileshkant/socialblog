@@ -7,7 +7,8 @@ export const state = () => ({
   autoFocusComment: false,
   replyComment: null,
   toastMessage: null,
-  isDrawerOpen: false
+  isDrawerOpen: false,
+  isViewCategory: false
 })
 
 export const mutations = {
@@ -37,6 +38,9 @@ export const mutations = {
   },
   isDrawerOpen(state, payload) {
     state.isDrawerOpen = payload
+  },
+  isViewCategory(state, payload) {
+    state.isViewCategory = payload
   }
 }
 
@@ -64,6 +68,9 @@ export const actions = {
   },
   isDrawerOpen(context, payload) {
     context.commit('isDrawerOpen', payload)
+  },
+  isViewCategory(context, payload) {
+    context.commit('isViewCategory', payload)
   }
 }
 
@@ -91,5 +98,8 @@ export const getters = {
   },
   isDrawerOpen: (state) => {
     return state.isDrawerOpen
+  },
+  isViewCategory: (state) => {
+    return state.isViewCategory
   }
 }

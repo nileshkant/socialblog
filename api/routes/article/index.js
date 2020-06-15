@@ -284,11 +284,20 @@ router.get('/get-articles', async (req, res) => {
     const categoryPosts = req.query.categoryid
     const limit = Number(req.query.pageSize) || 30
     const page = Number(req.query.page) || 1
-    const allArticles = await Article.find({
-      categories: mongoose.Types.ObjectId(categoryPosts),
-      isPublished: true,
-      isVerified: true
-    })
+    let query = {}
+    if (categoryPosts) {
+      query = {
+        categories: mongoose.Types.ObjectId(categoryPosts),
+        isPublished: true,
+        isVerified: true
+      }
+    } else {
+      query = {
+        isPublished: true,
+        isVerified: true
+      }
+    }
+    const allArticles = await Article.find(query)
       .populate('categories')
       .populate([{ path: 'likes' }])
       .populate({
