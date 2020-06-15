@@ -4,9 +4,29 @@
       <v-btn icon large class="d-flex d-md-none" to="/">
         <v-icon>mdi-home-outline</v-icon>
       </v-btn>
-      <v-toolbar-title class="title pl-0">{{
-        titleSection || 'Please select a topic'
-      }}</v-toolbar-title>
+      <v-avatar
+        v-if="titleSection.user && titleSection.user.facebook"
+        size="40"
+        class="mr-3"
+      >
+        <img
+          :src="
+            `https://graph.facebook.com/${titleSection.user.facebook.id}/picture?type=square`
+          "
+        />
+      </v-avatar>
+      <div>
+        <div class="title py-0">
+          {{
+            (titleSection &&
+              titleSection.user &&
+              (titleSection.user.facebook.displayName ||
+                titleSection.user.username)) ||
+              'Please select a topic'
+          }}
+        </div>
+        <div class="caption text--secondary">{{ titleSection.title }}</div>
+      </div>
     </v-toolbar>
     <v-divider />
     <div
@@ -140,6 +160,7 @@ export default {
   },
   mounted() {
     this.$meta().refresh()
+    console.log('titleSection', this.titleSection)
   },
   methods: {
     handleResize({ height }) {

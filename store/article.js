@@ -17,7 +17,7 @@ export const mutations = {
   loading(state, payload) {
     state.loading = payload
   },
-  getArticle(state, { articles, page, pageSize }) {
+  getArticle(state, { articles, page, pageSize, categoryId }) {
     if (!page || page === 1) {
       state.articles = articles
     } else {
@@ -28,10 +28,13 @@ export const mutations = {
       pageSize,
       isLastPage: articles.length < pageSize
     }
-    state.titleSection =
-      state.articles &&
-      state.articles[0] &&
-      state.articles[0].categories[0].name
+    const data =
+      articles &&
+      articles[0] &&
+      articles[0].categories.filter((value) => {
+        return value._id === categoryId
+      })
+    state.titleSection = { title: (data && data[0].name) || null }
   },
   getCategories(state, payload) {
     state.categories = payload
@@ -48,7 +51,14 @@ export const mutations = {
   },
   getSingleArticle(state, payload) {
     state.singleArticle = payload
-    state.titleSection = state.singleArticle.categories[0].name
+    state.titleSection = {
+      title:
+        state.singleArticle &&
+        state.singleArticle &&
+        state.singleArticle.categories[0].name,
+      user:
+        state.singleArticle && state.singleArticle && state.singleArticle.author
+    }
   },
   postComment(state, payload) {
     state.allComments.push(payload.newComment)
@@ -154,7 +164,8 @@ export const actions = {
     context.commit('getArticle', {
       articles: ip.articles,
       page: ip.page,
-      pageSize: ip.pageSize
+      pageSize: ip.pageSize,
+      categoryId: payload.id
     })
   },
   async getCategories(context) {

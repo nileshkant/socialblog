@@ -5,7 +5,7 @@
         <v-icon>mdi-home-outline</v-icon>
       </v-btn>
       <v-toolbar-title class="title pl-0">{{
-        titleSection || 'Sorry no content found'
+        (titleSection && titleSection.title) || 'Sorry no content found'
       }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon to="/search">

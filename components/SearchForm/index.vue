@@ -63,7 +63,10 @@ export default {
   },
   methods: {
     submitSearch() {
-      if (this.search && this.search.length < 15) {
+      if (
+        this.search &&
+        (this.$route.query.search === this.search || this.search.length < 30)
+      ) {
         this.$emit('searched', { text: this.search, type: this.type })
         this.$store.dispatch('article/search', {
           type: this.type,
