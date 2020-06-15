@@ -160,7 +160,6 @@ export default {
   },
   mounted() {
     this.$meta().refresh()
-    console.log('titleSection', this.titleSection)
   },
   methods: {
     handleResize({ height }) {

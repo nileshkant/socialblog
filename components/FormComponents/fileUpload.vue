@@ -121,16 +121,12 @@ export default {
         },
         { once: true }
       )
-      console.log('this.$refs.uploader', this.$refs.uploadIcon)
-
       this.$refs.uploader.click()
     },
     async onFileChanged(e) {
       this.$refs.uploadIcon.syncValue(e.target.files[0])
       this.valid = await this.$refs.uploadIcon.validate(e.target.files[0])
       this.innerValue = e.target.files[0]
-      console.log('inneeeeeee', this.innerValue)
-      // do something
     },
     async handleFileChange(e) {
       this.$refs.provider.syncValue(e)

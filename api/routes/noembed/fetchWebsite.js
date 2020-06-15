@@ -2,8 +2,6 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 
 export const embedObj = async (url) => {
-  console.log('url', url)
-
   return await axios.get(`https://noembed.com/embed?url=${url}&maxwidth=500`)
 }
 
@@ -12,7 +10,6 @@ export const websiteDetails = async (url) => {
   if (url.includes('twitter.com')) {
     const noEmbed = await embedObj(url)
     if (noEmbed && noEmbed.data) {
-      console.log('noEmbed', noEmbed.data)
       post = { ...post, embedJson: noEmbed.data }
     }
   } else {
