@@ -4,18 +4,18 @@
       <v-form>
         <VTextFieldWithValidation
           v-model="formData.title"
-          rules="required|min:5"
+          rules="required|min:5|max:100"
           label="Title*"
         />
         <VTextFieldWithValidation
           v-model="formData.quote"
-          rules="required|min:5"
+          rules="required|min:5|max:300"
           label="Quote*"
         />
         <VTextFieldWithValidation
           v-model="formData.source"
-          rules="min:3"
-          label="Source"
+          rules="required|min:3|max:200"
+          label="Source*"
         />
         <ColorPicker v-model="formData.color" />
         <v-card-actions>
@@ -37,14 +37,22 @@
 <script>
 import { ValidationObserver, extend } from 'vee-validate'
 import { mapGetters } from 'vuex'
-import { required, min, size, regex } from 'vee-validate/dist/rules'
+import { required, min, max } from 'vee-validate/dist/rules'
 import VTextFieldWithValidation from '../FormComponents/Textfield'
 import ColorPicker from '../FormComponents/colorpicker'
 // import cloneDeep from 'lodash/cloneDeep'
-extend('required', required)
-extend('min', min)
-extend('size', size)
-extend('regex', regex)
+extend('required', {
+  ...required,
+  message: '{_field_} is required'
+})
+extend('min', {
+  ...min,
+  message: '{_field_} must be minimum {length} characters'
+})
+extend('max', {
+  ...max,
+  message: 'Must be less than {length} characters'
+})
 
 export default {
   components: {

@@ -4,7 +4,7 @@
       <v-form>
         <VTextFieldWithValidation
           v-model="formData.title"
-          rules="required|min:5"
+          rules="required|min:5|max:200"
           label="Title*"
         />
 
