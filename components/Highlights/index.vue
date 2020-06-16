@@ -2,7 +2,7 @@
   <div>
     <Weather v-if="weatherReport" :weather="weatherNow" />
     <Covid19 />
-    <div class="caption my-2 text-center">
+    <div class="caption mt-2 text-center mb-12 mb-md-2">
       <span class="mr-3">
         <NLink class="link text--secondary" to="/terms-of-services">
           Terms

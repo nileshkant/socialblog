@@ -40,7 +40,10 @@
           >{{ post.quoteCard.title }}</span
         >
       </v-card-title>
-      <v-card-text class="pt-0 pb-2 caption">
+      <v-card-text
+        class="pt-0 pb-2 caption"
+        :class="!checkColor && 'black--text'"
+      >
         {{
           $dateFns.formatDistanceToNow(new Date(post.createdDate), {
             addSuffix: true

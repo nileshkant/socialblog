@@ -15,6 +15,7 @@
               flat
               append-icon="mdi-magnify"
               :loading="loading"
+              @click:append="submitSearch"
             />
           </v-col>
           <v-col cols="auto">
@@ -55,11 +56,15 @@ export default {
       articleDetails: 'article/articleDetails'
     })
   },
-  mounted() {
-    if (this.$route.query && this.$route.query.search) {
-      this.search = this.$route.query.search
-      this.type = this.$route.query.type || 'article'
+  watch: {
+    $route(to, from) {
+      if (to) {
+        this.searchTerm()
+      }
     }
+  },
+  mounted() {
+    this.searchTerm()
   },
   methods: {
     submitSearch() {
@@ -74,6 +79,12 @@ export default {
           pageSize: 30,
           page: 1
         })
+      }
+    },
+    searchTerm() {
+      if (this.$route.query && this.$route.query.search) {
+        this.search = this.$route.query.search
+        this.type = this.$route.query.type || 'article'
       }
     },
     onChangeType() {

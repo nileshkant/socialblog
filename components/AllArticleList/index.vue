@@ -1,21 +1,18 @@
 <template>
   <div>
     <v-toolbar v-if="!removeToolbar" flat>
-      <v-btn icon large class="d-flex d-md-none" @click="openCategory">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
       <v-toolbar-title class="title pl-0">{{
         (titleSection && titleSection.title) || 'Sorry no content found'
       }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon to="/search">
+      <v-btn icon class="d-none d-md-flex" to="/search">
         <v-icon>
           mdi-magnify
         </v-icon>
       </v-btn>
       <v-btn icon class="d-flex d-md-none" @click="openMenu">
         <v-icon>
-          mdi-dots-vertical
+          mdi-menu
         </v-icon>
       </v-btn>
     </v-toolbar>
@@ -33,6 +30,7 @@
         v-for="(article, index) in articles"
         :key="article._id"
         class="mx-0"
+        :class="index === articles.length - 1 && 'mb-12 mb-md-2'"
       >
         <v-col
           v-if="article.articleType === 'quoteCard' && article.quoteCard"
@@ -124,9 +122,6 @@ export default {
         totalHeight: e.target.scrollHeight
       })
     }, 500),
-    openCategory() {
-      this.$store.dispatch('commonState/isViewCategory', true)
-    },
     openMenu() {
       this.$store.dispatch('commonState/isDrawerOpen', true)
     }

@@ -1,9 +1,6 @@
 <template>
   <div>
     <v-toolbar flat>
-      <v-btn icon large class="d-flex d-md-none" to="/">
-        <v-icon>mdi-home-outline</v-icon>
-      </v-btn>
       <v-row>
         <v-col>
           <div class="mt-7">

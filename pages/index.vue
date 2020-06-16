@@ -5,13 +5,17 @@
       md="3"
       cols="12"
       class="py-0 border-right-grey"
-      :class="isViewCategory && !isTrending ? '' : 'd-none d-md-flex'"
+      :class="showCategories ? '' : 'd-none d-md-flex'"
     >
-      <sidebar @trending="isTrending = true" />
+      <sidebar @closeCategory="showCategories = false" />
     </v-col>
     <v-col class="pa-0 border-right-grey middle-col" sm="12" md="6" cols="12">
-      <NuxtChild v-if="!isViewCategory" :key="$route.params.id" keep-alive />
-      <div v-if="$route.path === '/' && !isViewCategory">
+      <NuxtChild
+        v-if="!showCategories && !isTrending"
+        :key="$route.params.id"
+        keep-alive
+      />
+      <div v-if="$route.path === '/' && !showCategories && !isTrending">
         <AllArticleList :articles="articles" :user="user" />
       </div>
     </v-col>
@@ -25,14 +29,6 @@
       <v-row>
         <v-col cols="12" class="px-0 py-0">
           <v-toolbar flat>
-            <v-btn
-              icon
-              large
-              class="d-flex d-md-none"
-              @click="isTrending = false"
-            >
-              <v-icon>mdi-arrow-left</v-icon>
-            </v-btn>
             <v-toolbar-title class="title pl-0"
               >Highlights Today</v-toolbar-title
             >
@@ -57,6 +53,24 @@
         </v-col>
       </v-row>
     </v-col>
+    <v-bottom-navigation
+      v-if="!this.$route.path.startsWith('/article/')"
+      v-model="bottomNav"
+      shift
+      grow
+      absolute
+      color="accent"
+      class="d-flex d-md-none"
+    >
+      <v-btn
+        v-for="(menu, index) in bottomMenu"
+        :key="index"
+        @click="menu.action()"
+      >
+        <span>{{ menu.title }}</span>
+        <v-icon>{{ menu.icon }}</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
   </v-row>
 </template>
 
@@ -83,8 +97,70 @@ export default {
   },
   data() {
     return {
-      isTrending: false
+      isTrending: false,
+      bottomNav: this.$route.path.startsWith('/search') ? 2 : 1,
+      showCategories: false,
+      prevRoute: null,
+      bottomMenu: [
+        {
+          title: 'Topics',
+          icon: 'mdi-format-list-text',
+          isActive: () => this.showCategories,
+          action: () => {
+            this.showCategories = true
+            this.isTrending = false
+          }
+        },
+        {
+          title: 'Stories',
+          icon: 'mdi-post-outline',
+          isActive: () =>
+            !this.showCategories &&
+            !this.isTrending &&
+            !this.$route.path.startsWith('/search'),
+          action: () => {
+            this.showCategories = false
+            this.isTrending = false
+            this.$router.push(this.prevRoute || '/')
+            this.prevRoute = null
+          }
+        },
+        {
+          title: 'Search',
+          icon: 'mdi-magnify',
+          isActive: () =>
+            !this.showCategories &&
+            !this.isTrending &&
+            this.$route.path.startsWith('/search'),
+          action: () => {
+            this.showCategories = false
+            this.isTrending = false
+            if (!this.$route.path.startsWith('/search')) {
+              this.prevRoute = this.$route.path
+              this.$router.push('/search')
+            }
+          }
+        },
+        {
+          title: 'Highlights',
+          icon: 'mdi-trending-up',
+          isActive: () => this.isTrending,
+          action: () => {
+            this.isTrending = true
+            this.showCategories = false
+          }
+        }
+      ]
     }
+  },
+  computed: {
+    ...mapGetters({
+      windowHeight: 'commonState/windowHeight',
+      isDarkMode: 'commonState/isDarkMode',
+      titleSection: 'article/titleSection',
+      articles: 'article/articles',
+      user: 'user'
+    })
   },
   watch: {
     $route(to, from) {
@@ -94,17 +170,10 @@ export default {
           pageSize: 30
         })
       }
+      if (this.$route.path.startsWith('/search')) {
+        this.bottomNav = 2
+      }
     }
-  },
-  computed: {
-    ...mapGetters({
-      windowHeight: 'commonState/windowHeight',
-      isDarkMode: 'commonState/isDarkMode',
-      isViewCategory: 'commonState/isViewCategory',
-      titleSection: 'article/titleSection',
-      articles: 'article/articles',
-      user: 'user'
-    })
   },
   mounted() {
     this.$meta().refresh()
@@ -114,7 +183,7 @@ export default {
     closeModel() {
       this.overlay = false
     },
-    drawer(item) {
+    drawer() {
       this.$store.dispatch('commonState/isDrawerOpen', true)
     },
     menuClicked(value) {

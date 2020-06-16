@@ -3,15 +3,6 @@
     <v-col class="pa-0">
       <v-toolbar flat>
         <v-toolbar-title class="title">The Open Stories</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <!-- <v-btn icon large class="d-flex d-md-none" @click="trending">
-          <v-badge color="green" dot offset-x="5" offset-y="5">
-            <v-icon>mdi-trending-up</v-icon>
-          </v-badge>
-        </v-btn> -->
-        <v-btn icon large class="d-flex d-md-none" @click="closeCategory">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
       </v-toolbar>
       <v-divider />
       <div
@@ -50,20 +41,6 @@
             </v-list-item>
           </template>
         </v-list>
-        <v-fab-transition>
-          <v-btn
-            color="primary"
-            rounded
-            dark
-            bottom
-            left
-            class="pos-a fab-button d-flex d-md-none"
-            @click="trending"
-          >
-            <span>Highlights</span>
-            <v-icon>mdi-arrow-right</v-icon>
-          </v-btn>
-        </v-fab-transition>
       </div>
     </v-col>
   </v-row>
@@ -89,15 +66,9 @@ export default {
     })
   },
   methods: {
-    trending() {
-      this.$emit('trending')
-    },
     clickedTopic(item) {
       this.$router.push({ path: `/topic-articles/${item._id}` })
-      this.closeCategory()
-    },
-    closeCategory() {
-      this.$store.dispatch('commonState/isViewCategory', false)
+      this.$emit('closeCategory')
     }
   }
 }
