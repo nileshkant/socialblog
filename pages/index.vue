@@ -58,9 +58,8 @@
       v-model="bottomNav"
       shift
       grow
-      absolute
       color="accent"
-      class="d-flex d-md-none"
+      class="d-flex d-md-none pos-f"
     >
       <v-btn
         v-for="(menu, index) in bottomMenu"
@@ -208,5 +207,8 @@ export default {
 }
 .middle-col {
   position: relative;
+}
+.pos-f {
+  position: fixed;
 }
 </style>
