@@ -1,13 +1,23 @@
 <template>
-  <AllArticleList :articles="articles" :user="user" @scrolled="scrolled" />
+  <div>
+    <AllArticleList
+      v-if="!contentLoading"
+      :articles="articles"
+      :user="user"
+      @scrolled="scrolled"
+    />
+    <LoadingSkeleton v-else />
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import AllArticleList from '../../../components/AllArticleList'
+import LoadingSkeleton from '../../../components/LoadingSkeleton'
 export default {
   components: {
-    AllArticleList
+    AllArticleList,
+    LoadingSkeleton
   },
   async fetch({ store, params, route }) {
     await store.dispatch('article/getArticles', {
@@ -20,7 +30,8 @@ export default {
     ...mapGetters({
       articles: 'article/articles',
       user: 'user',
-      articleDetails: 'article/articleDetails'
+      articleDetails: 'article/articleDetails',
+      contentLoading: 'article/contentLoading'
     })
   },
   methods: {

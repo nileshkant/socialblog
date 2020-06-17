@@ -112,6 +112,7 @@ import AllCommentList from '~/components/AllCommentList'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
 import CommentForm from '~/components/CommentForm'
 import ReplyCard from '~/components/ChatCard/ReplyCard'
+// import LoadingSkeleton from '~/components/LoadingSkeleton'
 
 export default {
   components: {
@@ -120,6 +121,7 @@ export default {
     CommentForm,
     AllCommentList,
     ReplyCard
+    // LoadingSkeleton
   },
   async fetch({ store, params, route, redirect }) {
     try {
@@ -148,7 +150,8 @@ export default {
       allComments: 'article/allComments',
       user: 'user',
       titleSection: 'article/titleSection',
-      replyComment: 'commonState/replyComment'
+      replyComment: 'commonState/replyComment',
+      contentLoading: 'article/contentLoading'
     })
   },
   watch: {

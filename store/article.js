@@ -10,12 +10,16 @@ export const state = () => ({
   latestComment: null,
   titleSection: null,
   allComments: null,
-  bookmarks: []
+  bookmarks: [],
+  contentLoading: false
 })
 
 export const mutations = {
   loading(state, payload) {
     state.loading = payload
+  },
+  contentLoading(state, payload) {
+    state.contentLoading = payload
   },
   getArticle(state, { articles, page, pageSize, categoryId }) {
     if (!page || page === 1) {
@@ -162,6 +166,7 @@ export const mutations = {
 
 export const actions = {
   async getArticles(context, payload) {
+    context.commit('contentLoading', true)
     const ip = await this.$axios.$get(
       `/article/get-articles?categoryid=${payload.id || ''}&page=${
         payload.page
@@ -173,6 +178,7 @@ export const actions = {
       pageSize: ip.pageSize,
       categoryId: payload.id
     })
+    context.commit('contentLoading', false)
   },
   async getCategories(context) {
     const categories = await this.$axios.$get('/article/categories')
@@ -194,10 +200,12 @@ export const actions = {
     context.commit('loading', false)
   },
   async getSingleArticle(context, payload) {
+    context.commit('contentLoading', true)
     const singleArticle = await this.$axios.$get(
       `/article/single-article?articleid=${payload}`
     )
     context.commit('getSingleArticle', singleArticle)
+    context.commit('contentLoading', false)
   },
   async postComment({ commit, rootState }, payload) {
     commit('loading', true)
@@ -295,5 +303,8 @@ export const getters = {
   },
   articleDetails(state) {
     return state.articleDetails
+  },
+  contentLoading(state) {
+    return state.contentLoading
   }
 }
