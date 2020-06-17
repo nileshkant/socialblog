@@ -120,8 +120,10 @@ export default {
           action: () => {
             this.showCategories = false
             this.isTrending = false
-            this.$router.push(this.prevRoute || '/')
-            this.prevRoute = null
+            if (this.$route.path.startsWith('/search')) {
+              this.$router.push(this.prevRoute || '/')
+              this.prevRoute = null
+            }
           }
         },
         {
