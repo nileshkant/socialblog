@@ -1,18 +1,22 @@
 <template>
   <v-app>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
-    </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
+    <v-container>
+      <v-row justify="center" align="center">
+        <v-col cols="12">
+          <v-img max-height="80vh" :src="NotFoundImg" contain></v-img>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn color="accent" to="/">
+            Home page
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-app>
 </template>
 
 <script>
+import NotFoundImg from '../static/images/not-found.svg'
 export default {
   layout: 'empty',
   props: {
@@ -24,7 +28,8 @@ export default {
   data() {
     return {
       pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
+      otherError: 'An error occurred',
+      NotFoundImg
     }
   },
   head() {

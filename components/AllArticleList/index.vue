@@ -26,6 +26,15 @@
       class="overflowY-auto scrollBar"
       @scroll="ondivScroll"
     >
+      <NoRecords
+        v-if="
+          apiCalled &&
+            articles &&
+            articles.length === 0 &&
+            allComments &&
+            allComments.length === 0
+        "
+      />
       <v-row
         v-for="(article, index) in articles"
         :key="article._id"
@@ -67,11 +76,13 @@ import debounce from 'lodash/debounce'
 import ChatCard from '~/components/ChatCard'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
 import AllCommentList from '~/components/AllCommentList'
+import NoRecords from '~/components/NoRecords'
 export default {
   components: {
     'chat-card': ChatCard,
     QuoteCard,
-    AllCommentList
+    AllCommentList,
+    NoRecords
   },
   props: {
     articles: {
@@ -93,6 +104,10 @@ export default {
     showArticleLink: {
       type: Boolean,
       default: false
+    },
+    apiCalled: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

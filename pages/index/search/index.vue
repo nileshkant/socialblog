@@ -16,6 +16,7 @@
       :all-comments="allComments"
       remove-toolbar
       show-article-link
+      :api-called="apiCalled"
       @scrolled="scrolled"
     />
   </div>
@@ -45,7 +46,8 @@ export default {
   data() {
     return {
       text: '',
-      type: ''
+      type: '',
+      apiCalled: false
     }
   },
   computed: {
@@ -60,6 +62,7 @@ export default {
     searched({ text, type }) {
       this.text = text
       this.type = type
+      this.apiCalled = true
     },
     scrolled({ scrolledTop, totalHeight }) {
       if (

@@ -19,6 +19,12 @@
     <v-container class="mt-10">
       <v-row>
         <v-col md="8" cols="12" order-md="1" order="2">
+          <NoRecords
+            v-if="
+              userPosts && userPosts.articles && userPosts.articles.length === 0
+            "
+            message="You haven't posted any story yet."
+          />
           <client-only>
             <div
               v-masonry
@@ -106,11 +112,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import ProfilePost from '../components/ProfilePost'
+import NoRecords from '~/components/NoRecords'
 
 export default {
   middleware: 'authenticated',
   components: {
-    ProfilePost
+    ProfilePost,
+    NoRecords
   },
   filters: {
     filterPosts: (value, type) => {
