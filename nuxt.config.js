@@ -98,8 +98,8 @@ module.exports = {
       options: { customProperties: true },
       themes: {
         dark: {
-          primary: '#854E9B',
-          accent: '#E17C64',
+          primary: '#587FFC',
+          accent: '#FF8692',
           secondary: '#FAF9F9',
           info: '#23182d',
           warning: '#bda034',
@@ -110,9 +110,9 @@ module.exports = {
           colorReverseTheme: '#000000'
         },
         light: {
-          primary: '#854E9B',
+          primary: '#587FFC',
           secondary: '#23182D',
-          accent: '#E17C64',
+          accent: '#FF8692',
           info: '#23182d',
           success: '#40b06c',
           warning: '#bda034',

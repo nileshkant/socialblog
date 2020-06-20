@@ -7,10 +7,12 @@ import morgan from 'morgan'
 import * as Sentry from '@sentry/node'
 import bodyParser from 'body-parser'
 import routes from './core/rest'
+import './cronJob'
 import { RATE_LIMIT, SENTRY_DNS } from './env'
 import passport from './core/passport'
 import './core/mongoose'
 import './core/redis'
+
 const app = express()
 if (process.env.NODE_ENV === 'production') Sentry.init({ dsn: SENTRY_DNS })
 

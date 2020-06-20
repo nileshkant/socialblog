@@ -26,6 +26,10 @@ const articleSchema = new Schema({
     default: true
   },
   hashtags: [{ type: String }],
+  views: {
+    type: Number,
+    default: 0
+  },
   // All Card types according to post
   // Full details Card
   fullDetailsCard: {

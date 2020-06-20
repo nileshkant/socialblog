@@ -8,6 +8,11 @@ import { websiteDetails } from '../noembed/fetchWebsite'
 import { Article } from './articleModal'
 import { LikeArticle } from './articleModal/otherModal'
 import { Category, PostComment } from './modal'
+const util = require('util')
+const redis = require('redis')
+
+const client = redis.createClient()
+client.get = util.promisify(client.get)
 const router = Router()
 
 router.post('/', authorized, async (req, res) => {
@@ -270,6 +275,15 @@ router.get('/like', authorized, async (req, res) => {
   }
 })
 
+const getArticleArr = async (doc) => {
+  const value = await client.get(`storyViews_${doc._id}`)
+  const articleDetails = {
+    ...doc,
+    newViews: value ? Number(value) : 0
+  }
+  return articleDetails
+}
+
 /**
  * Get Articles
  * @date 2020-05-04
@@ -319,9 +333,16 @@ router.get('/get-articles', async (req, res) => {
       .exec()
     const resArticle = []
     allArticles.forEach((doc) => {
-      resArticle.push(doc)
+      resArticle.push(doc.toObject())
     })
-    res.status(200).json({ articles: resArticle, pageSize: limit, page })
+    const data = await Promise.all(
+      resArticle.map((key) => {
+        return getArticleArr(key).then((value) => {
+          return value
+        })
+      })
+    )
+    res.status(200).json({ articles: data, pageSize: limit, page })
   } catch (err) {
     res.status(400).json({ msg: err })
   }
@@ -382,8 +403,16 @@ router.get('/single-article', async (req, res) => {
           select: { password: 0, permissions: 0 }
         }
       })
-      .cache({ expire: 60, key: req.query.articleid })
-    res.status(200).json(article)
+    if (process.env.NODE_ENV === 'production') {
+      client.incr(`storyViews_${articleid}`)
+    }
+    const articleObj = article.toObject()
+    const value = await client.get(`storyViews_${articleid}`)
+    const articleDetails = {
+      ...articleObj,
+      newViews: value ? Number(value) : 0
+    }
+    res.status(200).json(articleDetails)
   } catch (err) {
     res.status(400).json({ msg: err })
   }

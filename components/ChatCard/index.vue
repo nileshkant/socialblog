@@ -120,6 +120,18 @@
         <v-icon v-else>mdi-bookmark-plus-outline</v-icon>
       </v-btn>
 
+      <div
+        v-if="cardcontent._id && (cardcontent.views || cardcontent.newViews)"
+        class="ml-2"
+      >
+        <span>
+          {{ cardcontent.views + cardcontent.newViews }}
+        </span>
+        <span class="caption">
+          Views
+        </span>
+      </div>
+
       <v-menu v-if="cardcontent._id" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn v-if="cardcontent._id" class="mx-2" icon v-on="on">

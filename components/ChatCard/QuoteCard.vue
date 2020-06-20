@@ -66,6 +66,13 @@
     >
       " {{ cardcontent.quoteCard.quote }} "
     </v-card-text>
+    <v-card-text
+      v-if="cardcontent.quoteCard && cardcontent.quoteCard.source"
+      class="caption py-0 pl-4 text-truncate"
+      :class="!checkColor && 'black--text'"
+    >
+      - {{ cardcontent.quoteCard.source }}
+    </v-card-text>
     <div class="ml-4">
       <span
         v-for="(tag, index) in cardcontent.hashtags"
@@ -104,6 +111,19 @@
         >
       </v-btn>
 
+      <div
+        v-if="cardcontent._id && (cardcontent.views || cardcontent.newViews)"
+        class="ml-2"
+        :class="!checkColor && 'black--text'"
+      >
+        <span>
+          {{ cardcontent.views + cardcontent.newViews }}
+        </span>
+        <span class="caption">
+          Views
+        </span>
+      </div>
+
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn
@@ -138,13 +158,7 @@
           </div>
         </v-list>
       </v-menu>
-      <v-card-text
-        v-if="cardcontent.quoteCard && cardcontent.quoteCard.source"
-        class="caption py-0 text-truncate text-right"
-        :class="!checkColor && 'black--text'"
-      >
-        {{ cardcontent.quoteCard.source }}
-      </v-card-text>
+      <v-spacer></v-spacer>
     </v-card-actions>
   </v-card>
 </template>

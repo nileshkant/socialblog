@@ -1,6 +1,6 @@
 {
   "name": "theopenstories",
-  "version": "1.12.2",
+  "version": "1.13.0",
   "description": "Explore your thoughtful mind",
   "author": "Nilesh Kant",
   "private": true,
@@ -48,6 +48,7 @@
     "mongoose": "^5.9.7",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
+    "node-cron": "^2.0.3",
     "nuxt": "^2.0.0",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
