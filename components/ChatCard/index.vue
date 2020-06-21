@@ -125,7 +125,7 @@
         class="ml-2"
       >
         <span>
-          {{ cardcontent.views + cardcontent.newViews }}
+          {{ cardcontent.views + (cardcontent.newViews || 0) }}
         </span>
         <span class="caption">
           Views

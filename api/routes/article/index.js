@@ -15,6 +15,15 @@ const client = redis.createClient()
 client.get = util.promisify(client.get)
 const router = Router()
 
+const getArticleArr = async (doc) => {
+  const value = await client.get(`storyViews_${doc._id}`)
+  const articleDetails = {
+    ...doc,
+    newViews: value ? Number(value) : 0
+  }
+  return articleDetails
+}
+
 router.post('/', authorized, async (req, res) => {
   try {
     const { file, articleType, ...restfield } = req.body
@@ -275,15 +284,6 @@ router.get('/like', authorized, async (req, res) => {
   }
 })
 
-const getArticleArr = async (doc) => {
-  const value = await client.get(`storyViews_${doc._id}`)
-  const articleDetails = {
-    ...doc,
-    newViews: value ? Number(value) : 0
-  }
-  return articleDetails
-}
-
 /**
  * Get Articles
  * @date 2020-05-04
@@ -403,7 +403,7 @@ router.get('/single-article', async (req, res) => {
           select: { password: 0, permissions: 0 }
         }
       })
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       client.incr(`storyViews_${articleid}`)
     }
     const articleObj = article.toObject()
@@ -476,7 +476,7 @@ router.get('/search', async (req, res) => {
         .exec()
       const resArticle = []
       searchResult.forEach((doc) => {
-        resArticle.push(doc)
+        resArticle.push(doc.toObject())
       })
     }
     if (article) {
@@ -502,10 +502,17 @@ router.get('/search', async (req, res) => {
         .exec()
       const resArticle = []
       searchResult.forEach((doc) => {
-        resArticle.push(doc)
+        resArticle.push(doc.toObject())
       })
+      const data = await Promise.all(
+        resArticle.map((key) => {
+          return getArticleArr(key).then((value) => {
+            return value
+          })
+        })
+      )
+      res.status(200).json({ result: data, pageSize: limit, page })
     }
-    res.status(200).json({ result: searchResult, pageSize: limit, page })
   } catch (err) {
     res.status(400).json({ msg: err })
   }

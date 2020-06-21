@@ -1,47 +1,44 @@
 <template>
   <client-only>
-    <ValidationObserver ref="obs">
-      <v-form @submit.prevent="submitSearch">
-        <v-row no-gutters>
-          <v-col>
-            <VTextFieldWithValidation
-              v-model="search"
-              :label="`Search ${type}s`"
-              rounded
-              outlined
-              dense
-              solo
-              clearable
-              flat
-              append-icon="mdi-magnify"
-              :loading="loading"
-              @click:append="submitSearch"
-            />
-          </v-col>
-          <v-col cols="auto">
-            <v-btn text class="px-0 pl-1" @click="onChangeType">
-              <v-icon v-if="type === 'article'">mdi-post-outline</v-icon>
-              <v-icon v-if="type === 'comment'"
-                >mdi-comment-multiple-outline</v-icon
-              >
-              <v-icon color="primary">mdi-swap-vertical</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-form>
-    </ValidationObserver>
+    <v-form @submit.prevent="submitSearch">
+      <v-row no-gutters>
+        <v-col>
+          <v-text-field
+            v-model="search"
+            :label="`Search ${type}s`"
+            rounded
+            outlined
+            dense
+            clearable
+            flat
+            append-icon="mdi-magnify"
+            :loading="loading"
+            @click:append="submitSearch"
+          />
+        </v-col>
+        <v-col cols="auto">
+          <v-btn text class="px-0 pl-1" @click="onChangeType">
+            <v-icon v-if="type === 'article'">mdi-post-outline</v-icon>
+            <v-icon v-if="type === 'comment'"
+              >mdi-comment-multiple-outline</v-icon
+            >
+            <v-icon color="primary">mdi-swap-vertical</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-form>
   </client-only>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { ValidationObserver } from 'vee-validate'
-import VTextFieldWithValidation from '../FormComponents/Textfield'
+// import { ValidationObserver } from 'vee-validate'
+// import VTextFieldWithValidation from '../FormComponents/Textfield'
 
 export default {
   components: {
-    ValidationObserver,
-    VTextFieldWithValidation
+    // ValidationObserver,
+    // VTextFieldWithValidation
   },
   data: () => {
     return {

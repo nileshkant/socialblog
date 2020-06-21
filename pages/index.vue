@@ -7,7 +7,12 @@
       class="py-0 border-right-grey"
       :class="showCategories ? '' : 'd-none d-md-flex'"
     >
-      <sidebar @closeCategory="showCategories = false" />
+      <sidebar
+        @closeCategory="
+          showCategories = false
+          bottomNav = 1
+        "
+      />
     </v-col>
     <v-col class="pa-0 border-right-grey middle-col" sm="12" md="6" cols="12">
       <NuxtChild
