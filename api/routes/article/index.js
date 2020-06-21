@@ -403,7 +403,7 @@ router.get('/single-article', async (req, res) => {
           select: { password: 0, permissions: 0 }
         }
       })
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'production') {
       client.incr(`storyViews_${articleid}`)
     }
     const articleObj = article.toObject()
