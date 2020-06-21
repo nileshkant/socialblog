@@ -7,7 +7,13 @@
             <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
-          <v-toolbar-title class="title pl-0">My Profile</v-toolbar-title>
+          <v-toolbar-title class="title pl-0">{{
+            ($route.params.id !== 'me' &&
+              anyUserDetails &&
+              (anyUserDetails.username ||
+                anyUserDetails.facebook.displayName)) ||
+              'My Profile'
+          }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon large @click="drawer">
             <v-icon>mdi-menu</v-icon>
@@ -55,7 +61,11 @@
                 >
                   <img
                     :src="
-                      `https://graph.facebook.com/${user.userDetails.facebook.id}/picture?type=large`
+                      `https://graph.facebook.com/${($route.params.id !==
+                        'me' &&
+                        anyUserDetails &&
+                        anyUserDetails.facebook.id) ||
+                        user.userDetails.facebook.id}/picture?type=large`
                     "
                     alt="John"
                   />
@@ -64,7 +74,12 @@
             </v-row>
             <v-row>
               <v-col class="text-center title" cols="12">
-                {{ user.userDetails.facebook.displayName }}
+                {{
+                  ($route.params.id !== 'me' &&
+                    anyUserDetails &&
+                    anyUserDetails.facebook.displayName) ||
+                    user.userDetails.facebook.displayName
+                }}
               </v-col>
               <v-col cols="12">
                 <v-row justify="space-around">
@@ -111,7 +126,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ProfilePost from '../components/ProfilePost'
+import ProfilePost from '~/components/ProfilePost'
 import NoRecords from '~/components/NoRecords'
 
 export default {
@@ -133,15 +148,26 @@ export default {
     }
   },
   async fetch({ store, params }) {
-    await store.dispatch('userProfile/userPosts')
+    await store.dispatch(
+      'userProfile/userPosts',
+      params.id === 'me' ? '' : params.id
+    )
+    if (params.id !== 'me') {
+      await store.dispatch('userProfile/anyUserDetails', params.id)
+    }
   },
   fetchOnServer: false,
   computed: {
     ...mapGetters({
       userPosts: 'userProfile/userPosts',
       isDarkMode: 'commonState/isDarkMode',
-      user: 'user'
+      user: 'user',
+      anyUserDetails: 'userProfile/anyUserDetails'
     })
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('userProfile/anyUserDetails', null)
+    next()
   },
   methods: {
     drawer(item) {

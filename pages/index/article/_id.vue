@@ -16,7 +16,14 @@
         />
       </v-avatar>
       <div>
-        <div class="title py-0">
+        <NLink
+          class="title py-0"
+          :to="
+            `/profile/${titleSection &&
+              titleSection.user &&
+              titleSection.user._id}`
+          "
+        >
           {{
             (titleSection &&
               titleSection.user &&
@@ -24,7 +31,7 @@
                 titleSection.user.username)) ||
               'Please select a topic'
           }}
-        </div>
+        </NLink>
         <div class="caption text--secondary">{{ titleSection.title }}</div>
       </div>
     </v-toolbar>

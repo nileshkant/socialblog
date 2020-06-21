@@ -91,7 +91,7 @@ export default {
             this.closeDrawer()
           },
           visible: () => this.user || false,
-          to: '/profile'
+          to: '/profile/me'
         },
         {
           title: 'Add New Story',

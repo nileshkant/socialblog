@@ -9,12 +9,15 @@ const router = Router()
 
 router.get('/get-posts', authorized, async (req, res) => {
   try {
-    const user = req.user._id
+    const user = req.query.userId || req.user._id
     const limit = Number(req.query.pageSize) || 50
     const page = Number(req.query.page) || 1
-    const allArticles = await Article.find({
-      author: mongoose.Types.ObjectId(user)
-    })
+    const query = { author: mongoose.Types.ObjectId(user) }
+    if (req.query.userId) {
+      query.isPublished = true
+      query.isVerified = true
+    }
+    const allArticles = await Article.find(query)
       .populate('categories')
       .sort({ createdDate: -1 })
       .limit(limit)
@@ -27,6 +30,21 @@ router.get('/get-posts', authorized, async (req, res) => {
     res.status(200).json({ articles: resArticle, pageSize: limit, page })
   } catch (err) {
     res.status(404).json({ msg: err })
+  }
+})
+
+router.get('/user', authorized, async (req, res) => {
+  try {
+    const query = req.query.userId || req.user._id
+    const user = await MultiAccountUser.findById(query).select([
+      '-password',
+      '-permissions'
+    ])
+    if (user) {
+      res.status(200).json(user)
+    }
+  } catch (err) {
+    res.status(404).json({ msg: 'User not found!' })
   }
 })
 
