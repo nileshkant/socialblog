@@ -16,13 +16,10 @@
         />
       </v-avatar>
       <div>
-        <NLink
-          class="title py-0"
-          :to="
-            `/profile/${titleSection &&
-              titleSection.user &&
-              titleSection.user._id}`
-          "
+        <div
+          class="py-0 title"
+          :class="user && 'primary--text pointer'"
+          @click="profileVisit"
         >
           {{
             (titleSection &&
@@ -31,7 +28,7 @@
                 titleSection.user.username)) ||
               'Please select a topic'
           }}
-        </NLink>
+        </div>
         <div class="caption text--secondary">{{ titleSection.title }}</div>
       </div>
     </v-toolbar>
@@ -213,6 +210,15 @@ export default {
     },
     removeReply() {
       this.$store.dispatch('commonState/replyComment', null)
+    },
+    profileVisit() {
+      if (this.user && this.user.userDetails) {
+        this.$router.push(
+          `/profile/${this.titleSection &&
+            this.titleSection.user &&
+            this.titleSection.user._id}`
+        )
+      }
     }
   },
   head() {
@@ -281,6 +287,9 @@ export default {
 }
 .pos-a {
   position: absolute;
+}
+.pointer {
+  cursor: pointer;
 }
 .right-menu {
   right: 0;
