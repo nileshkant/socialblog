@@ -1,7 +1,17 @@
 <template>
   <div>
     <v-toolbar v-if="!removeToolbar" flat>
-      <v-toolbar-title class="title pl-0">{{
+      <span
+        ><v-img
+          :src="icon"
+          max-height="22"
+          max-width="45"
+          contain
+          class="pointer d-flex d-md-none"
+          @click="$router.push({ path: `/` })"
+        ></v-img
+      ></span>
+      <v-toolbar-title class="title ml-md-0 pl-0 ml-3">{{
         (titleSection && titleSection.title) || 'Sorry no content found'
       }}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -77,6 +87,8 @@ import ChatCard from '~/components/ChatCard'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
 import AllCommentList from '~/components/AllCommentList'
 import NoRecords from '~/components/NoRecords'
+import icon from '~/static/images/TOSIcon.png'
+
 export default {
   components: {
     'chat-card': ChatCard,
@@ -112,7 +124,8 @@ export default {
   },
   data() {
     return {
-      autoRight: true
+      autoRight: true,
+      icon
     }
   },
   computed: {

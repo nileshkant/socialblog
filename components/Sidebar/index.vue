@@ -2,7 +2,19 @@
   <v-row>
     <v-col class="pa-0">
       <v-toolbar flat>
-        <v-toolbar-title class="title">The Open Stories</v-toolbar-title>
+        <span
+          ><v-img
+            :src="icon"
+            max-height="25"
+            max-width="50"
+            contain
+            class="pointer d-none d-md-flex"
+            @click="clickedTopic('home')"
+          ></v-img
+        ></span>
+        <v-toolbar-title class="title ml-md-3">
+          The Open Stories
+        </v-toolbar-title>
       </v-toolbar>
       <v-divider />
       <div
@@ -48,6 +60,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import icon from '~/static/images/TOSIcon.png'
 
 export default {
   filters: {
@@ -55,6 +68,11 @@ export default {
       if (!value) return ''
       value = value.toString()
       return value.charAt(0).toUpperCase()
+    }
+  },
+  data() {
+    return {
+      icon
     }
   },
   computed: {
@@ -67,7 +85,11 @@ export default {
   },
   methods: {
     clickedTopic(item) {
-      this.$router.push({ path: `/topic-articles/${item._id}` })
+      if (item === 'home') {
+        this.$router.push({ path: `/` })
+      } else {
+        this.$router.push({ path: `/topic-articles/${item._id}` })
+      }
       this.$emit('closeCategory')
     }
   }
@@ -86,5 +108,8 @@ export default {
 .fab-button {
   bottom: 12%;
   right: 30px;
+}
+.pointer {
+  cursor: pointer;
 }
 </style>

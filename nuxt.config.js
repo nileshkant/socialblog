@@ -16,10 +16,36 @@ module.exports = {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || ''
-      }
+      },
+      { name: 'msapplication-TileColor', content: '#00aba9' },
+      { name: 'theme-color', content: '#ffffff' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v=Rym8WqW9rM' },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/apple-touch-icon.png?v=Rym8WqW9rM'
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/favicon-32x32.png?v=Rym8WqW9rM'
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        href: '/favicon-16x16.png?v=Rym8WqW9rM'
+      },
+      { rel: 'manifest', href: '/site.webmanifest?v=Rym8WqW9rM' },
+      {
+        rel: 'mask-icon',
+        href: '/safari-pinned-tab.svg?v=Rym8WqW9rM',
+        color: '#5bbad5'
+      },
+      { rel: 'shortcut icon', href: '/favicon.ico?v=Rym8WqW9rM' },
       {
         rel: 'stylesheet',
         href:
