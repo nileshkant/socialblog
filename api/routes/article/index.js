@@ -139,9 +139,13 @@ router.post('/add-comment', authorized, async (req, res) => {
       commentor: req.user._id
     })
     if (foundUrl && foundUrl.length > 0) {
-      const data = await websiteDetails(foundUrl[0])
-      if (data) {
-        addComment.embedUrl = data
+      try {
+        const data = await websiteDetails(foundUrl[0])
+        if (data) {
+          addComment.embedUrl = data
+        }
+      } catch (err) {
+        addComment.embedUrl = null
       }
     }
     if (allhashtags) {
