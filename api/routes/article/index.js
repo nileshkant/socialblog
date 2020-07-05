@@ -478,6 +478,7 @@ router.get('/search', async (req, res) => {
       searchResult.forEach((doc) => {
         resArticle.push(doc.toObject())
       })
+      res.status(200).json({ result: resArticle, pageSize: limit, page })
     }
     if (article) {
       searchResult = await Article.find(query)
