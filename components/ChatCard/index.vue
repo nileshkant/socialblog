@@ -28,22 +28,9 @@
       </v-img>
     </NLink>
     {{ cardcontent.file }}
-    <v-card-text
-      v-if="cardcontent.createdDate"
-      class="caption pb-0 text--secondary text-truncate"
-    >
-      {{
-        $dateFns.formatDistanceToNow(new Date(cardcontent.createdDate), {
-          addSuffix: true
-        })
-      }}
-      <span
-        >-
-        {{
-          cardcontent.author.username || cardcontent.author.facebook.displayName
-        }}</span
-      >
-    </v-card-text>
+
+    <AuthorAndDate :cardcontent="cardcontent" />
+
     <div class="title pt-0 px-4">
       <NLink
         :class="!cardcontent._id && 'disable-click'"
@@ -75,7 +62,11 @@
       </span>
     </div>
 
-    <CardAction :cardcontent="cardcontent" :share-data="shareData()" />
+    <CardAction :cardcontent="cardcontent" :share-data="shareData()">
+      <v-btn fab small color="primary" @click="show = !show">
+        <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+      </v-btn>
+    </CardAction>
 
     <v-expand-transition>
       <div v-show="show">
@@ -116,9 +107,12 @@
 import { mapGetters } from 'vuex'
 import { cloudinarytransformUrl } from '../../utilities/common'
 import CardAction from './commonAction/cardAction'
+import AuthorAndDate from './commonAction/authorAndDate'
+
 export default {
   components: {
-    CardAction
+    CardAction,
+    AuthorAndDate
   },
   props: {
     left: {

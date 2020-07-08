@@ -3,23 +3,8 @@
     :color="cardcontent.quoteCard && cardcontent.quoteCard.color"
     :dark="checkColor"
   >
-    <v-card-text
-      v-if="cardcontent.createdDate"
-      class="caption pb-0"
-      :class="!checkColor && 'black--text'"
-    >
-      {{
-        $dateFns.formatDistanceToNow(new Date(cardcontent.createdDate), {
-          addSuffix: true
-        })
-      }}
-      <span
-        >-
-        {{
-          cardcontent.author.username || cardcontent.author.facebook.displayName
-        }}</span
-      >
-    </v-card-text>
+    <AuthorAndDate :cardcontent="cardcontent" />
+
     <v-card-title class="pt-0">
       <NLink
         :class="!cardcontent._id && 'disable-click'"
@@ -70,10 +55,12 @@
 import { mapGetters } from 'vuex'
 import { lightOrDark } from '../../utilities/common'
 import CardAction from './commonAction/cardAction'
+import AuthorAndDate from './commonAction/authorAndDate'
 
 export default {
   components: {
-    CardAction
+    CardAction,
+    AuthorAndDate
   },
   props: {
     cardcontent: {

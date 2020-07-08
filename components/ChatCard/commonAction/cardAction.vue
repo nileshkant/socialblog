@@ -101,6 +101,7 @@
         </v-list>
       </v-menu>
       <v-spacer></v-spacer>
+      <slot></slot>
     </v-card-actions>
   </div>
 </template>
