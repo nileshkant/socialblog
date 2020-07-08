@@ -3,7 +3,7 @@
     <v-row class="mx-0 mt-2 pl-2 replymsg">
       <v-col class="pa-0" align-self="center">
         <div class="caption text--disabled">
-          Replying on
+          Replied on
         </div>
         <div
           v-if="replycontent && replycontent.textComment"
