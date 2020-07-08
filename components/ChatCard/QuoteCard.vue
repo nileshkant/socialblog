@@ -46,7 +46,7 @@
     <CardAction
       :cardcontent="cardcontent"
       :check-color="checkColor"
-      :share-data="shareData()"
+      :share-data="cardcontent._id && shareData()"
     />
   </v-card>
 </template>

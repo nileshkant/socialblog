@@ -125,7 +125,7 @@ export default {
     },
     shareData: {
       type: Object,
-      required: true
+      default: null
     }
   },
   data() {

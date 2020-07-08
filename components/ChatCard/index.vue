@@ -62,7 +62,10 @@
       </span>
     </div>
 
-    <CardAction :cardcontent="cardcontent" :share-data="shareData()">
+    <CardAction
+      :cardcontent="cardcontent"
+      :share-data="cardcontent._id && shareData()"
+    >
       <v-btn fab small color="primary" @click="show = !show">
         <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
       </v-btn>
