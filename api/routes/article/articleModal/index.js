@@ -36,7 +36,9 @@ const articleSchema = new Schema({
     title: {
       type: String,
       min: [5, 'Minimum 5 charaters required'],
-      index: true
+      index: true,
+      unique: true,
+      sparse: true
     },
     subtitle: {
       type: String,
@@ -64,7 +66,9 @@ const articleSchema = new Schema({
     title: {
       type: String,
       min: [5, 'Minimum 5 charaters required'],
-      index: true
+      index: true,
+      unique: true,
+      sparse: true
     },
     quote: {
       type: String,
@@ -83,6 +87,89 @@ const articleSchema = new Schema({
       }
     },
     source: {
+      type: String
+    }
+  },
+
+  // Movie/Series Details card
+  movieReviewCard: {
+    Title: {
+      type: String,
+      index: true,
+      trim: true,
+      unique: true,
+      sparse: true
+    },
+    Year: {
+      type: String
+    },
+    Rated: {
+      type: String
+    },
+    Released: {
+      type: String
+    },
+    Runtime: {
+      type: String
+    },
+    Genre: {
+      type: String
+    },
+    Director: {
+      type: String
+    },
+    Writer: {
+      type: String
+    },
+    Actors: {
+      type: String
+    },
+    Plot: {
+      type: String
+    },
+    Language: {
+      type: String
+    },
+    Country: {
+      type: String
+    },
+    Awards: {
+      type: String
+    },
+    Poster: {
+      type: String
+    },
+    TOSRating: {
+      type: Number
+    },
+    Ratings: {
+      type: [
+        {
+          Source: {
+            type: String
+          },
+          Value: {
+            type: String
+          }
+        }
+      ]
+    },
+    Metascore: {
+      type: String
+    },
+    imdbRating: {
+      type: String
+    },
+    imdbVotes: {
+      type: String
+    },
+    imdbID: {
+      type: String
+    },
+    Type: {
+      type: String
+    },
+    Production: {
       type: String
     }
   }
