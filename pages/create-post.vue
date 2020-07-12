@@ -26,6 +26,7 @@
           <v-card>
             <v-col>
               <v-chip-group
+                v-if="formdata.articleType !== 'movieReviewCard'"
                 multiple
                 mandatory
                 active-class="primary--text"
@@ -46,6 +47,11 @@
               />
               <QuoteForm
                 v-if="formdata.articleType === 'quoteCard'"
+                @formData="formUpdate"
+                @onSubmit="onSubmit"
+              />
+              <MovieReviewForm
+                v-if="formdata.articleType === 'movieReviewCard'"
                 @formData="formUpdate"
                 @onSubmit="onSubmit"
               />
@@ -79,7 +85,14 @@
                 :cardcontent="formdata"
                 showfullcard
               />
-              <QuoteCard v-else :cardcontent="formdata" />
+              <QuoteCard
+                v-if="formdata.articleType === 'quoteCard'"
+                :cardcontent="formdata"
+              />
+              <MovieCard
+                v-if="formdata.articleType === 'movieReviewCard'"
+                :cardcontent="formdata.movieReviewCard"
+              />
             </v-col>
             <v-col cols="12" class="text-center">
               <v-btn outlined @click="formdata.articleType = null">
@@ -100,6 +113,8 @@ import ArticleCard from '../components/ChatCard'
 import QuoteCard from '../components/ChatCard/QuoteCard'
 import QuoteForm from '../components/ArticleForm/quoteForm'
 import SelectPostType from '../components/SelectPostType'
+import MovieCard from '../components/ChatCard/MovieCard'
+import MovieReviewForm from '../components/ArticleForm/movieDetails'
 import { toBase64 } from '../utilities/common'
 // import SelectBox from '../components/FormComponents/selectBox'
 export default {
@@ -110,7 +125,9 @@ export default {
     'article-form': ArticleForm,
     QuoteCard,
     QuoteForm,
-    SelectPostType
+    SelectPostType,
+    MovieCard,
+    MovieReviewForm
     // SelectBox
   },
   async fetch({ store, params }) {
@@ -120,7 +137,8 @@ export default {
     return {
       cardoption: [
         { text: 'Full Article Card', value: 'fullDetailsCard' },
-        { text: 'Quote Card', value: 'quoteCard' }
+        { text: 'Quote Card', value: 'quoteCard' },
+        { text: 'Movie/Series Review Card', value: 'movieReviewCard' }
       ],
       preview: false,
       formdata: {
@@ -144,8 +162,14 @@ export default {
       this.preview = false
       if (value === 'fullDetailsCard') {
         this.formdata.quoteCard = null
-      } else {
+      }
+      if (value === 'quoteCard') {
         this.formdata.fullDetailsCard = null
+      }
+      if (value === 'movieReviewCard') {
+        this.$store.commit('review/movieDetails', null)
+        this.formdata.fullDetailsCard = null
+        this.formdata.quoteCard = null
       }
     },
     changeCategory(value) {

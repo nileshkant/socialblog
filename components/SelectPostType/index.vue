@@ -34,6 +34,11 @@ export default {
           name: 'quoteCard',
           skeletonType: 'article, actions',
           button: 'Quote Story'
+        },
+        {
+          name: 'movieReviewCard',
+          skeletonType: 'article, actions',
+          button: 'Movie/Series Review Story'
         }
       ]
     }

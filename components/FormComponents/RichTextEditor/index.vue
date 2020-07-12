@@ -196,6 +196,10 @@ export default {
     autofocus: {
       type: Boolean,
       default: false
+    },
+    placeholder: {
+      type: String,
+      default: 'Add more details'
     }
   },
   data() {
@@ -242,7 +246,7 @@ export default {
         new Placeholder({
           emptyEditorClass: 'is-editor-empty',
           emptyNodeClass: 'is-empty',
-          emptyNodeText: 'Add more details',
+          emptyNodeText: this.placeholder,
           showOnlyWhenEditable: true,
           showOnlyCurrent: true
         })

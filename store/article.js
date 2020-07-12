@@ -9,7 +9,7 @@ export const state = () => ({
   singleArticle: null,
   latestComment: null,
   titleSection: null,
-  allComments: null,
+  allComments: [],
   bookmarks: [],
   contentLoading: false
 })
@@ -189,9 +189,11 @@ export const actions = {
     const article = await this.$axios.$post('/article', payload)
     context.commit('latestArticle', article)
     context.commit('loading', false)
-    this.$router.replace({
-      path: `/article/${article.savedArticle._id}`
-    })
+    if (payload.articleType !== 'movieReviewCard') {
+      this.$router.replace({
+        path: `/article/${article.savedArticle._id}`
+      })
+    }
   },
   async deleteArticle(context, payload) {
     context.commit('loading', true)

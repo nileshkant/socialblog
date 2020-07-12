@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import axios from 'axios'
+import { Article } from '../article/articleModal'
 
 const router = Router()
 
@@ -13,6 +14,12 @@ router.post('/', async (req, res) => {
       res.status(404).json(movieDetails.data)
     }
     if (movieDetails && movieDetails.data) {
+      const query = { 'movieReviewCard.Title': movieDetails.data.Title }
+      const postedArticle = await Article.findOne(query)
+      if (postedArticle) {
+        const movieDetail = { _id: postedArticle._id, ...movieDetails.data }
+        res.status(200).json(movieDetail)
+      }
       res.status(200).json(movieDetails.data)
     }
   } catch (err) {

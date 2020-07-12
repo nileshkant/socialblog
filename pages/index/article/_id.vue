@@ -24,7 +24,8 @@
           {{
             (titleSection &&
               titleSection.user &&
-              (titleSection.user.facebook.displayName ||
+              ((titleSection.user.facebook &&
+                titleSection.user.facebook.displayName) ||
                 titleSection.user.username)) ||
               'Please select a topic'
           }}
@@ -49,6 +50,14 @@
           class="mr-auto"
         >
           <QuoteCard :cardcontent="article"> </QuoteCard>
+        </v-col>
+        <v-col
+          v-if="article.articleType === 'movieReviewCard'"
+          md="8"
+          cols="10"
+          class="mr-auto"
+        >
+          <MovieCard :cardcontent="article" />
         </v-col>
         <v-col v-else md="8" cols="10" class="mr-auto">
           <chat-card :cardcontent="article" showfullcard> </chat-card>
@@ -116,6 +125,7 @@ import AllCommentList from '~/components/AllCommentList'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
 import CommentForm from '~/components/CommentForm'
 import ReplyCard from '~/components/ChatCard/ReplyCard'
+import MovieCard from '~/components/ChatCard/MovieCard'
 // import LoadingSkeleton from '~/components/LoadingSkeleton'
 
 export default {
@@ -124,7 +134,8 @@ export default {
     QuoteCard,
     CommentForm,
     AllCommentList,
-    ReplyCard
+    ReplyCard,
+    MovieCard
     // LoadingSkeleton
   },
   async fetch({ store, params, route, redirect }) {
@@ -221,58 +232,58 @@ export default {
       }
     }
   },
-  head() {
-    return {
-      titleTemplate:
-        this.article.articleType === 'quoteCard'
-          ? this.article.quoteCard.title
-          : this.article.fullDetailsCard.title,
-      meta: [
-        {
-          hid: 'og:title',
-          name: 'og:title',
-          content:
-            this.article.articleType === 'quoteCard'
-              ? this.article.quoteCard.title
-              : this.article.fullDetailsCard.title
-        },
-        {
-          hid: 'description',
-          name: 'description',
-          content:
-            this.article.articleType === 'quoteCard'
-              ? this.article.quoteCard.quote
-              : this.article.fullDetailsCard.subtitle
-        },
-        {
-          hid: 'og:description',
-          name: 'og:description',
-          content:
-            this.article.articleType === 'quoteCard'
-              ? this.article.quoteCard.quote
-              : this.article.fullDetailsCard.subtitle
-        },
-        {
-          hid: 'og:image',
-          name: 'og:image',
-          content:
-            this.article.articleType === 'fullDetailsCard'
-              ? this.article.fullDetailsCard.mediaUrl
-              : ''
-        }
-      ],
-      script: [
-        {
-          src: '//platform.twitter.com/widgets.js',
-          async: true,
-          defer: true,
-          callback: () => {
-            this.isTwitterLoaded = true
-          }
-        }
-      ]
-    }
-  },
+  // head() {
+  //   return {
+  //     titleTemplate:
+  //       this.article.articleType === 'quoteCard'
+  //         ? this.article.quoteCard.title
+  //         : this.article.fullDetailsCard.title,
+  //     meta: [
+  //       {
+  //         hid: 'og:title',
+  //         name: 'og:title',
+  //         content:
+  //           this.article.articleType === 'quoteCard'
+  //             ? this.article.quoteCard.title
+  //             : this.article.fullDetailsCard.title
+  //       },
+  //       {
+  //         hid: 'description',
+  //         name: 'description',
+  //         content:
+  //           this.article.articleType === 'quoteCard'
+  //             ? this.article.quoteCard.quote
+  //             : this.article.fullDetailsCard.subtitle
+  //       },
+  //       {
+  //         hid: 'og:description',
+  //         name: 'og:description',
+  //         content:
+  //           this.article.articleType === 'quoteCard'
+  //             ? this.article.quoteCard.quote
+  //             : this.article.fullDetailsCard.subtitle
+  //       },
+  //       {
+  //         hid: 'og:image',
+  //         name: 'og:image',
+  //         content:
+  //           this.article.articleType === 'fullDetailsCard'
+  //             ? this.article.fullDetailsCard.mediaUrl
+  //             : ''
+  //       }
+  //     ],
+  //     script: [
+  //       {
+  //         src: '//platform.twitter.com/widgets.js',
+  //         async: true,
+  //         defer: true,
+  //         callback: () => {
+  //           this.isTwitterLoaded = true
+  //         }
+  //       }
+  //     ]
+  //   }
+  // },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch('commonState/replyComment', null)
     this.formdata = null

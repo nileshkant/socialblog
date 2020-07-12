@@ -14,7 +14,7 @@ const articleSchema = new Schema({
   },
   articleType: {
     type: String,
-    enum: ['fullDetailsCard', 'quoteCard'],
+    enum: ['fullDetailsCard', 'quoteCard', 'movieReviewCard'],
     required: true
   },
   isVerified: {
