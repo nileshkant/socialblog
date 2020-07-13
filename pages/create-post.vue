@@ -91,7 +91,7 @@
               />
               <MovieCard
                 v-if="formdata.articleType === 'movieReviewCard'"
-                :cardcontent="formdata.movieReviewCard"
+                :cardcontent="formdata"
               />
             </v-col>
             <v-col cols="12" class="text-center">

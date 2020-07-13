@@ -59,7 +59,12 @@
         >
           <MovieCard :cardcontent="article" />
         </v-col>
-        <v-col v-else md="8" cols="10" class="mr-auto">
+        <v-col
+          v-if="article.articleType === 'fullDetailsCard'"
+          md="8"
+          cols="10"
+          class="mr-auto"
+        >
           <chat-card :cardcontent="article" showfullcard> </chat-card>
         </v-col>
       </v-row>
@@ -119,6 +124,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import storyHeader from './headerData'
 import { toBase64 } from '~/utilities/common'
 import ChatCard from '~/components/ChatCard'
 import AllCommentList from '~/components/AllCommentList'
@@ -232,58 +238,21 @@ export default {
       }
     }
   },
-  // head() {
-  //   return {
-  //     titleTemplate:
-  //       this.article.articleType === 'quoteCard'
-  //         ? this.article.quoteCard.title
-  //         : this.article.fullDetailsCard.title,
-  //     meta: [
-  //       {
-  //         hid: 'og:title',
-  //         name: 'og:title',
-  //         content:
-  //           this.article.articleType === 'quoteCard'
-  //             ? this.article.quoteCard.title
-  //             : this.article.fullDetailsCard.title
-  //       },
-  //       {
-  //         hid: 'description',
-  //         name: 'description',
-  //         content:
-  //           this.article.articleType === 'quoteCard'
-  //             ? this.article.quoteCard.quote
-  //             : this.article.fullDetailsCard.subtitle
-  //       },
-  //       {
-  //         hid: 'og:description',
-  //         name: 'og:description',
-  //         content:
-  //           this.article.articleType === 'quoteCard'
-  //             ? this.article.quoteCard.quote
-  //             : this.article.fullDetailsCard.subtitle
-  //       },
-  //       {
-  //         hid: 'og:image',
-  //         name: 'og:image',
-  //         content:
-  //           this.article.articleType === 'fullDetailsCard'
-  //             ? this.article.fullDetailsCard.mediaUrl
-  //             : ''
-  //       }
-  //     ],
-  //     script: [
-  //       {
-  //         src: '//platform.twitter.com/widgets.js',
-  //         async: true,
-  //         defer: true,
-  //         callback: () => {
-  //           this.isTwitterLoaded = true
-  //         }
-  //       }
-  //     ]
-  //   }
-  // },
+  head() {
+    return {
+      ...storyHeader(this.article),
+      script: [
+        {
+          src: '//platform.twitter.com/widgets.js',
+          async: true,
+          defer: true,
+          callback: () => {
+            this.isTwitterLoaded = true
+          }
+        }
+      ]
+    }
+  },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch('commonState/replyComment', null)
     this.formdata = null

@@ -44,14 +44,22 @@
           </div> -->
         </v-col>
         <v-col cols="6">
-          <v-sheet elevation="12" class="v-sheet--offset mx-auto rounded-image">
-            <v-img
-              class="rounded-image"
-              height="230"
-              :src="cardcontent.movieReviewCard.Poster"
+          <NLink
+            :to="'/article/' + cardcontent._id"
+            :event="!cardcontent._id ? '' : 'click'"
+          >
+            <v-sheet
+              elevation="12"
+              class="v-sheet--offset mx-auto rounded-image"
             >
-            </v-img>
-          </v-sheet>
+              <v-img
+                class="rounded-image"
+                height="230"
+                :src="cardcontent.movieReviewCard.Poster"
+              >
+              </v-img>
+            </v-sheet>
+          </NLink>
         </v-col>
       </v-row>
       <v-divider></v-divider>

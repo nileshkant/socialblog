@@ -11,14 +11,29 @@
           :disabled="movieDetails && true"
           @click:append="searchMovie"
         />
+        <div
+          v-if="movieDetails"
+          class="text-right caption"
+          :class="
+            totalCharBody > 500 || totalCharBody < 200
+              ? 'error--text'
+              : 'success--text'
+          "
+        >
+          {{ totalCharBody }}/500
+        </div>
         <RichtextEditor
           v-if="movieDetails"
           v-model="comment.textComment"
           placeholder="Write a review"
+          error-text-class="ml-11 mt-2"
           :limitcharcount="500"
           @richContent="richContent"
           @charCount="charCount"
         />
+        <div class="caption error--text ml-11 mt-2">
+          {{ charError }}
+        </div>
         <v-card-actions class="mt-4">
           <v-btn
             v-if="movieDetails"
@@ -44,21 +59,13 @@
 <script>
 import { ValidationObserver, extend } from 'vee-validate'
 import { mapGetters } from 'vuex'
-import { required, min, max } from 'vee-validate/dist/rules'
+import { required } from 'vee-validate/dist/rules'
 import RichtextEditor from '../FormComponents/RichTextEditor'
 import VTextFieldWithValidation from '../FormComponents/Textfield'
 // import cloneDeep from 'lodash/cloneDeep'
 extend('required', {
   ...required,
   message: '{_field_} is required'
-})
-extend('min', {
-  ...min,
-  message: '{_field_} must be minimum {length} characters'
-})
-extend('max', {
-  ...max,
-  message: 'Must be less than {length} characters'
 })
 
 export default {
@@ -68,6 +75,7 @@ export default {
     RichtextEditor
   },
   data: () => ({
+    charError: '',
     name: '',
     formData: {},
     comment: {
@@ -101,17 +109,27 @@ export default {
       })
       this.$store.commit('review/movieDetails', null)
       this.comment.textComment = null
+      this.charError = ''
     },
     richContent(content) {
       this.comment.textComment = content
     },
     charCount(count) {
       this.totalCharBody = count
+      if (this.totalCharBody < 199) {
+        this.charError = 'Mininum 200 characters required'
+      } else {
+        this.charError = ''
+      }
     },
     async searchMovie() {
       const success = await this.$refs.obs.validate()
       if (success) {
-        if (this.comment.textComment) {
+        if (
+          this.comment.textComment &&
+          this.totalCharBody >= 200 &&
+          this.totalCharBody <= 500
+        ) {
           if (this.movieDetails._id) {
             const sendForm = {
               ...this.comment,
@@ -123,23 +141,29 @@ export default {
             })
           } else {
             this.formData = {
-              ...this.formData,
+              movieReviewCard: { ...this.formData },
               articleType: 'movieReviewCard',
-              isPublished: true
+              isPublished: true,
+              categories: ['5ea0a652232cf06240248ec2']
             }
-            await this.$store.dispatch('article/postArticle', this.formdata)
-            if (this.latestArticle) {
+            await this.$store.dispatch('article/postArticle', this.formData)
+            if (
+              this.latestArticle &&
+              this.latestArticle.savedArticle &&
+              this.latestArticle.savedArticle._id
+            ) {
               const sendForm = {
                 ...this.comment,
-                articleId: this.latestArticle._id
+                articleId: this.latestArticle.savedArticle._id
               }
               await this.$store.dispatch('article/postComment', sendForm)
               this.$router.replace({
-                path: `/article/${this.latestArticle._id}`
+                path: `/article/${this.latestArticle.savedArticle._id}`
               })
             }
           }
-        } else {
+        }
+        if (!this.comment.textComment) {
           try {
             await this.$store.dispatch('review/movieDetails', {
               name: this.name

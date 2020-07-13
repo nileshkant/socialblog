@@ -153,7 +153,11 @@
         />
       </v-col>
     </v-row>
-    <div v-if="charcount > limitcharcount" class="error--text caption">
+    <div
+      v-if="charcount > limitcharcount"
+      class="error--text caption"
+      :class="errorTextClass"
+    >
       You can't use more than {{ limitcharcount }} characters
     </div>
   </div>
@@ -200,6 +204,10 @@ export default {
     placeholder: {
       type: String,
       default: 'Add more details'
+    },
+    errorTextClass: {
+      type: String,
+      default: ''
     }
   },
   data() {

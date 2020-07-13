@@ -61,6 +61,16 @@
         </v-col>
         <v-col
           v-if="
+            article.articleType === 'movieReviewCard' && article.movieReviewCard
+          "
+          md="8"
+          cols="10"
+          :class="{ 'ml-auto': index % 2 === 0 }"
+        >
+          <MovieCard :cardcontent="article" />
+        </v-col>
+        <v-col
+          v-if="
             article.articleType === 'fullDetailsCard' && article.fullDetailsCard
           "
           md="8"
@@ -85,6 +95,7 @@ import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import ChatCard from '~/components/ChatCard'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
+import MovieCard from '~/components/ChatCard/MovieCard'
 import AllCommentList from '~/components/AllCommentList'
 import NoRecords from '~/components/NoRecords'
 import icon from '~/static/images/TOSIcon.png'
@@ -93,6 +104,7 @@ export default {
   components: {
     'chat-card': ChatCard,
     QuoteCard,
+    MovieCard,
     AllCommentList,
     NoRecords
   },
