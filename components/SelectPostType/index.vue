@@ -16,11 +16,18 @@
         </v-overlay>
       </v-sheet>
     </v-col>
+    <v-col cols="12" md="4">
+      <MovieReviewSkeleton show-overlay @selectedCard="selectedCard" />
+    </v-col>
   </v-row>
 </template>
 
 <script>
+import MovieReviewSkeleton from '../LoadingSkeleton/movieSkeleton'
 export default {
+  components: {
+    MovieReviewSkeleton
+  },
   inject: ['theme'],
   data() {
     return {
@@ -52,5 +59,9 @@ export default {
 }
 .no-event {
   pointer-events: none;
+}
+.v-sheet--offset {
+  top: -30px;
+  position: relative;
 }
 </style>

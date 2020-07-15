@@ -5,7 +5,11 @@
         <v-icon>mdi-home-outline</v-icon>
       </v-btn>
       <v-avatar
-        v-if="titleSection.user && titleSection.user.facebook"
+        v-if="
+          titleSection.user &&
+            titleSection.user.facebook &&
+            article.articleType !== 'movieReviewCard'
+        "
         size="40"
         class="mr-3"
       >
@@ -15,7 +19,7 @@
           "
         />
       </v-avatar>
-      <div>
+      <div v-if="article.articleType !== 'movieReviewCard'">
         <div
           class="py-0 title"
           :class="user && 'primary--text pointer'"
@@ -24,12 +28,17 @@
           {{
             (titleSection &&
               titleSection.user &&
-              (titleSection.user.facebook.displayName ||
+              ((titleSection.user.facebook &&
+                titleSection.user.facebook.displayName) ||
                 titleSection.user.username)) ||
               'Please select a topic'
           }}
         </div>
         <div class="caption text--secondary">{{ titleSection.title }}</div>
+      </div>
+      <div v-if="article.articleType === 'movieReviewCard'" class="title">
+        {{ article.movieReviewCard.Title }} -
+        <span class="text--secondary">{{ article.movieReviewCard.Year }}</span>
       </div>
     </v-toolbar>
     <v-divider />
@@ -50,7 +59,20 @@
         >
           <QuoteCard :cardcontent="article"> </QuoteCard>
         </v-col>
-        <v-col v-else md="8" cols="10" class="mr-auto">
+        <v-col
+          v-if="article.articleType === 'movieReviewCard'"
+          md="8"
+          cols="10"
+          class="mr-auto"
+        >
+          <MovieCard :cardcontent="article" />
+        </v-col>
+        <v-col
+          v-if="article.articleType === 'fullDetailsCard'"
+          md="8"
+          cols="10"
+          class="mr-auto"
+        >
           <chat-card :cardcontent="article" showfullcard> </chat-card>
         </v-col>
       </v-row>
@@ -110,12 +132,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import storyHeader from './headerData'
 import { toBase64 } from '~/utilities/common'
 import ChatCard from '~/components/ChatCard'
 import AllCommentList from '~/components/AllCommentList'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
 import CommentForm from '~/components/CommentForm'
 import ReplyCard from '~/components/ChatCard/ReplyCard'
+import MovieCard from '~/components/ChatCard/MovieCard'
 // import LoadingSkeleton from '~/components/LoadingSkeleton'
 
 export default {
@@ -124,7 +148,8 @@ export default {
     QuoteCard,
     CommentForm,
     AllCommentList,
-    ReplyCard
+    ReplyCard,
+    MovieCard
     // LoadingSkeleton
   },
   async fetch({ store, params, route, redirect }) {
@@ -174,7 +199,11 @@ export default {
     },
     isAllowed() {
       if (this.user.userDetails.role === 'admin') return true
-      if (this.article.author._id === this.user.userDetails._id) return true
+      if (
+        this.article.author._id === this.user.userDetails._id &&
+        this.article.articleType !== 'movieReviewCard'
+      )
+        return true
       const filterComment = this.allComments.filter((comment) => {
         return (
           comment.commentor === this.user.userDetails._id ||
@@ -223,44 +252,7 @@ export default {
   },
   head() {
     return {
-      titleTemplate:
-        this.article.articleType === 'quoteCard'
-          ? this.article.quoteCard.title
-          : this.article.fullDetailsCard.title,
-      meta: [
-        {
-          hid: 'og:title',
-          name: 'og:title',
-          content:
-            this.article.articleType === 'quoteCard'
-              ? this.article.quoteCard.title
-              : this.article.fullDetailsCard.title
-        },
-        {
-          hid: 'description',
-          name: 'description',
-          content:
-            this.article.articleType === 'quoteCard'
-              ? this.article.quoteCard.quote
-              : this.article.fullDetailsCard.subtitle
-        },
-        {
-          hid: 'og:description',
-          name: 'og:description',
-          content:
-            this.article.articleType === 'quoteCard'
-              ? this.article.quoteCard.quote
-              : this.article.fullDetailsCard.subtitle
-        },
-        {
-          hid: 'og:image',
-          name: 'og:image',
-          content:
-            this.article.articleType === 'fullDetailsCard'
-              ? this.article.fullDetailsCard.mediaUrl
-              : ''
-        }
-      ],
+      ...storyHeader(this.article),
       script: [
         {
           src: '//platform.twitter.com/widgets.js',

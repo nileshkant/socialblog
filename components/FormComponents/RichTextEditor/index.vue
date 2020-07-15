@@ -153,7 +153,11 @@
         />
       </v-col>
     </v-row>
-    <div v-if="charcount > limitcharcount" class="error--text caption">
+    <div
+      v-if="charcount > limitcharcount"
+      class="error--text caption"
+      :class="errorTextClass"
+    >
       You can't use more than {{ limitcharcount }} characters
     </div>
   </div>
@@ -196,6 +200,14 @@ export default {
     autofocus: {
       type: Boolean,
       default: false
+    },
+    placeholder: {
+      type: String,
+      default: 'Add more details'
+    },
+    errorTextClass: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -242,7 +254,7 @@ export default {
         new Placeholder({
           emptyEditorClass: 'is-editor-empty',
           emptyNodeClass: 'is-empty',
-          emptyNodeText: 'Add more details',
+          emptyNodeText: this.placeholder,
           showOnlyWhenEditable: true,
           showOnlyCurrent: true
         })

@@ -7,6 +7,7 @@ import covid19 from '../routes/covid19'
 import userProfile from '../routes/userProfile'
 import noembed from '../routes/noembed'
 import contactUs from '../routes/contactUs'
+import movieDetails from '../routes/movieDetails'
 
 // import blog from '~/blog/rest'
 
@@ -26,5 +27,6 @@ router.use('/covid19', covid19)
 router.use('/user-profile', userProfile)
 router.use('/noembed', noembed)
 router.use('/contact-us', contactUs)
+router.use('/movie-details', movieDetails)
 
 export default router
