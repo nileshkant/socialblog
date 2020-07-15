@@ -87,7 +87,10 @@
           </div>
         </v-col>
       </v-row>
-      <CardAction :cardcontent="cardcontent" />
+      <CardAction
+        :cardcontent="cardcontent"
+        :share-data="cardcontent._id && shareData()"
+      />
     </div>
   </v-card>
 </template>
@@ -153,6 +156,23 @@ export default {
       } else {
         return name
       }
+    },
+    shareData() {
+      const data = {
+        url: '/article/' + this.cardcontent._id,
+        title: `Check out the cool review ${this.cardcontent.movieReviewCard.Title} - ${this.cardcontent.movieReviewCard.Year}`,
+        description: `Check out the awesome rewiews of - ${this.cardcontent.movieReviewCard.Title} ${this.cardcontent.movieReviewCard.Year}`,
+        quote: `${this.cardcontent.movieReviewCard.Title} - ${this.cardcontent.movieReviewCard.Year}`,
+        hashtags: this.createHashtag()
+      }
+      return data
+    },
+    createHashtag() {
+      const hashtag = this.cardcontent.movieReviewCard.Title.toLowerCase()
+        .split(' ')
+        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+        .join('')
+      return `${hashtag}, theopenstories`
     }
   }
 }
