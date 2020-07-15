@@ -4,10 +4,16 @@
       <v-row class="ma-0">
         <v-col cols="6">
           <div class="title">
-            {{ cardcontent.movieReviewCard.Title }}
-            <span class="text--secondary caption">
-              {{ cardcontent.movieReviewCard.Year }}
-            </span>
+            <NLink
+              :class="!cardcontent._id && 'disable-click'"
+              :to="'/article/' + cardcontent._id"
+              class="link in-color"
+            >
+              {{ cardcontent.movieReviewCard.Title }}
+              <span class="text--secondary caption">
+                {{ cardcontent.movieReviewCard.Year }}
+              </span>
+            </NLink>
           </div>
           <div class="caption text-capitalize">
             {{ cardcontent.movieReviewCard.Type }} -
@@ -90,15 +96,24 @@
       <CardAction
         :cardcontent="cardcontent"
         :share-data="cardcontent._id && shareData()"
-      />
+      >
+        <v-spacer></v-spacer>
+        <div class="error--text caption">Beta version</div>
+      </CardAction>
+    </div>
+    <div v-else>
+      <MovieReviewSkeleton @selectedCard="selectedCard" />
     </div>
   </v-card>
 </template>
 <script>
+import MovieReviewSkeleton from '../LoadingSkeleton/movieSkeleton'
 import CardAction from './commonAction/cardAction'
+
 export default {
   components: {
-    CardAction
+    CardAction,
+    MovieReviewSkeleton
   },
   props: {
     cardcontent: {
@@ -160,7 +175,7 @@ export default {
     shareData() {
       const data = {
         url: '/article/' + this.cardcontent._id,
-        title: `Check out the cool review ${this.cardcontent.movieReviewCard.Title} - ${this.cardcontent.movieReviewCard.Year}`,
+        title: `Check out the cool review of - ${this.cardcontent.movieReviewCard.Title} - ${this.cardcontent.movieReviewCard.Year}`,
         description: `Check out the awesome rewiews of - ${this.cardcontent.movieReviewCard.Title} ${this.cardcontent.movieReviewCard.Year}`,
         quote: `${this.cardcontent.movieReviewCard.Title} - ${this.cardcontent.movieReviewCard.Year}`,
         hashtags: this.createHashtag()
@@ -172,7 +187,7 @@ export default {
         .split(' ')
         .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
         .join('')
-      return `${hashtag}, theopenstories`
+      return `${hashtag},theopenstories`
     }
   }
 }
@@ -185,5 +200,17 @@ export default {
 }
 .rounded-image {
   border-radius: 8px;
+}
+.link {
+  text-decoration: none;
+  background-image: linear-gradient(#37b2b2 50%, #37b2b2 50%);
+  background-size: 10000px 1px;
+  background-repeat: no-repeat;
+  background-position: 0 1em;
+  background-position: -10000px 1em;
+  cursor: pointer;
+}
+.in-color {
+  color: inherit;
 }
 </style>

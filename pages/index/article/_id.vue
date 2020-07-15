@@ -5,7 +5,11 @@
         <v-icon>mdi-home-outline</v-icon>
       </v-btn>
       <v-avatar
-        v-if="titleSection.user && titleSection.user.facebook"
+        v-if="
+          titleSection.user &&
+            titleSection.user.facebook &&
+            article.articleType !== 'movieReviewCard'
+        "
         size="40"
         class="mr-3"
       >
@@ -15,7 +19,7 @@
           "
         />
       </v-avatar>
-      <div>
+      <div v-if="article.articleType !== 'movieReviewCard'">
         <div
           class="py-0 title"
           :class="user && 'primary--text pointer'"
@@ -31,6 +35,10 @@
           }}
         </div>
         <div class="caption text--secondary">{{ titleSection.title }}</div>
+      </div>
+      <div v-if="article.articleType === 'movieReviewCard'" class="title">
+        {{ article.movieReviewCard.Title }} -
+        <span class="text--secondary">{{ article.movieReviewCard.Year }}</span>
       </div>
     </v-toolbar>
     <v-divider />
@@ -191,7 +199,11 @@ export default {
     },
     isAllowed() {
       if (this.user.userDetails.role === 'admin') return true
-      if (this.article.author._id === this.user.userDetails._id) return true
+      if (
+        this.article.author._id === this.user.userDetails._id &&
+        this.article.articleType !== 'movieReviewCard'
+      )
+        return true
       const filterComment = this.allComments.filter((comment) => {
         return (
           comment.commentor === this.user.userDetails._id ||

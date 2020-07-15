@@ -86,7 +86,8 @@
                   user &&
                   user.userDetails &&
                   cardcontent.author &&
-                  cardcontent.author._id === user.userDetails._id) ||
+                  cardcontent.author._id === user.userDetails._id &&
+                  cardcontent.articleType !== 'movieReviewCard') ||
                   (user &&
                     user.userDetails &&
                     user.userDetails.role === 'admin') ||

@@ -32,6 +32,7 @@
       <v-col>
         <v-skeleton-loader :boilerplate="true" type="sentences">
         </v-skeleton-loader>
+        <div class="error--text caption">Beta version (May be unstable)</div>
       </v-col>
     </v-row>
   </v-sheet>
@@ -53,4 +54,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.v-sheet--offset {
+  top: -30px;
+  position: relative;
+}
+</style>

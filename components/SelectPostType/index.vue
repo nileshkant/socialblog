@@ -17,7 +17,7 @@
       </v-sheet>
     </v-col>
     <v-col cols="12" md="4">
-      <MovieReviewSkeleton show-overlay @selected-card="selectedCard" />
+      <MovieReviewSkeleton show-overlay @selectedCard="selectedCard" />
     </v-col>
   </v-row>
 </template>
