@@ -7,7 +7,7 @@ import covid19 from '../routes/covid19'
 import userProfile from '../routes/userProfile'
 import noembed from '../routes/noembed'
 import contactUs from '../routes/contactUs'
-import movieDetails from '../routes/movieDetails'
+import movieDetails from '../routes/MovieDetails'
 
 // import blog from '~/blog/rest'
 
