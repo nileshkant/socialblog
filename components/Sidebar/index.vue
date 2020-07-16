@@ -27,7 +27,7 @@
         <v-list three-line class="py-0">
           <template v-for="(item, index) in categories">
             <v-divider
-              v-if="!(index !== categories.length - 1)"
+              v-if="index !== categories.length && index !== 0"
               :key="index"
               :inset="true"
             ></v-divider>

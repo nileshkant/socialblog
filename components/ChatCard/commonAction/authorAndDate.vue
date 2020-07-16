@@ -1,7 +1,8 @@
 <template>
-  <v-card-text
+  <div
     v-if="cardcontent.createdDate"
-    class="caption pb-0 text--secondary text-truncate"
+    class="caption pb-0 text-truncate px-4 py-2"
+    :class="!checkColor ? 'black--text' : 'text--secondary'"
   >
     {{
       $dateFns.formatDistanceToNow(new Date(cardcontent.createdDate), {
@@ -14,7 +15,7 @@
         cardcontent.author.username || cardcontent.author.facebook.displayName
       }}</span
     >
-  </v-card-text>
+  </div>
 </template>
 
 <script>
@@ -23,6 +24,10 @@ export default {
     cardcontent: {
       type: Object,
       required: true
+    },
+    checkColor: {
+      type: Boolean,
+      default: true
     }
   }
 }

@@ -3,7 +3,7 @@
     :color="cardcontent.quoteCard && cardcontent.quoteCard.color"
     :dark="checkColor"
   >
-    <AuthorAndDate :cardcontent="cardcontent" />
+    <AuthorAndDate :cardcontent="cardcontent" :check-color="checkColor" />
 
     <v-card-title class="pt-0">
       <NLink

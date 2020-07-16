@@ -25,6 +25,9 @@
           </v-row>
           <v-card>
             <v-col>
+              <div class="mb-1">
+                Select Category
+              </div>
               <v-chip-group
                 v-if="formdata.articleType !== 'movieReviewCard'"
                 multiple
@@ -33,7 +36,7 @@
                 @change="changeCategory"
               >
                 <v-chip
-                  v-for="category in dropdownCategories"
+                  v-for="category in categoriesToDisplay"
                   :key="category.text"
                 >
                   {{ category.text }}
@@ -151,7 +154,12 @@ export default {
   computed: {
     ...mapGetters({
       dropdownCategories: 'article/dropdownCategories'
-    })
+    }),
+    categoriesToDisplay() {
+      return this.dropdownCategories.filter((val) => {
+        return val.text !== 'Movie/Series Reviews'
+      })
+    }
   },
   mounted() {
     this.$meta().refresh()
