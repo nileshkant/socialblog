@@ -144,7 +144,7 @@ export default {
               movieReviewCard: { ...this.formData },
               articleType: 'movieReviewCard',
               isPublished: true,
-              categories: ['5f1283e675eec853576e2259']
+              categories: ['5f1282aa75eec853576e2257']
             }
             await this.$store.dispatch('article/postArticle', this.formData)
             if (
