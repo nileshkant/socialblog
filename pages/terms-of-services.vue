@@ -108,7 +108,7 @@
 
         <p>
           Please read
-          <a href="https://theopenstories.xyz/privacy-policies"
+          <a href="https://theopenstories.com/privacy-policies"
             >our Privacy Policy</a
           >.
         </p>

@@ -1,6 +1,6 @@
 <template>
   <social-sharing
-    :url="`https://theopenstories.xyz${socialShareData.url}`"
+    :url="`https://theopenstories.com${socialShareData.url}`"
     :title="socialShareData.title"
     :description="socialShareData.description"
     :quote="socialShareData.quote"
