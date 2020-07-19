@@ -36,7 +36,6 @@ const articleSchema = new Schema({
     title: {
       type: String,
       min: [5, 'Minimum 5 charaters required'],
-      index: true,
       unique: true,
       sparse: true
     },
@@ -66,7 +65,6 @@ const articleSchema = new Schema({
     title: {
       type: String,
       min: [5, 'Minimum 5 charaters required'],
-      index: true,
       unique: true,
       sparse: true
     },
@@ -95,7 +93,6 @@ const articleSchema = new Schema({
   movieReviewCard: {
     Title: {
       type: String,
-      index: true,
       trim: true,
       unique: true,
       sparse: true
@@ -173,6 +170,23 @@ const articleSchema = new Schema({
       type: String
     }
   }
+})
+
+articleSchema.index({
+  'fullDetailsCard.title': 1,
+  'fullDetailsCard.subtitle': 1,
+  'fullDetailsCard.articleBody': 1,
+  'quoteCard.title': 1,
+  'quoteCard.quote': 1,
+  'movieReviewCard.Title': 1
+})
+articleSchema.index({
+  'fullDetailsCard.title': 'text',
+  'fullDetailsCard.subtitle': 'text',
+  'fullDetailsCard.articleBody': 'text',
+  'quoteCard.title': 'text',
+  'quoteCard.quote': 'text',
+  'movieReviewCard.Title': 'text'
 })
 
 // This is for joining two documents which has something in common in both
