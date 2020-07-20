@@ -1,111 +1,127 @@
 <template>
   <div>
-    <v-slide-x-reverse-transition hide-on-leave>
-      <SelectPostType v-if="!formdata.articleType" @selectedCard="changeCard" />
-    </v-slide-x-reverse-transition>
-    <v-slide-y-transition hide-on-leave>
-      <v-row v-if="formdata.articleType">
-        <v-col md="6" cols="12" :class="preview ? 'd-none d-md-flex' : ''">
-          <v-row>
-            <v-col>
-              <h3 class="mb-3">
-                Add Story Details
-              </h3>
-            </v-col>
-            <v-col cols="auto">
-              <v-btn
-                icon
-                large
-                class="d-flex d-md-none"
-                @click="preview = true"
-              >
-                <v-icon>mdi-eye-outline</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-card>
-            <v-col>
-              <div class="mb-1">
-                Select Category
-              </div>
-              <v-chip-group
-                v-if="formdata.articleType !== 'movieReviewCard'"
-                multiple
-                mandatory
-                active-class="primary--text"
-                @change="changeCategory"
-              >
-                <v-chip
-                  v-for="category in categoriesToDisplay"
-                  :key="category.text"
+    <v-app-bar fixed elevate-on-scroll>
+      <v-btn icon large @click="$router.back()">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-toolbar-title class="title pl-0">Create Story</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon large @click="drawer">
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <v-container>
+      <v-slide-x-reverse-transition hide-on-leave>
+        <SelectPostType
+          v-if="!formdata.articleType"
+          @selectedCard="changeCard"
+        />
+      </v-slide-x-reverse-transition>
+      <v-slide-y-transition hide-on-leave>
+        <v-row v-if="formdata.articleType">
+          <v-col md="6" cols="12" :class="preview ? 'd-none d-md-flex' : ''">
+            <v-row>
+              <v-col>
+                <h3 class="mb-3">
+                  Add Story Details
+                </h3>
+              </v-col>
+              <v-col cols="auto">
+                <v-btn
+                  icon
+                  large
+                  class="d-flex d-md-none"
+                  @click="preview = true"
                 >
-                  {{ category.text }}
-                </v-chip>
-              </v-chip-group>
-              <article-form
-                v-if="formdata.articleType === 'fullDetailsCard'"
-                @formData="formUpdate"
-                @file="uploadFile"
-                @onSubmit="onSubmit"
-              />
-              <QuoteForm
-                v-if="formdata.articleType === 'quoteCard'"
-                @formData="formUpdate"
-                @onSubmit="onSubmit"
-              />
-              <MovieReviewForm
-                v-if="formdata.articleType === 'movieReviewCard'"
-                @formData="formUpdate"
-                @onSubmit="onSubmit"
-              />
-            </v-col>
-          </v-card>
-        </v-col>
-        <v-col md="5" cols="12" class="ml-auto">
-          <v-row :class="!preview ? 'd-none d-md-flex' : ''">
-            <v-col cols="12" class="py-0">
-              <v-row>
-                <v-col>
-                  <h3>
-                    Preview Post
-                  </h3>
-                </v-col>
-                <v-col cols="auto">
-                  <v-btn
-                    icon
-                    large
-                    class="text-right d-flex d-md-none"
-                    @click="preview = false"
+                  <v-icon>mdi-eye-outline</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-card>
+              <v-col>
+                <div class="mb-1">
+                  Select Category
+                </div>
+                <v-chip-group
+                  v-if="formdata.articleType !== 'movieReviewCard'"
+                  multiple
+                  mandatory
+                  active-class="primary--text"
+                  @change="changeCategory"
+                >
+                  <v-chip
+                    v-for="category in categoriesToDisplay"
+                    :key="category.text"
                   >
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-col>
-            <v-col cols="12">
-              <ArticleCard
-                v-if="formdata.articleType === 'fullDetailsCard'"
-                :cardcontent="formdata"
-                showfullcard
-              />
-              <QuoteCard
-                v-if="formdata.articleType === 'quoteCard'"
-                :cardcontent="formdata"
-              />
-              <MovieCard
-                v-if="formdata.articleType === 'movieReviewCard'"
-                :cardcontent="formdata"
-              />
-            </v-col>
-            <v-col cols="12" class="text-center">
-              <v-btn outlined @click="formdata.articleType = null">
-                Change Story Card
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-slide-y-transition>
+                    {{ category.text }}
+                  </v-chip>
+                </v-chip-group>
+                <article-form
+                  v-if="formdata.articleType === 'fullDetailsCard'"
+                  @formData="formUpdate"
+                  @file="uploadFile"
+                  @onSubmit="onSubmit"
+                />
+                <QuoteForm
+                  v-if="formdata.articleType === 'quoteCard'"
+                  @formData="formUpdate"
+                  @onSubmit="onSubmit"
+                />
+                <MovieReviewForm
+                  v-if="formdata.articleType === 'movieReviewCard'"
+                  @formData="formUpdate"
+                  @onSubmit="onSubmit"
+                />
+              </v-col>
+            </v-card>
+          </v-col>
+          <v-col md="5" cols="12" class="ml-auto">
+            <v-row :class="!preview ? 'd-none d-md-flex' : ''">
+              <v-col cols="12" class="py-0">
+                <v-row>
+                  <v-col>
+                    <h3>
+                      Preview Post
+                    </h3>
+                  </v-col>
+                  <v-col cols="auto">
+                    <v-btn
+                      icon
+                      large
+                      class="text-right d-flex d-md-none"
+                      @click="preview = false"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col cols="12">
+                <ArticleCard
+                  v-if="formdata.articleType === 'fullDetailsCard'"
+                  :cardcontent="formdata"
+                  showfullcard
+                />
+                <QuoteCard
+                  v-if="formdata.articleType === 'quoteCard'"
+                  :cardcontent="formdata"
+                />
+                <MovieCard
+                  v-if="formdata.articleType === 'movieReviewCard'"
+                  :cardcontent="formdata"
+                />
+              </v-col>
+              <v-col cols="12" class="text-center">
+                <v-btn outlined @click="formdata.articleType = null">
+                  Change Story Card
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-slide-y-transition>
+    </v-container>
   </div>
 </template>
 
@@ -122,7 +138,6 @@ import { toBase64 } from '../utilities/common'
 // import SelectBox from '../components/FormComponents/selectBox'
 export default {
   middleware: 'authenticated',
-  layout: 'postView',
   components: {
     ArticleCard,
     'article-form': ArticleForm,
@@ -201,6 +216,9 @@ export default {
       if (this.formdata.categories.length > 0) {
         this.$store.dispatch('article/postArticle', this.formdata)
       }
+    },
+    drawer() {
+      this.$store.dispatch('commonState/isDrawerOpen', true)
     }
   }
 }

@@ -5,7 +5,7 @@
       md="3"
       cols="12"
       class="py-0 border-right-grey"
-      :class="showCategories ? '' : 'd-none d-md-flex'"
+      :class="showCategories ? '' : 'd-none d-md-block'"
     >
       <sidebar
         @closeCategory="
@@ -29,7 +29,7 @@
       md="3"
       cols="12"
       class="py-0"
-      :class="isTrending ? '' : 'd-none d-md-flex'"
+      :class="isTrending ? '' : 'd-none d-md-block'"
     >
       <v-row>
         <v-col cols="12" class="px-0 py-0">
@@ -165,6 +165,7 @@ export default {
       isDarkMode: 'commonState/isDarkMode',
       titleSection: 'article/titleSection',
       articles: 'article/articles',
+      isDrawerOpen: 'commonState/isDrawerOpen',
       user: 'user'
     })
   },
