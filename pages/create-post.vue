@@ -109,7 +109,7 @@
                         </v-btn>
                         <v-spacer></v-spacer>
                         <v-btn
-                          @click="onSubmit"
+                          @click="onSubmit('publish')"
                           color="primary"
                           :loading="loading"
                         >
