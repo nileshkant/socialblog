@@ -38,43 +38,89 @@
                 </v-btn>
               </v-col>
             </v-row>
-            <v-card>
-              <v-col>
-                <div class="mb-1">
-                  Select Category
-                </div>
-                <v-chip-group
-                  v-if="formdata.articleType !== 'movieReviewCard'"
-                  multiple
-                  mandatory
-                  active-class="primary--text"
-                  @change="changeCategory"
-                >
-                  <v-chip
-                    v-for="category in categoriesToDisplay"
-                    :key="category.text"
+            <v-stepper v-model="e1" :vertical="false">
+              <v-stepper-header v-if="steps !== 1">
+                <template v-for="n in steps">
+                  <v-stepper-step
+                    v-if="formdata.articleType !== 'movieReviewCard'"
+                    :key="`${n}-step`"
+                    :complete="e1 > n"
+                    :step="n"
                   >
-                    {{ category.text }}
-                  </v-chip>
-                </v-chip-group>
-                <article-form
-                  v-if="formdata.articleType === 'fullDetailsCard'"
-                  @formData="formUpdate"
-                  @file="uploadFile"
-                  @onSubmit="onSubmit"
-                />
-                <QuoteForm
-                  v-if="formdata.articleType === 'quoteCard'"
-                  @formData="formUpdate"
-                  @onSubmit="onSubmit"
-                />
-                <MovieReviewForm
-                  v-if="formdata.articleType === 'movieReviewCard'"
-                  @formData="formUpdate"
-                  @onSubmit="onSubmit"
-                />
-              </v-col>
-            </v-card>
+                    <span v-if="n === 1">
+                      Describe Story Briefly
+                    </span>
+                    <span v-if="n === 2">
+                      Select Categories
+                    </span>
+                  </v-stepper-step>
+                  <v-divider v-if="n !== steps" :key="n"></v-divider>
+                </template>
+              </v-stepper-header>
+
+              <v-stepper-items>
+                <v-stepper-content
+                  v-for="n in steps"
+                  :key="`${n}-content`"
+                  :step="n"
+                >
+                  <v-card v-if="n === 1">
+                    <v-col>
+                      <article-form
+                        v-if="formdata.articleType === 'fullDetailsCard'"
+                        @formData="formUpdate"
+                        @file="uploadFile"
+                        @onSubmit="onSubmit"
+                      />
+                      <QuoteForm
+                        v-if="formdata.articleType === 'quoteCard'"
+                        @formData="formUpdate"
+                        @onSubmit="onSubmit"
+                      />
+                      <MovieReviewForm
+                        v-if="formdata.articleType === 'movieReviewCard'"
+                        @formData="formUpdate"
+                        @onSubmit="onSubmit"
+                      />
+                    </v-col>
+                  </v-card>
+                  <v-card v-if="n === 2">
+                    <v-col>
+                      <div class="mb-1">
+                        Select Category
+                      </div>
+                      <v-chip-group
+                        multiple
+                        column
+                        active-class="primary--text"
+                        @change="changeCategory"
+                      >
+                        <v-chip
+                          v-for="category in dropdownCategories"
+                          :key="category.text"
+                          filter
+                        >
+                          {{ category.text }}
+                        </v-chip>
+                      </v-chip-group>
+                      <v-card-actions class="mt-5">
+                        <v-btn @click="prevStep(2)" color="accent" outlined>
+                          Change
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          @click="onSubmit"
+                          color="primary"
+                          :loading="loading"
+                        >
+                          Publish
+                        </v-btn>
+                      </v-card-actions>
+                    </v-col>
+                  </v-card>
+                </v-stepper-content>
+              </v-stepper-items>
+            </v-stepper>
           </v-col>
           <v-col md="5" cols="12" class="ml-auto">
             <v-row :class="!preview ? 'd-none d-md-flex' : ''">
@@ -158,6 +204,8 @@ export default {
         { text: 'Quote Card', value: 'quoteCard' },
         { text: 'Movie/Series Review Card', value: 'movieReviewCard' }
       ],
+      e1: 1,
+      steps: 2,
       preview: false,
       formdata: {
         articleType: null,
@@ -166,15 +214,32 @@ export default {
       }
     }
   },
+  watch: {
+    steps(val) {
+      if (this.e1 > val) {
+        this.e1 = val
+      }
+    },
+    // vertical() {
+    //   this.e1 = 2
+    //   requestAnimationFrame(() => (this.e1 = 1)) // Workarounds
+    // },
+    formdata: {
+      deep: true,
+      handler(val) {
+        if (val.articleType === 'movieReviewCard') {
+          this.steps = 1
+        } else {
+          this.steps = 2
+        }
+      }
+    }
+  },
   computed: {
     ...mapGetters({
-      dropdownCategories: 'article/dropdownCategories'
-    }),
-    categoriesToDisplay() {
-      return this.dropdownCategories.filter((val) => {
-        return val.text !== 'Movie/Series Reviews'
-      })
-    }
+      dropdownCategories: 'article/dropdownCategories',
+      loading: 'article/loading'
+    })
   },
   mounted() {
     this.$meta().refresh()
@@ -208,13 +273,29 @@ export default {
       this.formdata.fileURL = data ? URL.createObjectURL(data) : ''
       this.fileData = data || null
     },
-    async onSubmit(data) {
-      if (this.fileData) {
-        this.formdata.file = await toBase64(this.fileData)
+    nextStep(n) {
+      if (n === this.steps) {
+        this.e1 = 1
+      } else {
+        this.e1 = n + 1
       }
-      this.formdata.isPublished = data === 'publish'
-      if (this.formdata.categories.length > 0) {
-        this.$store.dispatch('article/postArticle', this.formdata)
+    },
+    prevStep(n) {
+      if (n > 1) {
+        this.e1 = n - 1
+      }
+    },
+    async onSubmit(data) {
+      if (this.e1 === 2) {
+        if (this.fileData) {
+          this.formdata.file = await toBase64(this.fileData)
+        }
+        this.formdata.isPublished = data === 'publish'
+        if (this.formdata.categories.length > 0) {
+          this.$store.dispatch('article/postArticle', this.formdata)
+        }
+      } else {
+        this.nextStep(1)
       }
     },
     drawer() {

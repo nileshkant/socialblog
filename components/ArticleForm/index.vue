@@ -55,7 +55,7 @@
             :loading="loading"
             :disabled="loading"
             @click="submit('publish')"
-            >Publish</v-btn
+            >Continue</v-btn
           >
         </v-card-actions>
       </v-form>

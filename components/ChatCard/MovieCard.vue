@@ -102,7 +102,7 @@
       </CardAction>
     </div>
     <div v-else>
-      <MovieReviewSkeleton @selectedCard="selectedCard" />
+      <MovieReviewSkeleton />
     </div>
   </v-card>
 </template>

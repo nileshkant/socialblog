@@ -46,13 +46,15 @@ export const mutations = {
   },
   getCategories(state, payload) {
     state.categories = payload
-    state.dropdownCategories = payload.map((data) => {
-      const category = {
+    const menu = payload.map((data) => {
+      return {
         text: data.name,
         value: data._id
       }
-      return category
     })
+    state.dropdownCategories = menu.filter(
+      (datas) => datas.text !== 'Movie/Series Reviews'
+    )
   },
   latestArticle(state, payload) {
     state.latestArticle = payload
