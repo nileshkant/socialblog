@@ -21,7 +21,7 @@
       <v-slide-y-transition hide-on-leave>
         <v-row v-if="formdata.articleType">
           <v-col md="6" cols="12" :class="preview ? 'd-none d-md-flex' : ''">
-            <v-row>
+            <v-row class="mt-10">
               <v-col>
                 <h3 class="mb-3">
                   Add Story Details
@@ -125,7 +125,7 @@
           <v-col md="5" cols="12" class="ml-auto">
             <v-row :class="!preview ? 'd-none d-md-flex' : ''">
               <v-col cols="12" class="py-0">
-                <v-row>
+                <v-row class="mt-10">
                   <v-col>
                     <h3>
                       Preview Post
