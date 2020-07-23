@@ -2,7 +2,7 @@
   <div
     v-if="cardcontent.createdDate"
     class="caption pb-0 text-truncate px-4 py-2"
-    :class="!checkColor ? 'black--text' : 'text--secondary'"
+    :class="!usetheme && !checkColor ? 'black--text' : ''"
   >
     {{
       $dateFns.formatDistanceToNow(new Date(cardcontent.createdDate), {
@@ -26,6 +26,10 @@ export default {
       required: true
     },
     checkColor: {
+      type: Boolean,
+      default: true
+    },
+    useTheme: {
       type: Boolean,
       default: true
     }

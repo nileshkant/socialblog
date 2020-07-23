@@ -3,7 +3,11 @@
     :color="cardcontent.quoteCard && cardcontent.quoteCard.color"
     :dark="checkColor"
   >
-    <AuthorAndDate :cardcontent="cardcontent" :check-color="checkColor" />
+    <AuthorAndDate
+      :cardcontent="cardcontent"
+      :check-color="checkColor"
+      :useTheme="false"
+    />
 
     <v-card-title class="pt-0">
       <NLink
@@ -17,10 +21,15 @@
     </v-card-title>
     <v-card-text
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
-      class="headline font-weight-bold"
-      :class="!checkColor && 'black--text'"
+      class="font-weight-bold textWrap"
+      :class="[
+        !checkColor && 'black--text',
+        cardcontent.quoteCard.quote.length > 300 ? 'title' : 'headline'
+      ]"
     >
-      " {{ cardcontent.quoteCard.quote }} "
+      <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
+      {{ cardcontent.quoteCard.quote.trim() }}
+      <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
     </v-card-text>
     <v-card-text
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.source"
@@ -127,5 +136,8 @@ export default {
 }
 .disable-click {
   pointer-events: none;
+}
+.textWrap {
+  white-space: pre-line;
 }
 </style>

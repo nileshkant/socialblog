@@ -7,10 +7,14 @@
           rules="required|min:5|max:100"
           label="Title*"
         />
-        <VTextFieldWithValidation
+        <VTextarea
           v-model="formData.quote"
-          rules="required|min:5|max:300"
-          label="Quote*"
+          rules="required|min:5|max:800"
+          auto-grow
+          label="Quote/Poem/Song/Small story*"
+          show-counter
+          :rows="3"
+          classes="mt-4"
         />
         <VTextFieldWithValidation
           v-model="formData.source"
@@ -40,6 +44,8 @@ import { mapGetters } from 'vuex'
 import { required, min, max } from 'vee-validate/dist/rules'
 import VTextFieldWithValidation from '../FormComponents/Textfield'
 import ColorPicker from '../FormComponents/colorpicker'
+import VTextarea from '../FormComponents/TextArea'
+
 // import cloneDeep from 'lodash/cloneDeep'
 extend('required', {
   ...required,
@@ -58,7 +64,8 @@ export default {
   components: {
     ValidationObserver,
     VTextFieldWithValidation,
-    ColorPicker
+    ColorPicker,
+    VTextarea
   },
   data: () => ({
     items: ['No Image', 'Upload Image', 'Image/Video Url'],
