@@ -21,10 +21,10 @@
     </v-card-title>
     <v-card-text
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
-      class="font-weight-bold textWrap"
+      class="font-weight-bold"
       :class="[
         !checkColor && 'black--text',
-        cardcontent.quoteCard.quote.length > 300 ? 'title' : 'headline'
+        cardcontent.quoteCard.quote.length > 300 ? 'title textWrap' : 'headline'
       ]"
     >
       <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
