@@ -23,13 +23,30 @@
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
       class="font-weight-bold"
       :class="[
-        !checkColor && 'black--text',
-        cardcontent.quoteCard.quote.length > 300 ? 'title textWrap' : 'headline'
+        !checkColor && 'black--text text--secondary',
+        cardcontent.quoteCard.quote.length > 300
+          ? 'textWrap'
+          : 'headline font-weight-bold',
+        cardcontent.quoteCard.quote.length > 300 &&
+          $route.params.id !== cardcontent._id &&
+          'truncate-overflow'
       ]"
     >
       <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
       {{ cardcontent.quoteCard.quote.trim() }}
       <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
+    </v-card-text>
+    <v-card-text
+      v-if="
+        cardcontent.quoteCard.quote.length > 300 &&
+          $route.params.id !== cardcontent._id
+      "
+    >
+      <NLink
+        :to="'/article/' + cardcontent._id"
+        :class="!checkColor ? 'black--text' : 'white--text'"
+        >Read more...</NLink
+      >
     </v-card-text>
     <v-card-text
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.source"
@@ -139,5 +156,9 @@ export default {
 }
 .textWrap {
   white-space: pre-line;
+}
+.truncate-overflow {
+  max-height: calc(1.375rem * 6) !important;
+  overflow: hidden;
 }
 </style>
