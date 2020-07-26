@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-card v-if="post && post.fullDetailsCard" class="mx-auto">
+    <v-card
+      v-if="post && post.articleType === 'fullDetailsCard'"
+      class="mx-auto"
+    >
       <v-img height="250" :src="post.fullDetailsCard.mediaUrl"></v-img>
       <v-card-title class="title pb-0">{{
         post.fullDetailsCard.title
@@ -29,7 +32,7 @@
       </v-card-actions>
     </v-card>
     <v-card
-      v-if="post && post.quoteCard"
+      v-if="post && post.articleType === 'quoteCard'"
       :color="post.quoteCard && post.quoteCard.color"
       :dark="checkColor"
     >

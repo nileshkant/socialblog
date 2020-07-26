@@ -38,7 +38,9 @@
     </v-card-text>
     <v-card-text
       v-if="
-        cardcontent.quoteCard.quote.length > 300 &&
+        cardcontent.quoteCard &&
+          cardcontent.quoteCard.quote &&
+          cardcontent.quoteCard.quote.length > 300 &&
           $route.params.id !== cardcontent._id
       "
     >
