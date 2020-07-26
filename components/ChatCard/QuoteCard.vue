@@ -23,7 +23,7 @@
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
       class="font-weight-bold"
       :class="[
-        !checkColor && 'black--text text--secondary',
+        !checkColor && 'black--text',
         cardcontent.quoteCard.quote.length > 300
           ? 'textWrap'
           : 'headline font-weight-bold',
