@@ -455,7 +455,9 @@ router.get('/single-article', async (req, res) => {
  */
 router.get('/categories', async (req, res) => {
   try {
-    const allCategories = await Category.find().cache({ expire: 60 * 60 * 24 })
+    const allCategories = await Category.find()
+      .sort({ name: 1 })
+      .cache({ expire: 60 * 60 * 24 })
     const categories = []
     allCategories.forEach((doc) => {
       categories.push(doc)
