@@ -86,7 +86,6 @@ const storyHeader = (article) => {
       header = {}
       break
   }
-  console.log('header', header)
 
   return header
 }
