@@ -377,10 +377,6 @@ router.delete('/delete-article', authorized, async (req, res) => {
       query.author = req.user._id
     }
     const deleteArticle = await Article.findOneAndDelete(query).exec()
-    console.log(
-      'deleteArticle',
-      deleteArticle[deleteArticle.articleType].cloudinaryId
-    )
     if (deleteArticle) {
       if (deleteArticle[deleteArticle.articleType].cloudinaryId) {
         try {
@@ -394,10 +390,9 @@ router.delete('/delete-article', authorized, async (req, res) => {
           console.log('err', err)
         }
       }
-      const deletedComment = await PostComment.deleteMany({
+      await PostComment.deleteMany({
         articleId: req.query.articleId
       }).exec()
-      console.log('deletedComment', deletedComment)
       await LikeArticle.deleteMany({ articleId: req.query.articleId }).exec()
       clearHash(req.query.articleId)
       res
