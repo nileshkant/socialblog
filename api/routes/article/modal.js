@@ -17,6 +17,9 @@ const postComment = new Schema({
   mediaUrl: {
     type: String
   },
+  cloudinaryId: {
+    type: String
+  },
   embedUrl: {
     title: {
       type: String

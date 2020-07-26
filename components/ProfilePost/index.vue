@@ -96,6 +96,7 @@ export default {
     checkColor() {
       if (
         this.post.quoteCard &&
+        this.post.quoteCard.color &&
         lightOrDark(this.post.quoteCard.color) === 'dark'
       ) {
         return true

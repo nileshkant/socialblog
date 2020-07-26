@@ -84,6 +84,7 @@ router.post('/', authorized, async (req, res) => {
     if (file) {
       const mediaUrl = await cloudinary.uploader.upload(file)
       article[articleType].mediaUrl = mediaUrl.secure_url
+      article[articleType].cloudinaryId = mediaUrl.public_id
     }
     await article.save((err, data) => {
       if (err) {
@@ -160,6 +161,7 @@ router.post('/add-comment', authorized, async (req, res) => {
     }
     if (file) {
       const mediaUrl = await cloudinary.uploader.upload(file)
+      addComment.cloudinaryId = mediaUrl.public_id
       addComment.mediaUrl = mediaUrl.secure_url
     }
     const commented = await addComment.save()
@@ -222,6 +224,15 @@ router.delete('/delete-comments', authorized, async (req, res) => {
     }
     const deletedComment = await PostComment.findOneAndDelete(query).exec()
     if (deletedComment) {
+      if (deletedComment.cloudinaryId) {
+        try {
+          await cloudinary.uploader.destroy(deletedComment.cloudinaryId, {
+            invalidate: true
+          })
+        } catch (err) {
+          console.log('err', err)
+        }
+      }
       res.status(200).json({ deletedcomment: deletedComment })
     } else {
       res.status(400).json({ msg: 'Delete unsuccessful' })
@@ -366,8 +377,27 @@ router.delete('/delete-article', authorized, async (req, res) => {
       query.author = req.user._id
     }
     const deleteArticle = await Article.findOneAndDelete(query).exec()
+    console.log(
+      'deleteArticle',
+      deleteArticle[deleteArticle.articleType].cloudinaryId
+    )
     if (deleteArticle) {
-      await PostComment.deleteMany({ articleId: req.query.articleId }).exec()
+      if (deleteArticle[deleteArticle.articleType].cloudinaryId) {
+        try {
+          await cloudinary.uploader.destroy(
+            deleteArticle[deleteArticle.articleType].cloudinaryId,
+            {
+              invalidate: true
+            }
+          )
+        } catch (err) {
+          console.log('err', err)
+        }
+      }
+      const deletedComment = await PostComment.deleteMany({
+        articleId: req.query.articleId
+      }).exec()
+      console.log('deletedComment', deletedComment)
       await LikeArticle.deleteMany({ articleId: req.query.articleId }).exec()
       clearHash(req.query.articleId)
       res

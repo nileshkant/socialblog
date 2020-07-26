@@ -52,6 +52,9 @@ const articleSchema = new Schema({
     mediaUrl: {
       type: String
     },
+    cloudinaryId: {
+      type: String
+    },
     embedUrl: {
       type: String
     },
@@ -73,6 +76,11 @@ const articleSchema = new Schema({
       min: [5, 'Minimum 5 charaters required'],
       index: true
     },
+    mediaUrls: [
+      {
+        type: String
+      }
+    ],
     color: {
       type: String,
       validate: {
