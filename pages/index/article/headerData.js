@@ -45,7 +45,7 @@ const storyHeader = (article) => {
           {
             hid: 'og:description',
             name: 'og:description',
-            content: article.fullDetailsCard.quote
+            content: article.fullDetailsCard.subtitle
           },
           {
             hid: 'og:image',
