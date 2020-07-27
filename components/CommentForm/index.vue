@@ -38,7 +38,7 @@
               <v-col cols="8" md="10" sm="9" class="pa-0">
                 <RichtextEditor
                   v-model="formData.textComment"
-                  :limitcharcount="250"
+                  :limitcharcount="1000"
                   @charCount="charCount"
                   @richContent="richContent"
                 />
@@ -204,7 +204,7 @@ export default {
       if (success) {
         if (
           this.formData.file ||
-          (this.formData.textComment && this.totalCharBody <= 250)
+          (this.formData.textComment && this.totalCharBody <= 1000)
         ) {
           this.$emit('onSubmit')
           this.formData.file = this.formData.textComment = this.base64File = null
