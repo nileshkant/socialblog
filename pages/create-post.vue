@@ -63,6 +63,7 @@
                   v-for="n in steps"
                   :key="`${n}-content`"
                   :step="n"
+                  class="pa-0"
                 >
                   <v-card v-if="n === 1">
                     <v-col>

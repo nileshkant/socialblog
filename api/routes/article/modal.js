@@ -14,6 +14,10 @@ const postComment = new Schema({
     type: String,
     index: true
   },
+  isMarkdown: {
+    type: Boolean,
+    default: false
+  },
   mediaUrl: {
     type: String
   },

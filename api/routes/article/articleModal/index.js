@@ -49,6 +49,9 @@ const articleSchema = new Schema({
       min: [5, 'Minimum 5 charaters required'],
       index: true
     },
+    isMarkdown: {
+      type: Boolean
+    },
     mediaUrl: {
       type: String
     },

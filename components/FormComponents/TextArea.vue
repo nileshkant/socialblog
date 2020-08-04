@@ -2,6 +2,7 @@
   <div :class="classes">
     <ValidationProvider v-slot="{ errors, valid }" :name="label" :rules="rules">
       <v-textarea
+        ref="childText"
         v-model="innerValue"
         :error-messages="errors"
         :success="valid"
@@ -24,6 +25,7 @@
         :shaped="shaped"
         :single-line="singleLine"
         :solo="solo"
+        :validate-on-blur="validateOnBlur"
         v-bind="$attrs"
         v-on="$listeners"
       />
@@ -127,6 +129,10 @@ export default {
     solo: {
       type: Boolean,
       default: false
+    },
+    validateOnBlur: {
+      type: Boolean,
+      default: true
     }
   },
   data: () => ({

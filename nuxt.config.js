@@ -1,3 +1,4 @@
+// const hljs = require('highlight.js')
 const colors = require('vuetify/es5/util/colors').default
 
 module.exports = {
@@ -64,7 +65,8 @@ module.exports = {
     '~/assets/css/main.css',
     '~/assets/css/tiptap.css',
     '~/assets/css/weather.css',
-    '~/assets/css/weather-dark.css'
+    '~/assets/css/weather-dark.css',
+    '~/assets/css/highlight.css'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -101,8 +103,20 @@ module.exports = {
     '@nuxtjs/proxy',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    '@nuxtjs/markdownit'
   ],
+
+  markdownit: {
+    injected: true,
+    linkify: true,
+    breaks: true,
+    use: [
+      '~/utilities/markdownHashtag',
+      '~/utilities/markdownVideo',
+      ['markdown-it-highlightjs', { inline: true }]
+    ]
+  },
 
   styleResources: {
     scss: ['~assets/scss/_main.scss']

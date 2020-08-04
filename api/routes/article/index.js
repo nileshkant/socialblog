@@ -126,8 +126,15 @@ router.post('/create-category', authorized, async (req, res) => {
 
 router.post('/add-comment', authorized, async (req, res) => {
   try {
-    const { articleId, textComment, file, replyComment, embedUrl } = req.body
-    const regexp = new RegExp('#', 'g')
+    const {
+      articleId,
+      textComment,
+      file,
+      replyComment,
+      embedUrl,
+      isMarkdown
+    } = req.body
+    // const regexp = new RegExp('#', 'g')
     const allhashtags = textComment && textComment.match(/#\w+/g)
     const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/g
     const foundUrl = textComment && textComment.match(urlRegex)
@@ -137,6 +144,7 @@ router.post('/add-comment', authorized, async (req, res) => {
       hashtags: [],
       replyComment,
       embedUrl,
+      isMarkdown,
       commentor: req.user._id
     })
     if (foundUrl && foundUrl.length > 0) {
@@ -157,7 +165,6 @@ router.post('/add-comment', authorized, async (req, res) => {
         return hash
       })
       addComment.hashtags = uniq(addComment.hashtags)
-      addComment.textComment = addComment.textComment.replace(regexp, '')
     }
     if (file) {
       const mediaUrl = await cloudinary.uploader.upload(file)

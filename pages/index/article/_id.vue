@@ -85,22 +85,26 @@
     </div>
     <v-divider />
     <div class="editor-pos">
-      <v-card flat class="br-0 px-3">
+      <v-card flat class="br-0">
         <v-btn
           v-if="replyComment"
-          class="mx-2 right-menu pos-a"
+          class="right-menu pos-a"
           icon
           small
           @click="removeReply"
           ><v-icon small>mdi-close</v-icon>
         </v-btn>
         <ReplyCard v-if="replyComment" :replycontent="replyComment" />
+        {{ replyComment }}
         <resize-observer @notify="handleResize" />
-        <CommentForm
+        <!-- <CommentForm
           v-if="user && user.userDetails && isAllowed()"
           @formData="formUpdate"
           @onSubmit="onSubmit"
-        />
+        /> -->
+        <div v-if="user && user.userDetails && isAllowed()" class="px-3">
+          <CommentFormMD @formData="formUpdate" @onSubmit="onSubmit" />
+        </div>
         <v-row v-else-if="user">
           <v-col class="pa-0">
             <v-card-text color="accent" class="subtitle-1 text--disabled">
@@ -137,19 +141,21 @@ import { toBase64 } from '~/utilities/common'
 import ChatCard from '~/components/ChatCard'
 import AllCommentList from '~/components/AllCommentList'
 import QuoteCard from '~/components/ChatCard/QuoteCard'
-import CommentForm from '~/components/CommentForm'
+// import CommentForm from '~/components/CommentForm'
 import ReplyCard from '~/components/ChatCard/ReplyCard'
 import MovieCard from '~/components/ChatCard/MovieCard'
+import CommentFormMD from '~/components/CommentFormMD'
 // import LoadingSkeleton from '~/components/LoadingSkeleton'
 
 export default {
   components: {
     'chat-card': ChatCard,
     QuoteCard,
-    CommentForm,
+    // CommentForm,
     AllCommentList,
     ReplyCard,
-    MovieCard
+    MovieCard,
+    CommentFormMD
     // LoadingSkeleton
   },
   async fetch({ store, params, route, redirect }) {

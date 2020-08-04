@@ -75,6 +75,10 @@
       <div v-show="show">
         <v-divider></v-divider>
         <v-card-text
+          v-if="
+            cardcontent.fullDetailsCard &&
+              !cardcontent.fullDetailsCard.isMarkdown
+          "
           class="pb-0"
           v-html="
             cardcontent.fullDetailsCard &&
@@ -82,6 +86,14 @@
           "
         >
         </v-card-text>
+        <v-card-text
+          v-if="
+            cardcontent.fullDetailsCard &&
+              cardcontent.fullDetailsCard.articleBody &&
+              cardcontent.fullDetailsCard.isMarkdown
+          "
+          v-html="$md.render(cardcontent.fullDetailsCard.articleBody)"
+        ></v-card-text>
         <v-tooltip bottom content-class="caption">
           <template v-slot:activator="{ on }">
             <v-card-text

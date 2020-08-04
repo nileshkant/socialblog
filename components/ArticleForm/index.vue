@@ -19,11 +19,16 @@
           rules="required|min:3|max:50"
           label="Source*"
         />
-        <RichtextEditor
+        <!-- <RichtextEditor
           v-model="formData.articleBody"
           :limitcharcount="300"
           @richContent="richContent"
           @charCount="charCount"
+        /> -->
+        <CommentFormMD
+          v-model="formData.articleBody"
+          no-send-button
+          @formData="richContent"
         />
         <v-row>
           <v-col md="8" cols="12">
@@ -69,8 +74,10 @@ import { mapGetters } from 'vuex'
 import { required, min, max, image, size, regex } from 'vee-validate/dist/rules'
 // import cloneDeep from 'lodash/cloneDeep'
 import VTextFieldWithValidation from '../FormComponents/Textfield'
-import RichtextEditor from '../FormComponents/RichTextEditor'
+// import RichtextEditor from '../FormComponents/RichTextEditor'
 import FileUpload from '../FormComponents/fileUpload'
+import CommentFormMD from '~/components/CommentFormMD'
+
 // import SelectBox from '../FormComponents/selectBox'
 extend('required', {
   ...required,
@@ -98,7 +105,8 @@ export default {
   components: {
     ValidationObserver,
     VTextFieldWithValidation,
-    RichtextEditor,
+    // RichtextEditor,
+    CommentFormMD,
     FileUpload
     // SelectBox
   },
@@ -113,7 +121,8 @@ export default {
       subtitle: '',
       source: '',
       articleBody: '',
-      mediaUrl: ''
+      mediaUrl: '',
+      isMarkdown: false
     }
   }),
   computed: {
@@ -155,20 +164,14 @@ export default {
     charCount(count) {
       this.totalCharBody = count
     },
-    clear() {
-      this.$nextTick(() => {
-        this.$refs.obs.reset()
-      })
-    },
     richContent(content) {
-      this.formData.articleBody = content
+      this.formData.articleBody = content.textComment
+      this.formData.isMarkdown = true
     },
     async submit(data) {
       const success = await this.$refs.obs.validate()
       if (success) {
-        if (this.totalCharBody > 5 && this.totalCharBody <= 300) {
-          this.$emit('onSubmit', data)
-        }
+        this.$emit('onSubmit', data)
       }
     }
   }

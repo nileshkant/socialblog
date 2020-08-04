@@ -83,12 +83,16 @@
         v-html="htmlContent()"
       ></div>
       <v-card-text
-        v-if="cardcontent && cardcontent.textComment"
+        v-if="cardcontent && cardcontent.textComment && !cardcontent.isMarkdown"
         class="pa-0 para"
         v-html="cardcontent.textComment"
       >
       </v-card-text>
-      <div>
+      <div
+        v-if="cardcontent && cardcontent.textComment && cardcontent.isMarkdown"
+        v-html="$md.render(cardcontent.textComment)"
+      ></div>
+      <div v-if="!cardcontent.isMarkdown">
         <span
           v-for="(tag, index) in cardcontent.hashtags"
           :key="index"
