@@ -6,10 +6,18 @@
           Replied on
         </div>
         <div
-          v-if="replycontent && replycontent.textComment"
+          v-if="
+            replycontent && replycontent.textComment && !replycontent.isMarkdown
+          "
           class="pb-0 para caption"
           v-html="replycontent.textComment"
         />
+        <div
+          v-if="
+            replycontent && replycontent.textComment && replycontent.isMarkdown
+          "
+          v-html="$md.render(replycontent.textComment)"
+        ></div>
         <div v-if="replycontent && !replycontent.textComment">
           Photo
         </div>

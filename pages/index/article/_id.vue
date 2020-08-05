@@ -85,7 +85,7 @@
     </div>
     <v-divider />
     <div class="editor-pos">
-      <v-card flat class="br-0">
+      <v-card flat class="br-0 px-3">
         <v-btn
           v-if="replyComment"
           class="right-menu pos-a"
@@ -95,14 +95,13 @@
           ><v-icon small>mdi-close</v-icon>
         </v-btn>
         <ReplyCard v-if="replyComment" :replycontent="replyComment" />
-        {{ replyComment }}
         <resize-observer @notify="handleResize" />
         <!-- <CommentForm
           v-if="user && user.userDetails && isAllowed()"
           @formData="formUpdate"
           @onSubmit="onSubmit"
         /> -->
-        <div v-if="user && user.userDetails && isAllowed()" class="px-3">
+        <div v-if="user && user.userDetails && isAllowed()">
           <CommentFormMD @formData="formUpdate" @onSubmit="onSubmit" />
         </div>
         <v-row v-else-if="user">
