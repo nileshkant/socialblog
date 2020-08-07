@@ -74,6 +74,7 @@
               />
               <div
                 v-if="i === 2"
+                class="mdStyle"
                 v-html="$md.render(formData.textComment)"
               ></div>
             </v-col>

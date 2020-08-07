@@ -90,6 +90,7 @@
       </v-card-text>
       <div
         v-if="cardcontent && cardcontent.textComment && cardcontent.isMarkdown"
+        class="mdStyle"
         v-html="$md.render(cardcontent.textComment)"
       ></div>
       <div v-if="!cardcontent.isMarkdown">

@@ -16,6 +16,7 @@
           v-if="
             replycontent && replycontent.textComment && replycontent.isMarkdown
           "
+          class="mdStyle"
           v-html="$md.render(replycontent.textComment)"
         ></div>
         <div v-if="replycontent && !replycontent.textComment">

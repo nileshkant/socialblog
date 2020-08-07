@@ -53,3 +53,7 @@ blockquote p::after {
   content: '”';
   margin: -2px -10px 0 0;
 }
+
+.mdStyle img {
+  max-width: 100%;
+}

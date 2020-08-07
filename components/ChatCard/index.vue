@@ -92,6 +92,7 @@
               cardcontent.fullDetailsCard.articleBody &&
               cardcontent.fullDetailsCard.isMarkdown
           "
+          class="mdStyle"
           v-html="$md.render(cardcontent.fullDetailsCard.articleBody)"
         ></v-card-text>
         <v-tooltip bottom content-class="caption">
