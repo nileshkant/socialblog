@@ -24,7 +24,7 @@
         }"
         class="overflowY-auto scrollBar"
       >
-        <v-list three-line class="py-0">
+        <v-list three-line dense class="py-0">
           <template v-for="(item, index) in categories">
             <v-divider
               v-if="index !== categories.length && index !== 0"
@@ -43,7 +43,7 @@
                 }}</span>
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title class="title">
+                <v-list-item-title>
                   {{ item.name }}
                 </v-list-item-title>
                 <v-list-item-subtitle>

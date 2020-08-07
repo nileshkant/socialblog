@@ -77,7 +77,12 @@
                 v-html="$md.render(formData.textComment)"
               ></div>
             </v-col>
-            <v-col v-if="!noSendButton" cols="auto" class="py-0 text-center">
+            <v-col
+              v-if="!noSendButton"
+              cols="auto"
+              class="py-0 text-center mb-6"
+              align-self="end"
+            >
               <!-- <div class="pb-2 pt-1">
 
                     </div> -->
@@ -215,7 +220,7 @@ export default {
       const len = textArea.value.length
       const start = textArea.selectionStart
       const end = textArea.selectionEnd
-      const selectedText = textArea.value.substring(start, end)
+      const selectedText = textArea.value.substring(start, end).trim()
       let replacement = ` ${openTag}${closeTag} `
       if (selectedText) {
         replacement = ` ${openTag}${selectedText}${closeTag}`
