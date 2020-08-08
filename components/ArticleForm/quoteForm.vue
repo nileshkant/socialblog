@@ -7,7 +7,7 @@
           rules="required|min:5|max:100"
           label="Title*"
         />
-        <VTextarea
+        <!-- <VTextarea
           v-model="formData.quote"
           rules="required|min:5|max:800"
           auto-grow
@@ -15,6 +15,11 @@
           show-counter
           :rows="3"
           classes="mt-4"
+        /> -->
+        <CommentFormMD
+          v-model="formData.quote"
+          no-send-button
+          @formData="richContent"
         />
         <VTextFieldWithValidation
           v-model="formData.source"
@@ -44,8 +49,8 @@ import { mapGetters } from 'vuex'
 import { required, min, max } from 'vee-validate/dist/rules'
 import VTextFieldWithValidation from '../FormComponents/Textfield'
 import ColorPicker from '../FormComponents/colorpicker'
-import VTextarea from '../FormComponents/TextArea'
-
+// import VTextarea from '../FormComponents/TextArea'
+import CommentFormMD from '~/components/CommentFormMD'
 // import cloneDeep from 'lodash/cloneDeep'
 extend('required', {
   ...required,
@@ -65,7 +70,8 @@ export default {
     ValidationObserver,
     VTextFieldWithValidation,
     ColorPicker,
-    VTextarea
+    // VTextarea
+    CommentFormMD
   },
   data: () => ({
     items: ['No Image', 'Upload Image', 'Image/Video Url'],
@@ -104,6 +110,12 @@ export default {
       this.$nextTick(() => {
         this.$refs.obs.reset()
       })
+    },
+    richContent(content) {
+      this.formData.quote = content.textComment
+      if (!this.formData.isMarkdown) {
+        this.formData.isMarkdown = true
+      }
     },
     async submit(data) {
       const success = await this.$refs.obs.validate()

@@ -166,7 +166,9 @@ export default {
     },
     richContent(content) {
       this.formData.articleBody = content.textComment
-      this.formData.isMarkdown = true
+      if (!this.formData.isMarkdown) {
+        this.formData.isMarkdown = true
+      }
     },
     async submit(data) {
       const success = await this.$refs.obs.validate()

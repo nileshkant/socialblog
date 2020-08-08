@@ -75,11 +75,11 @@ router.post('/', authorized, async (req, res) => {
           ''
         )
       }
-      if (articleBodyTag) {
-        article[articleType].articleBody = article[
-          articleType
-        ].articleBody.replace(regexp, '')
-      }
+      // if (articleBodyTag) {
+      //   article[articleType].articleBody = article[
+      //     articleType
+      //   ].articleBody.replace(regexp, '')
+      // }
     }
     if (file) {
       const mediaUrl = await cloudinary.uploader.upload(file)

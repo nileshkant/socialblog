@@ -53,13 +53,19 @@
           })
         }}</v-card-text
       >
-      <v-card-text
+      <!-- <v-card-text
         v-if="post.quoteCard.quote"
         class="headline font-weight-bold"
         :class="!checkColor && 'black--text'"
       >
         " {{ post.quoteCard.quote }} "
-      </v-card-text>
+      </v-card-text> -->
+      <v-card-text
+        v-if="post.quoteCard.quote"
+        class="mdStyle"
+        :class="!checkColor && 'black--text'"
+        v-html="$md.render(post.quoteCard.quote)"
+      ></v-card-text>
       <v-card-actions>
         <v-btn
           v-if="post.isVerified"

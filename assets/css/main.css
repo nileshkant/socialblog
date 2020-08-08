@@ -56,4 +56,5 @@ blockquote p::after {
 
 .mdStyle img {
   max-width: 100%;
+  border-radius: 5px;
 }

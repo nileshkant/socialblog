@@ -19,8 +19,12 @@
         }}</span></NLink
       >
     </v-card-title>
-    <v-card-text
-      v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
+    <!-- <v-card-text
+      v-if="
+        cardcontent.quoteCard &&
+          cardcontent.quoteCard.quote &&
+          !cardcontent.quoteCard.isMarkdown
+      "
       class="font-weight-bold"
       :class="[
         !checkColor && 'black--text',
@@ -35,6 +39,19 @@
       <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
       {{ cardcontent.quoteCard.quote.trim() }}
       <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
+    </v-card-text> -->
+    <v-card-text>
+      <div
+        v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
+        class="mdStyle"
+        :class="[
+          cardcontent.quoteCard.quote.length > 300 &&
+            $route.params.id !== cardcontent._id &&
+            'truncate-overflow',
+          !checkColor && 'black--text'
+        ]"
+        v-html="$md.render(cardcontent.quoteCard.quote)"
+      ></div>
     </v-card-text>
     <v-card-text
       v-if="
