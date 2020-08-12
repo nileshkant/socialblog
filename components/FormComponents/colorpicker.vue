@@ -8,6 +8,7 @@
       hide-canvas
       hide-inputs
       class="fullWidth"
+      v-bind="optionalProps"
     ></v-color-picker>
   </div>
 </template>
@@ -22,6 +23,10 @@ export default {
     type: {
       type: String,
       default: 'hex'
+    },
+    optionalProps: {
+      type: Object,
+      default: () => {}
     }
   },
   data: () => ({

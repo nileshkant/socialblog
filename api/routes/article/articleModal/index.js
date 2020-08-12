@@ -91,6 +91,7 @@ const articleSchema = new Schema({
       type: String,
       validate: {
         validator(value) {
+          if (!value) return true
           return /(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\b|(?:rgb|hsl)a?\([^)]*\)/i.test(
             value
           )

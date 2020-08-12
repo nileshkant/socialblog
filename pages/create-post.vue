@@ -129,7 +129,7 @@
                 <v-row class="mt-10">
                   <v-col>
                     <h3>
-                      Preview Post
+                      Preview Story
                     </h3>
                   </v-col>
                   <v-col cols="auto">

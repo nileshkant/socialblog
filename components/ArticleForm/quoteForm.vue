@@ -19,6 +19,7 @@
         <CommentFormMD
           v-model="formData.quote"
           no-send-button
+          :optional-props="{ label: 'Quote/Poem/Song/Short story*' }"
           @formData="richContent"
         />
         <VTextFieldWithValidation
@@ -26,7 +27,19 @@
           rules="required|min:3|max:200"
           label="Source*"
         />
-        <ColorPicker v-model="formData.color" />
+        <v-row>
+          <v-col>
+            <ColorPicker
+              :optional-props="{ disabled: !formData.color }"
+              v-model="color"
+            />
+          </v-col>
+          <v-col cols="auto" align-self="end" class="mb-3">
+            <v-btn icon @click="formData.color = formData.color ? null : color">
+              <v-icon>mdi-invert-colors-off</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
         <v-card-actions>
           <!-- <v-btn @click="submit('save')">Save</v-btn> -->
           <v-spacer></v-spacer>
@@ -79,6 +92,7 @@ export default {
     select: '',
     totalCharBody: 0,
     file: null,
+    color: '#000000',
     formData: {
       title: '',
       quote: '',
@@ -93,6 +107,11 @@ export default {
     })
   },
   watch: {
+    color: {
+      handler(newVal) {
+        this.formData.color = newVal
+      }
+    },
     formData: {
       handler(newValue) {
         this.$emit('formData', newValue)

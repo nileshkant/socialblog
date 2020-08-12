@@ -32,23 +32,41 @@
     <v-card-actions>
       <v-btn icon :disabled="!cardcontent._id" @click="likeArticle">
         <v-icon v-if="likes" color="error">mdi-heart</v-icon>
-        <v-icon v-else :color="!checkColor ? 'black' : ''"
+        <v-icon
+          v-else
+          :class="{
+            'black--text': checkColor === 'light',
+            'white--text': checkColor === 'dark'
+          }"
           >mdi-heart-outline</v-icon
         >
       </v-btn>
       <div
         v-if="cardcontent.likes && cardcontent.likes.length > 0"
         class="mr-2"
-        :class="!checkColor && 'black--text'"
+        :class="{
+          'black--text': checkColor === 'light',
+          'white--text': checkColor === 'dark'
+        }"
       >
         {{ cardcontent.likes && cardcontent.likes.length }}
       </div>
 
       <v-btn icon :disabled="!cardcontent._id" @click="bookmarkArticle">
-        <v-icon v-if="isBookmarked" :color="!checkColor ? 'black' : ''"
+        <v-icon
+          v-if="isBookmarked"
+          :class="{
+            'black--text': checkColor === 'light',
+            'white--text': checkColor === 'dark'
+          }"
           >mdi-bookmark-check</v-icon
         >
-        <v-icon v-else :color="!checkColor ? 'black' : ''"
+        <v-icon
+          v-else
+          :class="{
+            'black--text': checkColor === 'light',
+            'white--text': checkColor === 'dark'
+          }"
           >mdi-bookmark-plus-outline</v-icon
         >
       </v-btn>
@@ -56,7 +74,10 @@
       <div
         v-if="cardcontent._id && (cardcontent.views || cardcontent.newViews)"
         class="ml-2"
-        :class="!checkColor && 'black--text'"
+        :class="{
+          'black--text': checkColor === 'light',
+          'white--text': checkColor === 'dark'
+        }"
       >
         <span>
           {{ cardcontent.views + cardcontent.newViews }}
@@ -68,14 +89,14 @@
 
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn
-            v-if="cardcontent._id"
-            class="mx-2"
-            icon
-            :color="!checkColor ? 'black' : ''"
-            v-on="on"
-          >
-            <v-icon>mdi-dots-vertical</v-icon>
+          <v-btn v-if="cardcontent._id" class="mx-2" icon v-on="on">
+            <v-icon
+              :class="{
+                'black--text': checkColor === 'light',
+                'white--text': checkColor === 'dark'
+              }"
+              >mdi-dots-vertical</v-icon
+            >
           </v-btn>
         </template>
         <v-list>
@@ -121,8 +142,8 @@ export default {
       required: true
     },
     checkColor: {
-      type: Boolean,
-      default: true
+      type: String,
+      default: 'noColor'
     },
     shareData: {
       type: Object,

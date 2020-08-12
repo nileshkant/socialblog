@@ -1,20 +1,19 @@
 <template>
   <v-card
     :color="cardcontent.quoteCard && cardcontent.quoteCard.color"
-    :dark="checkColor"
+    :class="{
+      'black--text': checkColor === 'light',
+      'white--text': checkColor === 'dark'
+    }"
   >
-    <AuthorAndDate
-      :cardcontent="cardcontent"
-      :check-color="checkColor"
-      :useTheme="false"
-    />
+    <AuthorAndDate :cardcontent="cardcontent" :useTheme="false" />
 
     <v-card-title class="pt-0">
       <NLink
         :class="!cardcontent._id && 'disable-click'"
         :to="'/article/' + cardcontent._id"
         class="title font-weight-light link"
-        ><span :class="!checkColor && 'black--text'">{{
+        ><span>{{
           cardcontent.quoteCard && cardcontent.quoteCard.title
         }}</span></NLink
       >
@@ -40,40 +39,33 @@
       {{ cardcontent.quoteCard.quote.trim() }}
       <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
     </v-card-text> -->
-    <v-card-text>
-      <div
-        v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
-        class="mdStyle"
-        :class="[
-          cardcontent.quoteCard.quote.length > 300 &&
-            $route.params.id !== cardcontent._id &&
-            'truncate-overflow',
-          !checkColor && 'black--text'
-        ]"
-        v-html="$md.render(cardcontent.quoteCard.quote)"
-      ></div>
-    </v-card-text>
-    <v-card-text
+    <div
+      v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
+      class="mdStyle px-4"
+      :class="[
+        cardcontent.quoteCard.quote.length > 300 &&
+          $route.params.id !== cardcontent._id &&
+          'truncate-overflow'
+      ]"
+      v-html="$md.render(cardcontent.quoteCard.quote)"
+    ></div>
+    <div
       v-if="
         cardcontent.quoteCard &&
           cardcontent.quoteCard.quote &&
           cardcontent.quoteCard.quote.length > 300 &&
           $route.params.id !== cardcontent._id
       "
+      class="px-4 caption"
     >
-      <NLink
-        :to="'/article/' + cardcontent._id"
-        :class="!checkColor ? 'black--text' : 'white--text'"
-        >Read more...</NLink
-      >
-    </v-card-text>
-    <v-card-text
+      <NLink :to="'/article/' + cardcontent._id">Read more...</NLink>
+    </div>
+    <div
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.source"
-      class="caption py-0 pl-4 text-truncate"
-      :class="!checkColor && 'black--text'"
+      class="caption py-0 px-4 text-truncate"
     >
       - {{ cardcontent.quoteCard.source }}
-    </v-card-text>
+    </div>
     <div class="ml-4">
       <span
         v-for="(tag, index) in cardcontent.hashtags"
@@ -81,7 +73,6 @@
         class="pr-2"
       >
         <NLink
-          :class="!checkColor && 'black--text'"
           class="tt-none nlink link"
           :to="`/search?search=%23${tag}&type=article`"
           >#{{ tag }}</NLink
@@ -124,13 +115,17 @@ export default {
   },
   computed: {
     checkColor() {
-      if (
-        this.cardcontent.quoteCard &&
-        lightOrDark(this.cardcontent.quoteCard.color) === 'dark'
-      ) {
-        return true
+      let color = 'noColor'
+      if (this.cardcontent.quoteCard) {
+        if (lightOrDark(this.cardcontent.quoteCard.color) === 'dark') {
+          color = 'dark'
+        } else if (lightOrDark(this.cardcontent.quoteCard.color) === 'light') {
+          color = 'light'
+        } else {
+          color = 'noColor'
+        }
       }
-      return false
+      return color
     },
     ...mapGetters({
       user: 'user',

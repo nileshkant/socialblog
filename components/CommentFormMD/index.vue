@@ -67,10 +67,10 @@
                 v-model="formData.textComment"
                 rules="required|min:5|max:800"
                 auto-grow
-                label="Add more details"
                 show-counter
                 :rows="0"
                 validate-on-blur
+                v-bind="optionalProps"
               />
               <div
                 v-if="i === 2"
@@ -160,6 +160,12 @@ export default {
     noSendButton: {
       type: Boolean,
       default: false
+    },
+    optionalProps: {
+      type: Object,
+      default: () => ({
+        label: 'Add more details'
+      })
     }
   },
   data() {

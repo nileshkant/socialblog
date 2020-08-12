@@ -17,6 +17,7 @@ export const cloudinarytransformUrl = (fullUrl, parameters) => {
 }
 
 export const lightOrDark = (color) => {
+  if (!color) return 'noColor'
   // Variables for red, green, blue values
   let r
   let g
