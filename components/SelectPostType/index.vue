@@ -40,7 +40,7 @@ export default {
         {
           name: 'quoteCard',
           skeletonType: 'article, actions',
-          button: 'Quote Story'
+          button: 'Short Story'
         }
       ]
     }

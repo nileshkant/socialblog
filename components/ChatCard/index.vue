@@ -1,7 +1,9 @@
 <template>
   <v-card>
     <NLink
-      :to="'/article/' + cardcontent._id"
+      :to="
+        `/article/${cardcontent._id}?title=${cardcontent.fullDetailsCard.title}`
+      "
       :event="overlay || !cardcontent._id ? '' : 'click'"
       class="link"
     >
@@ -34,7 +36,9 @@
     <div class="title pt-0 px-4">
       <NLink
         :class="!cardcontent._id && 'disable-click'"
-        :to="'/article/' + cardcontent._id"
+        :to="
+          `/article/${cardcontent._id}?title=${cardcontent.fullDetailsCard.title}`
+        "
         class="link in-color"
         @click.native="redirectTo"
       >
@@ -45,6 +49,17 @@
     <v-card-subtitle>
       {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.subtitle }}
     </v-card-subtitle>
+    <div class="pl-4">
+      <NLink
+        v-if="$route.name !== 'index-article-id'"
+        class="read-more-link"
+        :to="
+          `/article/${cardcontent._id}?title=${cardcontent.fullDetailsCard.title}`
+        "
+      >
+        Read More...
+      </NLink>
+    </div>
     <div class="ml-4">
       <span
         v-for="(tag, index) in cardcontent.hashtags"
@@ -66,6 +81,7 @@
       :cardcontent="cardcontent"
       :share-data="cardcontent._id && shareData()"
     >
+      <v-spacer></v-spacer>
       <v-btn fab small color="primary" @click="show = !show">
         <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
       </v-btn>

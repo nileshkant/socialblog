@@ -66,7 +66,8 @@ module.exports = {
     '~/assets/css/tiptap.css',
     '~/assets/css/weather.css',
     '~/assets/css/weather-dark.css',
-    '~/assets/css/highlight.css'
+    '~/assets/css/highlight.css',
+    '~/assets/sass/scssStyles.scss'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -119,7 +120,7 @@ module.exports = {
   },
 
   styleResources: {
-    scss: ['~assets/scss/_main.scss']
+    scss: ['~/assets/scss/_main.scss', '~/assets/sass/scssStyles.scss']
   },
   /*
    ** Axios module configuration

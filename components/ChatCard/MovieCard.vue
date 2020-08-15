@@ -6,7 +6,9 @@
           <div class="title">
             <NLink
               :class="!cardcontent._id && 'disable-click'"
-              :to="'/article/' + cardcontent._id"
+              :to="
+                `/article/${cardcontent._id}?title=${cardcontent.movieReviewCard.Title}`
+              "
               class="link in-color"
             >
               {{ cardcontent.movieReviewCard.Title }}
@@ -51,7 +53,9 @@
         </v-col>
         <v-col cols="6">
           <NLink
-            :to="'/article/' + cardcontent._id"
+            :to="
+              `/article/${cardcontent._id}?title=${cardcontent.movieReviewCard.Title}`
+            "
             :event="!cardcontent._id ? '' : 'click'"
           >
             <v-sheet
@@ -98,7 +102,15 @@
         :share-data="cardcontent._id && shareData()"
       >
         <v-spacer></v-spacer>
-        <div class="error--text caption">Beta version</div>
+        <NLink
+          v-if="$route.name !== 'index-article-id'"
+          class="read-more-link"
+          :to="
+            `/article/${cardcontent._id}?title=${cardcontent.movieReviewCard.Title}`
+          "
+        >
+          Read Reviews
+        </NLink>
       </CardAction>
     </div>
     <div v-else>
@@ -161,6 +173,9 @@ export default {
         Response: 'True'
       })
     }
+  },
+  mounted() {
+    console.log('path', this.$route)
   },
   methods: {
     ratingSource(name) {

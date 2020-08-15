@@ -32,7 +32,6 @@
       <v-col>
         <v-skeleton-loader :boilerplate="true" type="sentences">
         </v-skeleton-loader>
-        <div class="error--text caption">Beta version (May be unstable)</div>
       </v-col>
     </v-row>
   </v-sheet>

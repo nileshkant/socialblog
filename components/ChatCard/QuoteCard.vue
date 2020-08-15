@@ -11,7 +11,7 @@
     <v-card-title class="pt-0">
       <NLink
         :class="!cardcontent._id && 'disable-click'"
-        :to="'/article/' + cardcontent._id"
+        :to="`/article/${cardcontent._id}?title=${cardcontent.quoteCard.title}`"
         class="title font-weight-light link"
         ><span>{{
           cardcontent.quoteCard && cardcontent.quoteCard.title
@@ -50,19 +50,8 @@
       v-html="$md.render(cardcontent.quoteCard.quote)"
     ></div>
     <div
-      v-if="
-        cardcontent.quoteCard &&
-          cardcontent.quoteCard.quote &&
-          cardcontent.quoteCard.quote.length > 300 &&
-          $route.params.id !== cardcontent._id
-      "
-      class="px-4 caption"
-    >
-      <NLink :to="'/article/' + cardcontent._id">Read more...</NLink>
-    </div>
-    <div
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.source"
-      class="caption py-0 px-4 text-truncate"
+      class="caption py-2 px-4 text-truncate"
     >
       - {{ cardcontent.quoteCard.source }}
     </div>
@@ -83,7 +72,25 @@
       :cardcontent="cardcontent"
       :check-color="checkColor"
       :share-data="cardcontent._id && shareData()"
-    />
+    >
+      <v-spacer></v-spacer>
+      <div
+        v-if="
+          cardcontent.quoteCard &&
+            cardcontent.quoteCard.quote &&
+            cardcontent.quoteCard.quote.length > 300 &&
+            $route.params.id !== cardcontent._id
+        "
+      >
+        <NLink
+          class="read-more-link"
+          :to="
+            `/article/${cardcontent._id}?title=${cardcontent.quoteCard.title}`
+          "
+          >Read more...</NLink
+        >
+      </div>
+    </CardAction>
   </v-card>
 </template>
 
