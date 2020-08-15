@@ -2,7 +2,11 @@
   <v-card>
     <NLink
       :to="
-        `/article/${cardcontent._id}?title=${cardcontent.fullDetailsCard.title}`
+        `/article/${cardcontent._id}?title=${
+          cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.title
+            ? cardcontent.fullDetailsCard.title
+            : ''
+        }`
       "
       :event="overlay || !cardcontent._id ? '' : 'click'"
       class="link"
@@ -37,7 +41,11 @@
       <NLink
         :class="!cardcontent._id && 'disable-click'"
         :to="
-          `/article/${cardcontent._id}?title=${cardcontent.fullDetailsCard.title}`
+          `/article/${cardcontent._id}?title=${
+            cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.title
+              ? cardcontent.fullDetailsCard.title
+              : ''
+          }`
         "
         class="link in-color"
         @click.native="redirectTo"
@@ -51,7 +59,7 @@
     </v-card-subtitle>
     <div class="pl-4">
       <NLink
-        v-if="$route.name !== 'index-article-id'"
+        v-if="$route.name !== 'index-article-id' && cardcontent._id"
         class="read-more-link"
         :to="
           `/article/${cardcontent._id}?title=${cardcontent.fullDetailsCard.title}`

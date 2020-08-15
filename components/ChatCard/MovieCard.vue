@@ -54,7 +54,13 @@
         <v-col cols="6">
           <NLink
             :to="
-              `/article/${cardcontent._id}?title=${cardcontent.movieReviewCard.Title}`
+              `/article/${cardcontent._id}?title=${
+                cardcontent._id &&
+                cardcontent.movieReviewCard &&
+                cardcontent.movieReviewCard.Title
+                  ? cardcontent.movieReviewCard.Title
+                  : ''
+              }`
             "
             :event="!cardcontent._id ? '' : 'click'"
           >
@@ -106,7 +112,13 @@
           v-if="$route.name !== 'index-article-id'"
           class="read-more-link"
           :to="
-            `/article/${cardcontent._id}?title=${cardcontent.movieReviewCard.Title}`
+            `/article/${cardcontent._id}?title=${
+              cardcontent._id &&
+              cardcontent.movieReviewCard &&
+              cardcontent.movieReviewCard.Title
+                ? cardcontent.movieReviewCard.Title
+                : ''
+            }`
           "
         >
           Read Reviews

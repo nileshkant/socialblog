@@ -11,7 +11,13 @@
     <v-card-title class="pt-0">
       <NLink
         :class="!cardcontent._id && 'disable-click'"
-        :to="`/article/${cardcontent._id}?title=${cardcontent.quoteCard.title}`"
+        :to="
+          `/article/${cardcontent._id}?title=${
+            cardcontent.quoteCard && cardcontent.quoteCard.title
+              ? cardcontent.quoteCard.title
+              : ''
+          }`
+        "
         class="title font-weight-light link"
         ><span>{{
           cardcontent.quoteCard && cardcontent.quoteCard.title
