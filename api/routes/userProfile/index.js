@@ -12,7 +12,10 @@ router.get('/get-posts', authorized, async (req, res) => {
     const user = req.query.userId || req.user._id
     const limit = Number(req.query.pageSize) || 50
     const page = Number(req.query.page) || 1
-    const query = { author: mongoose.Types.ObjectId(user) }
+    const query = {
+      author: mongoose.Types.ObjectId(user),
+      articleType: { $ne: 'movieReviewCard' }
+    }
     if (req.query.userId) {
       query.isPublished = true
       query.isVerified = true

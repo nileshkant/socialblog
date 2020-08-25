@@ -107,6 +107,14 @@
                       {{ userPosts.articles | filterPosts('quoteCard') }}
                     </div>
                   </v-col>
+                  <v-col v-if="repostArticles" cols="auto">
+                    <div class="caption">
+                      Live Reposts
+                    </div>
+                    <div class="text-center title">
+                      {{ repostArticles }}
+                    </div>
+                  </v-col>
                 </v-row>
               </v-col>
             </v-row>
@@ -163,7 +171,21 @@ export default {
       isDarkMode: 'commonState/isDarkMode',
       user: 'user',
       anyUserDetails: 'userProfile/anyUserDetails'
-    })
+    }),
+    repostArticles() {
+      const filterRepost =
+        this.userPosts &&
+        this.userPosts.articles &&
+        this.userPosts.articles.filter((article) => {
+          return (
+            this.$dateFns.differenceInDays(
+              new Date(),
+              new Date(article.modifiedDate)
+            ) < 2
+          )
+        })
+      return (filterRepost && filterRepost.length) || 0
+    }
   },
   beforeRouteLeave(to, from, next) {
     this.$store.commit('userProfile/anyUserDetails', null)

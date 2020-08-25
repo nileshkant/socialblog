@@ -349,7 +349,7 @@ router.get('/get-articles', async (req, res) => {
           select: { password: 0, permissions: 0 }
         }
       })
-      .sort({ createdDate: -1 })
+      .sort({ modifiedDate: -1 })
       .limit(limit)
       .skip(limit * (page - 1))
       .exec()
@@ -552,6 +552,28 @@ router.get('/search', async (req, res) => {
       )
       res.status(200).json({ result: data, pageSize: limit, page })
     }
+  } catch (err) {
+    res.status(400).json({ msg: err })
+  }
+})
+
+/**
+ * Repost a story
+ * @date 2020-08-20
+ * @param {any} '/repost-story'
+ * @returns {any}
+ */
+router.post('/repost-story', authorized, async (req, res) => {
+  const { articleId } = req.body
+  try {
+    const repostedStory = await Article.updateOne(
+      {
+        _id: articleId,
+        author: req.user._id
+      },
+      { modifiedDate: new Date(), $inc: { repostTimes: 1 } }
+    )
+    res.status(200).json(repostedStory)
   } catch (err) {
     res.status(400).json({ msg: err })
   }

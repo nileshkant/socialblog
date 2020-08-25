@@ -24,27 +24,6 @@
         }}</span></NLink
       >
     </v-card-title>
-    <!-- <v-card-text
-      v-if="
-        cardcontent.quoteCard &&
-          cardcontent.quoteCard.quote &&
-          !cardcontent.quoteCard.isMarkdown
-      "
-      class="font-weight-bold"
-      :class="[
-        !checkColor && 'black--text',
-        cardcontent.quoteCard.quote.length > 300
-          ? 'textWrap'
-          : 'headline font-weight-bold',
-        cardcontent.quoteCard.quote.length > 300 &&
-          $route.params.id !== cardcontent._id &&
-          'truncate-overflow'
-      ]"
-    >
-      <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
-      {{ cardcontent.quoteCard.quote.trim() }}
-      <span v-if="cardcontent.quoteCard.quote.length <= 300">"</span>
-    </v-card-text> -->
     <div
       v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
       class="mdStyle px-4"
@@ -90,6 +69,10 @@
       >
         <NLink
           class="read-more-link"
+          :class="{
+            'black--text': checkColor === 'light',
+            'white--text': checkColor === 'dark'
+          }"
           :to="
             `/article/${cardcontent._id}?title=${cardcontent.quoteCard.title}`
           "

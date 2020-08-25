@@ -186,9 +186,6 @@ export default {
       })
     }
   },
-  mounted() {
-    console.log('path', this.$route)
-  },
   methods: {
     ratingSource(name) {
       if (name === 'Internet Movie Database') {

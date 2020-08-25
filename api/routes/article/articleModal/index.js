@@ -12,6 +12,14 @@ const articleSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  modifiedDate: {
+    type: Date,
+    default: Date.now
+  },
+  repostTimes: {
+    type: Number,
+    default: 0
+  },
   articleType: {
     type: String,
     enum: ['fullDetailsCard', 'quoteCard', 'movieReviewCard'],

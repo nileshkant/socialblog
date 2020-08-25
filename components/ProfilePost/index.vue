@@ -20,32 +20,39 @@
       </div>
 
       <v-card-actions>
-        <v-btn
-          color="primary"
-          text
-          outlined
-          class="ml-2"
-          :to="`/article/${post.id}`"
-        >
+        <v-btn text outlined class="ml-2" :to="`/article/${post.id}`">
           View Story
         </v-btn>
+        <v-btn
+          v-if="user && user.userDetails._id === post.author && post.isVerified"
+          title="Repost Story"
+          icon
+          @click="repostStory(post._id)"
+        >
+          <v-icon :color="checkRepost ? '' : 'red'">mdi-twitter-retweet</v-icon>
+        </v-btn>
+        <v-card-text v-if="!post.isVerified" class="pa-0 caption px-2">
+          This Story is blocked!
+        </v-card-text>
       </v-card-actions>
     </v-card>
     <v-card
       v-if="post && post.articleType === 'quoteCard'"
       :color="post.quoteCard && post.quoteCard.color"
-      :dark="checkColor"
+      :class="{
+        'black--text': checkColor === 'light',
+        'white--text': checkColor === 'dark'
+      }"
     >
       <v-card-title class="pb-0">
-        <span
-          class="title font-weight-light"
-          :class="!checkColor && 'black--text'"
-          >{{ post.quoteCard.title }}</span
-        >
+        <span class="title font-weight-light">{{ post.quoteCard.title }}</span>
       </v-card-title>
       <v-card-text
         class="pt-0 pb-2 caption"
-        :class="!checkColor && 'black--text'"
+        :class="{
+          'black--text': checkColor === 'light',
+          'white--text': checkColor === 'dark'
+        }"
       >
         {{
           $dateFns.formatDistanceToNow(new Date(post.createdDate), {
@@ -63,27 +70,44 @@
       <v-card-text
         v-if="post.quoteCard.quote"
         class="mdStyle"
-        :class="!checkColor && 'black--text'"
+        :class="{
+          'black--text': checkColor === 'light',
+          'white--text': checkColor === 'dark'
+        }"
         v-html="$md.render(post.quoteCard.quote)"
       ></v-card-text>
       <v-card-actions>
         <v-btn
           v-if="post.isVerified"
-          :class="!checkColor && 'black--text'"
+          :color="
+            checkColor === 'light'
+              ? 'black'
+              : checkColor === 'dark'
+              ? 'white'
+              : ''
+          "
+          :dark="checkColor === 'dark'"
           outlined
           text
           :to="`/article/${post.id}`"
         >
           View Story
         </v-btn>
-        <v-card-text v-else class="pa-0 caption px-2">
+        <v-btn
+          v-if="user && user.userDetails._id === post.author && post.isVerified"
+          title="Repost Story"
+          icon
+          @click="repostStory(post._id)"
+        >
+          <v-icon :color="checkRepost ? '' : 'red'">mdi-twitter-retweet</v-icon>
+        </v-btn>
+        <v-card-text v-if="!post.isVerified" class="pa-0 caption px-2">
           This Story is blocked!
         </v-card-text>
         <v-spacer></v-spacer>
         <v-card-text
           v-if="post.quoteCard && post.quoteCard.source"
           class="caption py-0 text-truncate text-right"
-          :class="!checkColor && 'black--text'"
         >
           {{ post.quoteCard.source }}
         </v-card-text>
@@ -93,7 +117,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { lightOrDark } from '../../utilities/common'
+
 export default {
   props: {
     post: {
@@ -102,15 +128,40 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      user: 'user'
+    }),
     checkColor() {
+      let color = 'noColor'
+      if (this.post.quoteCard) {
+        if (lightOrDark(this.post.quoteCard.color) === 'dark') {
+          color = 'dark'
+        } else if (lightOrDark(this.post.quoteCard.color) === 'light') {
+          color = 'light'
+        } else {
+          color = 'noColor'
+        }
+      }
+      return color
+    },
+    checkRepost() {
       if (
-        this.post.quoteCard &&
-        this.post.quoteCard.color &&
-        lightOrDark(this.post.quoteCard.color) === 'dark'
+        this.$dateFns.differenceInDays(
+          new Date(),
+          new Date(this.post.modifiedDate)
+        ) >= 2
       ) {
         return true
       }
       return false
+    }
+  },
+  methods: {
+    repostStory(id) {
+      if (this.checkRepost) {
+        const articleId = { articleId: id }
+        this.$store.dispatch('userProfile/repostStory', articleId)
+      }
     }
   }
 }
