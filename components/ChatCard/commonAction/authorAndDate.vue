@@ -15,7 +15,10 @@
     <span
       >-
       {{
-        cardcontent.author.username || cardcontent.author.facebook.displayName
+        cardcontent.author &&
+          (cardcontent.author.username ||
+            cardcontent.author.facebook.displayName ||
+            '')
       }}</span
     >
   </div>

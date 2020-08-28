@@ -3,6 +3,7 @@ import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
 import { Strategy as FacebookStrategy } from 'passport-facebook'
 import { SECRET, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET } from '../env'
 import { MultiAccountUser } from '../routes/auth/modal'
+import { UserAdditionalDetails } from '../routes/userAdditionalDetails/modal'
 import { BASE_URL } from '../../utilities/constant'
 
 passport.use(
@@ -58,6 +59,10 @@ passport.use(
               }
             },
             (err, user) => {
+              UserAdditionalDetails.create({
+                userId: user._id,
+                coinBalance: 20
+              })
               cb(err, user)
             }
           )

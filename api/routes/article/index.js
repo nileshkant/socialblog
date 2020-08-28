@@ -5,6 +5,7 @@ import { clearHash } from '../../core/redis'
 import cloudinary from '../../core/cloudinary'
 import { authorized } from '../../utils'
 import { websiteDetails } from '../noembed/fetchWebsite'
+import { UserAdditionalDetails } from '../userAdditionalDetails/modal'
 import { Article } from './articleModal'
 import { LikeArticle } from './articleModal/otherModal'
 import { Category, PostComment } from './modal'
@@ -86,13 +87,26 @@ router.post('/', authorized, async (req, res) => {
       article[articleType].mediaUrl = mediaUrl.secure_url
       article[articleType].cloudinaryId = mediaUrl.public_id
     }
-    await article.save((err, data) => {
-      if (err) {
-        res.status(400).json({ msg: err })
-        return
-      }
-      res.status(200).json({ savedArticle: data })
-    })
+    const savedArticle = await article.save()
+    if (savedArticle && savedArticle.articleType !== 'movieReviewCard') {
+      await UserAdditionalDetails.findOneAndUpdate(
+        {
+          userId: req.user._id
+        },
+        {
+          $inc: { coinBalance: 2 },
+          $push: {
+            redeemedBalance: {
+              actionDate: new Date(),
+              amount: 2,
+              action: savedArticle[savedArticle.articleType].title || ''
+            }
+          }
+        },
+        { upsert: true, new: true, setDefaultsOnInsert: true }
+      )
+    }
+    res.status(200).json({ savedArticle })
   } catch (err) {
     res.status(400).json({ message: err })
   }
@@ -173,6 +187,22 @@ router.post('/add-comment', authorized, async (req, res) => {
     }
     const commented = await addComment.save()
     if (commented) {
+      await UserAdditionalDetails.findOneAndUpdate(
+        {
+          userId: req.user._id
+        },
+        {
+          $inc: { coinBalance: 1 },
+          $push: {
+            redeemedBalance: {
+              actionDate: new Date(),
+              amount: 1,
+              action: 'Comment on a story'
+            }
+          }
+        },
+        { upsert: true, new: true, setDefaultsOnInsert: true }
+      )
       res.status(200).json({ newComment: commented })
     }
   } catch (err) {
@@ -231,6 +261,22 @@ router.delete('/delete-comments', authorized, async (req, res) => {
     }
     const deletedComment = await PostComment.findOneAndDelete(query).exec()
     if (deletedComment) {
+      await UserAdditionalDetails.findOneAndUpdate(
+        {
+          userId: req.user._id,
+          coinBalance: { $gte: 1 }
+        },
+        {
+          $inc: { coinBalance: -1 },
+          $push: {
+            redeemedBalance: {
+              actionDate: new Date(),
+              amount: -1,
+              action: 'Comment deleted'
+            }
+          }
+        }
+      )
       if (deletedComment.cloudinaryId) {
         try {
           await cloudinary.uploader.destroy(deletedComment.cloudinaryId, {
@@ -385,6 +431,22 @@ router.delete('/delete-article', authorized, async (req, res) => {
     }
     const deleteArticle = await Article.findOneAndDelete(query).exec()
     if (deleteArticle) {
+      await UserAdditionalDetails.findOneAndUpdate(
+        {
+          userId: req.user._id,
+          coinBalance: { $gte: 1 }
+        },
+        {
+          $inc: { coinBalance: -1 },
+          $push: {
+            redeemedBalance: {
+              actionDate: new Date(),
+              amount: -1,
+              action: deleteArticle[deleteArticle.articleType].title || ''
+            }
+          }
+        }
+      )
       if (deleteArticle[deleteArticle.articleType].cloudinaryId) {
         try {
           await cloudinary.uploader.destroy(
@@ -564,16 +626,36 @@ router.get('/search', async (req, res) => {
  * @returns {any}
  */
 router.post('/repost-story', authorized, async (req, res) => {
-  const { articleId } = req.body
+  const { articleId, articleTitle } = req.body
   try {
-    const repostedStory = await Article.updateOne(
+    const details = await UserAdditionalDetails.findOneAndUpdate(
       {
-        _id: articleId,
-        author: req.user._id
+        userId: req.user._id,
+        coinBalance: { $gte: 5 }
       },
-      { modifiedDate: new Date(), $inc: { repostTimes: 1 } }
+      {
+        $inc: { coinBalance: -5 },
+        $push: {
+          redeemedBalance: {
+            actionDate: new Date(),
+            amount: -5,
+            action: articleTitle || ''
+          }
+        }
+      }
     )
-    res.status(200).json(repostedStory)
+    if (details) {
+      const repostedStory = await Article.updateOne(
+        {
+          _id: articleId,
+          author: req.user._id
+        },
+        { modifiedDate: new Date(), $inc: { repostTimes: 1 } }
+      )
+      res.status(200).json(repostedStory)
+    } else {
+      res.status(400).json({ msg: 'Insufficient Balance' })
+    }
   } catch (err) {
     res.status(400).json({ msg: err })
   }
