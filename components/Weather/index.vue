@@ -21,7 +21,7 @@
           Humidity: {{ weather.list.main.humidity }}%
         </div>
       </v-col>
-      <v-col class="text-center" cols="5">
+      <v-col class="text-center px-0" cols="5">
         <Icons v-if="weather.list" :icon="weather.list.weather[0].icon" />
         <div v-if="weather.list" class="caption mt-2">
           {{ weather.list.weather[0].description | capitalizeFirstLetter }}
@@ -33,7 +33,6 @@
       <v-col>
         <div v-if="weather.city" class="caption">
           <v-icon>mdi-weather-hazy</v-icon>
-          Sunrise:
           {{
             $dateFns.format(
               $dateFns.fromUnixTime(weather.city.sunrise),
@@ -45,7 +44,6 @@
       <v-col>
         <div class="caption text-right">
           <v-icon>mdi-weather-sunset</v-icon>
-          Sunset:
           {{
             $dateFns.format(
               $dateFns.fromUnixTime(weather.city.sunset),

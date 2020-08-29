@@ -1,22 +1,20 @@
 <template>
   <v-row>
     <v-col class="pa-0">
-      <v-toolbar flat>
-        <span
+      <v-row class="mx-0 mt-1">
+        <v-col cols="2" class="px-md-0 px-1"
           ><v-img
             :src="icon"
-            max-height="25"
-            max-width="50"
             contain
-            class="pointer d-none d-md-flex"
+            class="pointer"
             @click="clickedTopic('home')"
           ></v-img
-        ></span>
-        <v-toolbar-title class="title ml-md-3">
-          The Open Stories
-        </v-toolbar-title>
-      </v-toolbar>
-      <v-divider />
+        ></v-col>
+        <v-col class="title ml-md-3 fw-800">
+          <h3>The Open Stories</h3>
+        </v-col>
+      </v-row>
+      <!-- <v-divider /> -->
       <div
         :style="{
           'min-height': windowHeight - 66 + 'px',
@@ -24,7 +22,31 @@
         }"
         class="overflowY-auto scrollBar"
       >
-        <v-list three-line dense class="py-0">
+        <h3 class="pb-1 pt-5 px-md-1 px-3 ">Categories</h3>
+        <v-row class="mx-0">
+          <v-col
+            v-for="(item, index) in categories"
+            :key="index"
+            cols="6"
+            class="px-3 pt-2 pb-0 pl-md-0"
+            align-self="center"
+          >
+            <v-sheet
+              class="categories pa-3 pos-r"
+              :style="{
+                backgroundImage: `linear-gradient(${120}deg, ${categoryCard(
+                  item.name
+                ).color.join(', ')})`
+              }"
+            >
+              <h5>{{ item.name }}</h5>
+              <v-icon class="pos-a card-icon">{{
+                categoryCard(item.name).icon
+              }}</v-icon>
+            </v-sheet>
+          </v-col>
+        </v-row>
+        <!-- <v-list dense class="py-0">
           <template v-for="(item, index) in categories">
             <v-divider
               v-if="index !== categories.length && index !== 0"
@@ -46,13 +68,10 @@
                 <v-list-item-title>
                   {{ item.name }}
                 </v-list-item-title>
-                <v-list-item-subtitle>
-                  {{ item.summary }}
-                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </template>
-        </v-list>
+        </v-list> -->
       </div>
     </v-col>
   </v-row>
@@ -91,6 +110,71 @@ export default {
         this.$router.push({ path: `/topic-articles/${item._id}` })
       }
       this.$emit('closeCategory')
+    },
+    categoryCard(name) {
+      let cardObj = {}
+      switch (name) {
+        case 'Entertainment':
+          cardObj = {
+            icon: 'mdi-movie-filter-outline',
+            color: ['#f6d365', '#fda085']
+          }
+          break
+        case 'Movie/Series Reviews':
+          cardObj = {
+            icon: 'mdi-movie-edit-outline',
+            color: ['#84fab0', '#8fd3f4']
+          }
+          break
+        case 'Nation and Politics':
+          cardObj = {
+            icon: 'mdi-earth',
+            color: ['#c471f5', '#fa71cd']
+          }
+          break
+        case 'Career and Education':
+          cardObj = {
+            icon: 'mdi-earth',
+            color: ['#00cdac', '#8ddad5']
+          }
+          break
+        case 'Health and Hygiene':
+          cardObj = {
+            icon: 'mdi-earth',
+            color: ['#209cff', '#68e0cf']
+          }
+          break
+        case 'Memes,Quotes and Hobbies':
+          cardObj = {
+            icon: 'mdi-earth',
+            color: ['#fc6076', '#ff9a44']
+          }
+          break
+        case 'On This Day':
+          cardObj = {
+            icon: 'mdi-earth',
+            color: ['#b224ef', '#7579ff']
+          }
+          break
+        case 'Programming and Softwares':
+          cardObj = {
+            icon: 'mdi-earth',
+            color: ['#2AFADF', '#4C83FF']
+          }
+          break
+        case 'Science and Technology':
+          cardObj = {
+            icon: 'mdi-earth',
+            color: ['#97ABFF', '#123597']
+          }
+          break
+        default:
+          cardObj = {
+            icon: 'mdi-movie-filter-outline',
+            color: ['#f6d365', '#fda085']
+          }
+      }
+      return cardObj
     }
   }
 }
@@ -111,5 +195,15 @@ export default {
 }
 .pointer {
   cursor: pointer;
+}
+.categories {
+  min-height: 60px;
+  color: #fff;
+}
+.card-icon {
+  right: 5px;
+  bottom: 5px;
+  font-size: 40px;
+  opacity: 0.1;
 }
 </style>
