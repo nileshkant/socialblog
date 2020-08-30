@@ -1,7 +1,7 @@
 <template>
   <div v-if="covidSummary" class="mt-4">
     <v-card>
-      <div class="title px-3 py-1">
+      <div class="body-1 px-3 py-1">
         Covid 19 Overview (WorldWide)
         <div class="caption text--disabled">
           Updated
@@ -15,7 +15,7 @@
       <v-row no-gutters>
         <v-col cols="6">
           <v-card flat class="ma-1 pa-2 confirmed-background">
-            <div class="mb-1 title confirmed">Confirmed</div>
+            <div class="mb-1 body-2 confirmed">Confirmed</div>
             {{ covidSummary.Global.TotalConfirmed | numberWithCommas }}
             <div class="caption confirmed-increase font-weight-bold">
               + {{ covidSummary.Global.NewConfirmed | numberWithCommas }}
@@ -24,7 +24,7 @@
         </v-col>
         <v-col cols="6">
           <v-card flat class=" ma-1 pa-2 activeCase-background">
-            <div class="mb-1 title activeCase">Active</div>
+            <div class="mb-1 body-2 activeCase">Active</div>
             {{
               (covidSummary.Global.TotalConfirmed -
                 covidSummary.Global.TotalRecovered)
@@ -34,7 +34,7 @@
         </v-col>
         <v-col cols="6">
           <v-card flat class="ma-1 pa-2 recovered-background">
-            <div class="mb-1 title recovered">Recovered</div>
+            <div class="mb-1 body-2 recovered">Recovered</div>
             {{ covidSummary.Global.TotalRecovered | numberWithCommas }}
             <div class="caption recovered-increase font-weight-bold">
               + {{ covidSummary.Global.NewRecovered | numberWithCommas }}
@@ -43,7 +43,12 @@
         </v-col>
         <v-col cols="6">
           <v-card flat class="ma-1 pa-2 deceased-background">
-            <div class="mb-1 title deceased">Total Deaths</div>
+            <div
+              class="mb-1 deceased body-2
+"
+            >
+              Total Deaths
+            </div>
             {{ covidSummary.Global.TotalDeaths | numberWithCommas }}
             <div class="caption deceased font-weight-bold">
               + {{ covidSummary.Global.NewDeaths | numberWithCommas }}
@@ -82,7 +87,7 @@ export default {
   color: #ff073a;
 }
 .confirmed-background {
-  min-height: 100px;
+  min-height: 85px;
   background: rgba(255, 7, 58, 0.1);
 }
 .confirmed-increase {
@@ -92,7 +97,7 @@ export default {
   color: #007bff;
 }
 .activeCase-background {
-  min-height: 100px;
+  min-height: 85px;
   background: rgba(0, 123, 255, 0.1);
 }
 .activeCase-increase {
@@ -102,7 +107,7 @@ export default {
   color: #28a745;
 }
 .recovered-background {
-  min-height: 100px;
+  min-height: 85px;
   background: rgba(40, 167, 69, 0.1);
 }
 .recovered-increase {
@@ -112,7 +117,7 @@ export default {
   color: #6c757d;
 }
 .deceased-background {
-  min-height: 100px;
+  min-height: 85px;
   background: rgba(108, 117, 125, 0.1);
 }
 .deceased-increase {

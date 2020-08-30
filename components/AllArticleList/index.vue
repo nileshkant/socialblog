@@ -53,9 +53,8 @@
       >
         <v-col
           v-if="article.articleType === 'quoteCard' && article.quoteCard"
-          md="8"
-          cols="10"
-          :class="{ 'ml-auto': index % 2 === 0 }"
+          cols="12"
+          class="mx-auto"
         >
           <QuoteCard :cardcontent="article"> </QuoteCard>
         </v-col>
@@ -63,9 +62,8 @@
           v-if="
             article.articleType === 'movieReviewCard' && article.movieReviewCard
           "
-          md="8"
-          cols="10"
-          :class="{ 'ml-auto': index % 2 === 0 }"
+          cols="12"
+          class="mx-auto"
         >
           <MovieCard :cardcontent="article" />
         </v-col>
@@ -73,9 +71,8 @@
           v-if="
             article.articleType === 'fullDetailsCard' && article.fullDetailsCard
           "
-          md="8"
-          cols="10"
-          :class="{ 'ml-auto': index % 2 === 0 }"
+          cols="12"
+          class="mx-auto"
         >
           <chat-card :cardcontent="article"> </chat-card>
         </v-col>
