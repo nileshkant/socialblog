@@ -38,6 +38,7 @@
                   item.name
                 ).color.join(', ')})`
               }"
+              @click="clickedTopic(item)"
             >
               <h5>{{ item.name }}</h5>
               <v-icon class="pos-a card-icon">{{
@@ -199,6 +200,7 @@ export default {
 .categories {
   min-height: 60px;
   color: #fff;
+  cursor: pointer;
 }
 .card-icon {
   right: 5px;
