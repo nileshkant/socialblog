@@ -134,43 +134,43 @@ export default {
           break
         case 'Career and Education':
           cardObj = {
-            icon: 'mdi-earth',
+            icon: 'mdi-book-check-outline',
             color: ['#00cdac', '#8ddad5']
           }
           break
         case 'Health and Hygiene':
           cardObj = {
-            icon: 'mdi-earth',
+            icon: 'mdi-meditation',
             color: ['#209cff', '#68e0cf']
           }
           break
         case 'Memes,Quotes and Hobbies':
           cardObj = {
-            icon: 'mdi-earth',
+            icon: 'mdi-comment-quote-outline',
             color: ['#fc6076', '#ff9a44']
           }
           break
         case 'On This Day':
           cardObj = {
-            icon: 'mdi-earth',
+            icon: 'mdi-calendar-today',
             color: ['#b224ef', '#7579ff']
           }
           break
         case 'Programming and Softwares':
           cardObj = {
-            icon: 'mdi-earth',
+            icon: 'mdi-code-json',
             color: ['#2AFADF', '#4C83FF']
           }
           break
         case 'Science and Technology':
           cardObj = {
-            icon: 'mdi-earth',
+            icon: 'mdi-cellphone-link',
             color: ['#97ABFF', '#123597']
           }
           break
         default:
           cardObj = {
-            icon: 'mdi-movie-filter-outline',
+            icon: 'mdi-earth',
             color: ['#f6d365', '#fda085']
           }
       }
