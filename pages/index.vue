@@ -34,15 +34,15 @@
       <v-row>
         <v-col cols="12" class="px-0 py-0">
           <v-toolbar flat>
-            <!-- <v-toolbar-title class="title pl-0"
+            <v-toolbar-title class="title pl-0"
               >Highlights Today</v-toolbar-title
-            > -->
+            >
             <v-spacer></v-spacer>
             <v-btn icon large @click="drawer">
               <v-icon>mdi-menu</v-icon>
             </v-btn>
           </v-toolbar>
-          <!-- <v-divider /> -->
+          <v-divider />
         </v-col>
         <v-col
           :style="{

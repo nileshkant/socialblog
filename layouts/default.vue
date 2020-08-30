@@ -2,7 +2,7 @@
   <v-app>
     <v-content>
       <SnackBar />
-      <v-container class="py-0">
+      <v-container class="py-0" fluid>
         <v-overlay :value="user && !user.userDetails.username">
           <v-card class="pa-5" width="400" max-width="100vw">
             <UpdateUser />
