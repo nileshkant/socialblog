@@ -51,31 +51,19 @@
       class="overflowY-auto scrollBar"
     >
       <v-row v-if="article" class="mx-0">
-        <v-col
-          v-if="article.articleType === 'quoteCard'"
-          md="8"
-          cols="10"
-          class="mr-auto"
-        >
+        <v-col v-if="article.articleType === 'quoteCard'" cols="12">
           <QuoteCard :cardcontent="article"> </QuoteCard>
         </v-col>
-        <v-col
-          v-if="article.articleType === 'movieReviewCard'"
-          md="8"
-          cols="10"
-          class="mr-auto"
-        >
+        <v-col v-if="article.articleType === 'movieReviewCard'" cols="12">
           <MovieCard :cardcontent="article" />
         </v-col>
-        <v-col
-          v-if="article.articleType === 'fullDetailsCard'"
-          md="8"
-          cols="10"
-          class="mr-auto"
-        >
+        <v-col v-if="article.articleType === 'fullDetailsCard'" cols="12">
           <chat-card :cardcontent="article" showfullcard> </chat-card>
         </v-col>
       </v-row>
+      <div class="text-line my-3 caption text--disabled">
+        Scroll down for more details
+      </div>
       <AllCommentList
         :user="user"
         :all-comments="allComments"
@@ -310,5 +298,30 @@ export default {
 }
 .br-0 {
   border-radius: 0 !important;
+}
+.text-line {
+  overflow: hidden;
+  text-align: center;
+}
+
+.text-line:before,
+.text-line:after {
+  background-color: var(--v-greyAccent-base);
+  content: '';
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+
+.text-line:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+
+.text-line:after {
+  left: 0.5em;
+  margin-right: -50%;
 }
 </style>
