@@ -8,8 +8,8 @@
     >
       <v-col
         v-if="!comments.reportedBy || comments.reportedBy.length < 4"
-        md="8"
-        cols="10"
+        cols="auto"
+        class="message-card"
         :class="
           (user &&
             (user.userDetails._id === comments.commentor._id ||
@@ -43,8 +43,8 @@
             comments.reportedBy &&
             comments.reportedBy.length > 3
         "
-        md="8"
-        cols="10"
+        cols="auto"
+        class="message-card"
         :class="
           (user &&
             (user.userDetails._id === comments.commentor._id ||
@@ -103,4 +103,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.message-card {
+  max-width: 90%;
+}
+</style>

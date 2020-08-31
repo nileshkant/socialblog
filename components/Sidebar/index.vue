@@ -206,6 +206,6 @@ export default {
   right: 5px;
   bottom: 5px;
   font-size: 40px;
-  opacity: 0.1;
+  opacity: 0.2;
 }
 </style>
