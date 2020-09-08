@@ -29,10 +29,6 @@
     <v-divider />
     <div
       id="articleContainer"
-      :style="{
-        'min-height': windowHeight - 66 + 'px',
-        'max-height': windowHeight - 66 + 'px'
-      }"
       class="overflowY-auto scrollBar"
       @scroll="ondivScroll"
     >

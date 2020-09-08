@@ -2,6 +2,7 @@
   <div>
     <v-overlay v-if="overlayImage" :value="overlayImage">
       <v-img
+        v-click-outside="() => (overlayImage = false)"
         :src="transform(overlayImage, 'q_auto:eco')"
         max-height="80vh"
         opacity="0.80"

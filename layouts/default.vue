@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-content>
+    <v-main>
       <SnackBar />
       <v-container class="py-0">
         <v-overlay :value="user && !user.userDetails.username">
@@ -14,7 +14,7 @@
           bottom
           color="cyan darken-2"
           left
-          :timeout="0"
+          :timeout="-1"
         >
           <span class="mr-1"
             >By using our website you agree to our
@@ -29,7 +29,7 @@
         <MenuDrawer />
         <nuxt />
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
