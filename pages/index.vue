@@ -95,7 +95,7 @@ export default {
     if (route.path === '/') {
       await store.dispatch('article/getArticles', {
         page: 1,
-        pageSize: 30
+        pageSize: 10
       })
     }
   },
