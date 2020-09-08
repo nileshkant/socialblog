@@ -40,7 +40,6 @@ module.exports = {
         sizes: '16x16',
         href: '/favicon-16x16.png?v=Rym8WqW9rM'
       },
-      { rel: 'manifest', href: '/site.webmanifest?v=Rym8WqW9rM' },
       {
         rel: 'mask-icon',
         href: '/safari-pinned-tab.svg?v=Rym8WqW9rM',
@@ -121,18 +120,6 @@ module.exports = {
 
   styleResources: {
     scss: ['~/assets/scss/_main.scss', '~/assets/sass/scssStyles.scss']
-  },
-  pwa: {
-    manifest: {
-      lang: 'en',
-      name: 'theopenstories',
-      short_name: 'The Open Stories',
-      display: 'standalone',
-      theme_color: '#F11010'
-    },
-    workbox: {
-      dev: process.env.NODE_ENV !== 'production'
-    }
   },
   /*
    ** Axios module configuration
