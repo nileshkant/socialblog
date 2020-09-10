@@ -23,7 +23,10 @@
         </v-btn>
       </v-img>
     </v-overlay>
-    <v-card class="pos-r pa-3 pt-5">
+    <v-card
+      class="pos-r pa-3 pt-5"
+      :class="overlay === cardcontent._id && 'delete-overlay'"
+    >
       <v-overlay absolute :opacity="0.7" :value="overlay === cardcontent._id">
         <v-btn class="mr-2" @click.stop.prevent="overlay = false">
           Cancel
@@ -184,15 +187,15 @@ export default {
       overlay: '',
       overlayImage: '',
       dropDown: [
-        {
-          title: 'Reply',
-          icon: 'mdi-reply-outline',
-          permission: () =>
-            this.user &&
-            !this.commentDisabled &&
-            this.user &&
-            !this.showArticleLink
-        },
+        // {
+        //   title: 'Reply',
+        //   icon: 'mdi-reply-outline',
+        //   permission: () =>
+        //     this.user &&
+        //     !this.commentDisabled &&
+        //     this.user &&
+        //     !this.showArticleLink
+        // },
         {
           title: 'Delete',
           icon: 'mdi-delete-outline',
@@ -335,5 +338,8 @@ img {
 }
 div ::v-deep > iframe {
   min-width: 0 !important;
+}
+.delete-overlay {
+  min-width: 300px;
 }
 </style>

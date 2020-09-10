@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat>
+    <v-app-bar elevate-on-scroll class="pos-sticky app-bar">
       <v-row>
         <v-col>
           <div class="mt-7">
@@ -8,7 +8,7 @@
           </div>
         </v-col>
       </v-row>
-    </v-toolbar>
+    </v-app-bar>
     <AllArticleList
       v-if="articles"
       :articles="articles"
@@ -81,4 +81,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.app-bar {
+  top: 0;
+  z-index: 1;
+}
+</style>

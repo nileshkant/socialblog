@@ -252,8 +252,13 @@ export default {
       }
       const sendForm = { ...this.formdata, articleId: this.$route.params.id }
       await this.$store.dispatch('article/postComment', sendForm)
-      const container = this.$el.querySelector('#articleContainer')
-      container.scrollTop = container.scrollHeight
+      this.overlay = false
+      window.scrollTo(
+        0,
+        document.body.scrollHeight || document.documentElement.scrollHeight
+      )
+      // const container = this.$el.querySelector('#articleContainer')
+      // container.scrollTop = container.scrollHeight
     },
     removeReply() {
       this.$store.dispatch('commonState/replyComment', null)

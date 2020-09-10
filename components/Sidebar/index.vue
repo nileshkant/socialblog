@@ -47,15 +47,23 @@
             </v-sheet>
           </v-col>
         </v-row>
-        <v-row class="mx-0 mt-5">
-          <v-col cols="12" class="px-md-0">
-            <v-btn to="#" color="primary" large block text>
-              <v-icon class="pr-3">mdi-note-plus-outline</v-icon>
-              My Profile
+        <v-row v-if="user" class="mx-0 mt-5">
+          <v-col cols="12" class="px-md-0 py-0">
+            <v-btn color="primary" text to="/profile/me" retain-focus-on-click>
+              <v-icon class="pr-3">mdi-account-circle-outline</v-icon>
+              Profile
             </v-btn>
           </v-col>
+          <v-col cols="12" class="px-md-0">
+            <v-btn to="/bookmarks" color="primary" text retain-focus-on-click>
+              <v-icon class="pr-3">mdi-bookmark-multiple-outline</v-icon>
+              Bookmarks
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row class="mx-0">
           <v-col cols="12" class="pl-md-0">
-            <v-btn block color="primary" rounded large>
+            <v-btn block color="primary" rounded large @click="addStory">
               <v-icon class="pr-3">mdi-note-plus-outline</v-icon>
               Add Story
             </v-btn>
@@ -125,6 +133,13 @@ export default {
         this.$router.push({ path: `/topic-articles/${item._id}` })
       }
       this.$emit('closeCategory')
+    },
+    addStory() {
+      if (this.user) {
+        this.$router.push('/create-post')
+      } else {
+        this.$store.dispatch('commonState/loginPopUp')
+      }
     },
     categoryCard(name) {
       let cardObj = {}
