@@ -9,7 +9,7 @@
       right
       bottom
       disable-resize-watcher
-      mobile-breakpoint="960"
+      mobile-break-point="960"
       class="menu-drawer"
       @input="drawerAction"
     >

@@ -1,17 +1,11 @@
 <template>
   <div>
-    <div v-if="articles || (page === 1 && !contentLoading)">
-      <AllArticleList :articles="articles" :user="user" />
-      <v-row v-if="articles.length === page * pageSize" class="mb-4 mx-0">
-        <v-col cols="auto" class="mx-auto">
-          <v-btn @click="scrolled">
-            <v-icon class="pr-2">mdi-arrow-down</v-icon>
-            Load more
-          </v-btn>
-        </v-col>
-      </v-row>
-    </div>
-
+    <AllArticleList
+      v-if="!contentLoading"
+      :articles="articles"
+      :user="user"
+      @scrolled="scrolled"
+    />
     <LoadingSkeleton v-else />
   </div>
 </template>
@@ -29,14 +23,8 @@ export default {
     await store.dispatch('article/getArticles', {
       id: route.params.id,
       page: (this.articleDetails && this.articleDetails.page) || 1,
-      pageSize: (this.articleDetails && this.articleDetails.pageSize) || 5
+      pageSize: (this.articleDetails && this.articleDetails.pageSize) || 30
     })
-  },
-  data() {
-    return {
-      page: 1,
-      pageSize: 20
-    }
   },
   computed: {
     ...mapGetters({
@@ -47,13 +35,17 @@ export default {
     })
   },
   methods: {
-    scrolled() {
-      this.page = this.articleDetails && this.articleDetails.page + 1
-      this.$store.dispatch('article/getArticles', {
-        id: this.$route.params.id,
-        page: this.page,
-        pageSize: this.pageSize
-      })
+    scrolled({ scrolledTop, totalHeight }) {
+      if (
+        scrolledTop + window.innerHeight - 50 > totalHeight &&
+        !this.articleDetails.isLastPage
+      ) {
+        this.$store.dispatch('article/getArticles', {
+          id: this.$route.params.id,
+          page: this.articleDetails && this.articleDetails.page + 1,
+          pageSize: 30
+        })
+      }
     }
   },
   head() {

@@ -1,10 +1,6 @@
 <template>
   <div>
-    <v-app-bar
-      v-if="!removeToolbar"
-      elevate-on-scroll=""
-      class="pos-sticky app-bar"
-    >
+    <v-toolbar v-if="!removeToolbar" flat>
       <span
         ><v-img
           :src="icon"
@@ -29,10 +25,14 @@
           mdi-menu
         </v-icon>
       </v-btn>
-    </v-app-bar>
+    </v-toolbar>
     <v-divider />
     <div
       id="articleContainer"
+      :style="{
+        'min-height': windowHeight - 66 + 'px',
+        'max-height': windowHeight - 66 + 'px'
+      }"
       class="overflowY-auto scrollBar"
       @scroll="ondivScroll"
     >
@@ -181,9 +181,5 @@ export default {
 }
 .middle-col {
   position: relative;
-}
-.app-bar {
-  top: 0;
-  z-index: 1;
 }
 </style>

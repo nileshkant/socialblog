@@ -58,21 +58,3 @@ blockquote p::after {
   max-width: 100%;
   border-radius: 5px;
 }
-
-/* position classes  */
-.pos-a {
-  position: absolute;
-}
-
-.pos-r {
-  position: relative;
-}
-
-.pos-f {
-  position: fixed;
-}
-
-.pos-sticky {
-  position: -webkit-sticky !important;
-  position: sticky !important;
-}
