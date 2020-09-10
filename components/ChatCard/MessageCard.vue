@@ -290,12 +290,6 @@ export default {
 </script>
 
 <style scoped>
-.pos-r {
-  position: relative;
-}
-.pos-a {
-  position: absolute;
-}
 .right-menu {
   right: 0;
   top: 0;

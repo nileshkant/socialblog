@@ -1,6 +1,10 @@
 <template>
   <div>
-    <v-toolbar v-if="!removeToolbar" flat>
+    <v-app-bar
+      v-if="!removeToolbar"
+      elevate-on-scroll=""
+      class="pos-sticky app-bar"
+    >
       <span
         ><v-img
           :src="icon"
@@ -25,7 +29,7 @@
           mdi-menu
         </v-icon>
       </v-btn>
-    </v-toolbar>
+    </v-app-bar>
     <v-divider />
     <div
       id="articleContainer"
@@ -177,5 +181,9 @@ export default {
 }
 .middle-col {
   position: relative;
+}
+.app-bar {
+  top: 0;
+  z-index: 1;
 }
 </style>

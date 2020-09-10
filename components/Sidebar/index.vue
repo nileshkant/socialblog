@@ -41,10 +41,24 @@
               @click="clickedTopic(item)"
             >
               <h5>{{ item.name }}</h5>
-              <v-icon class="pos-a card-icon">{{
+              <v-icon class="card-icon">{{
                 categoryCard(item.name).icon
               }}</v-icon>
             </v-sheet>
+          </v-col>
+        </v-row>
+        <v-row class="mx-0 mt-5">
+          <v-col cols="12" class="px-md-0">
+            <v-btn to="#" color="primary" large block text>
+              <v-icon class="pr-3">mdi-note-plus-outline</v-icon>
+              My Profile
+            </v-btn>
+          </v-col>
+          <v-col cols="12" class="pl-md-0">
+            <v-btn block color="primary" rounded large>
+              <v-icon class="pr-3">mdi-note-plus-outline</v-icon>
+              Add Story
+            </v-btn>
           </v-col>
         </v-row>
         <!-- <v-list dense class="py-0">
@@ -184,12 +198,6 @@ export default {
 .overflowY-auto {
   overflow-y: auto;
 }
-.pos-a {
-  position: absolute;
-}
-.pos-r {
-  position: relative;
-}
 .fab-button {
   bottom: 12%;
   right: 30px;
@@ -207,5 +215,6 @@ export default {
   bottom: 5px;
   font-size: 40px;
   opacity: 0.2;
+  position: absolute;
 }
 </style>

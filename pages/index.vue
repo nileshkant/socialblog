@@ -5,7 +5,7 @@
         sm="12"
         md="3"
         cols="12"
-        class="py-0 border-right-grey sidebar"
+        class="py-0 sidebar"
         :class="showCategories ? '' : 'd-none d-md-block'"
       >
         <sidebar
@@ -16,7 +16,7 @@
         />
       </v-col>
       <v-col
-        class="pa-0 border-right-grey middle-col ml-auto"
+        class="pa-0 border-left-grey border-right-grey middle-col ml-auto"
         sm="12"
         md="6"
         cols="12"
@@ -29,6 +29,17 @@
         <div v-if="$route.path === '/' && !showCategories && !isTrending">
           <AllArticleList :articles="articles" :user="user" />
         </div>
+        <v-row
+          v-if="$route.path === '/' && articles.length === page * pageSize"
+          class="mb-4 mx-0"
+        >
+          <v-col cols="auto" class="mx-auto">
+            <v-btn @click="loadMore">
+              <v-icon class="pr-2">mdi-arrow-down</v-icon>
+              Load more
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col
         sm="12"
@@ -99,12 +110,14 @@ export default {
     if (route.path === '/') {
       await store.dispatch('article/getArticles', {
         page: 1,
-        pageSize: 30
+        pageSize: 10
       })
     }
   },
   data() {
     return {
+      page: 1,
+      pageSize: 10,
       isTrending: false,
       bottomNav: this.$route.path.startsWith('/search') ? 2 : 1,
       showCategories: false,
@@ -199,6 +212,13 @@ export default {
     },
     menuClicked(value) {
       this.viewCategory = value
+    },
+    async loadMore() {
+      this.page = this.page + 1
+      await this.$store.dispatch('article/getArticles', {
+        page: this.page,
+        pageSize: this.pageSize
+      })
     }
   }
 }
@@ -210,6 +230,9 @@ export default {
 }
 .border-right-grey {
   border-right: 1px solid var(--v-greyAccent-base);
+}
+.border-left-grey {
+  border-left: 1px solid var(--v-greyAccent-base);
 }
 .editor-pos {
   position: relative;

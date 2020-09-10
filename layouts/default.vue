@@ -35,6 +35,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+// import debounce from 'lodash/debounce'
 import LoginPopUp from '../components/LoginPopUp'
 import SnackBar from '../components/Snackbar'
 import MenuDrawer from '../components/MenuDrawer'
@@ -54,6 +55,7 @@ export default {
         width: 0
       },
       snackbar: false
+      // bottomOfWindow: false
     }
   },
   computed: {
@@ -76,6 +78,12 @@ export default {
       ? JSON.parse(localStorage.getItem('cookiePolicy'))
       : true
   },
+  // beforeMount() {
+  //   window.addEventListener('scroll', this.handleScroll)
+  // },
+  // beforeDestroy() {
+  //   window.removeEventListener('scroll', this.handleScroll)
+  // },
   destroyed() {
     window.removeEventListener('resize', this.handleResize)
   },
@@ -90,6 +98,16 @@ export default {
       localStorage.setItem('cookiePolicy', JSON.stringify(false))
       this.snackbar = false
     }
+    // handleScroll: debounce(function(e) {
+    //   this.bottomOfWindow =
+    //     Math.max(
+    //       window.pageYOffset,
+    //       document.documentElement.scrollTop,
+    //       document.body.scrollTop
+    //     ) +
+    //       window.innerHeight >
+    //     document.documentElement.offsetHeight - 50
+    // }, 100)
   }
 }
 </script>

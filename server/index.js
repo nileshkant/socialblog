@@ -15,8 +15,8 @@ async function start() {
   app.use(
     session({
       secret: 'keyboard cat',
-      // resave: false,
-      // saveUninitialized: true,
+      resave: false,
+      saveUninitialized: true,
       cookie: { secure: true, sameSite: 'none' }
     })
   )
