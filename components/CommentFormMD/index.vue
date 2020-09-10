@@ -68,7 +68,7 @@
                 rules="required|min:5|max:800"
                 auto-grow
                 show-counter
-                :rows="0"
+                :rows="5"
                 validate-on-blur
                 v-bind="optionalProps"
               />

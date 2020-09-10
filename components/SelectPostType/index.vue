@@ -54,9 +54,6 @@ export default {
 </script>
 
 <style scoped>
-.pos-r {
-  position: relative;
-}
 .no-event {
   pointer-events: none;
 }

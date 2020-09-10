@@ -121,6 +121,16 @@ module.exports = {
   styleResources: {
     scss: ['~/assets/scss/_main.scss', '~/assets/sass/scssStyles.scss']
   },
+
+  pwa: {
+    manifest: {
+      name: 'The Open Stories',
+      short_name: 'The Open Stories'
+    },
+    workbox: {
+      enabled: process.env.NODE_ENV === 'production' || false
+    }
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
