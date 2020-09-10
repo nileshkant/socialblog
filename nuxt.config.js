@@ -122,16 +122,14 @@ module.exports = {
   styleResources: {
     scss: ['~/assets/scss/_main.scss', '~/assets/sass/scssStyles.scss']
   },
+
   pwa: {
     manifest: {
-      lang: 'en',
-      name: 'theopenstories',
-      short_name: 'The Open Stories',
-      display: 'standalone',
-      theme_color: '#F11010'
+      name: 'The Open Stories',
+      short_name: 'The Open Stories'
     },
     workbox: {
-      dev: process.env.NODE_ENV !== 'production'
+      enabled: process.env.NODE_ENV === 'production' || false
     }
   },
   /*
