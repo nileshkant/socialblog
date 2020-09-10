@@ -57,7 +57,7 @@
     <v-card-subtitle>
       {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.subtitle }}
     </v-card-subtitle>
-    <!-- <div class="pl-4">
+    <div class="pl-4">
       <NLink
         v-if="$route.name !== 'index-article-id' && cardcontent._id"
         class="read-more-link"
@@ -67,40 +67,22 @@
       >
         Read More...
       </NLink>
-    </div> -->
-    <div>
-      <v-divider v-if="cardcontent.hashtags.length > 0"></v-divider>
-      <v-row class="mx-2">
-        <v-col>
-          <span
-            v-for="(tag, index) in cardcontent.hashtags"
-            :key="index"
-            class="pr-2"
-          >
-            <NLink
-              text
-              small
-              color="primary"
-              class="tt-none nlink link"
-              :to="`/search?search=%23${tag}&type=article`"
-              >#{{ tag }}</NLink
-            >
-          </span>
-        </v-col>
-        <v-divider v-if="cardcontent.hashtags.length > 0" vertical></v-divider>
-        <v-col cols="auto" class="pa-0 pl-2" align-self="center">
-          <NLink
-            v-if="$route.name !== 'index-article-id' && cardcontent._id"
-            class="read-more-link"
-            :to="
-              `/article/${cardcontent._id}?title=${cardcontent.fullDetailsCard.title}`
-            "
-          >
-            Read More...
-          </NLink>
-        </v-col>
-      </v-row>
-      <v-divider v-if="cardcontent.hashtags.length > 0"></v-divider>
+    </div>
+    <div class="ml-4">
+      <span
+        v-for="(tag, index) in cardcontent.hashtags"
+        :key="index"
+        class="pr-2"
+      >
+        <NLink
+          text
+          small
+          color="primary"
+          class="tt-none nlink link"
+          :to="`/search?search=%23${tag}&type=article`"
+          >#{{ tag }}</NLink
+        >
+      </span>
     </div>
 
     <CardAction

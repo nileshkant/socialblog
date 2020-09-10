@@ -2,7 +2,6 @@
   <div>
     <v-overlay v-if="overlayImage" :value="overlayImage">
       <v-img
-        v-click-outside="() => (overlayImage = false)"
         :src="transform(overlayImage, 'q_auto:eco')"
         max-height="80vh"
         opacity="0.80"
@@ -23,10 +22,7 @@
         </v-btn>
       </v-img>
     </v-overlay>
-    <v-card
-      class="pos-r pa-3 pt-5"
-      :class="overlay === cardcontent._id && 'delete-overlay'"
-    >
+    <v-card class="pos-r pa-3 pt-5">
       <v-overlay absolute :opacity="0.7" :value="overlay === cardcontent._id">
         <v-btn class="mr-2" @click.stop.prevent="overlay = false">
           Cancel
@@ -187,15 +183,15 @@ export default {
       overlay: '',
       overlayImage: '',
       dropDown: [
-        // {
-        //   title: 'Reply',
-        //   icon: 'mdi-reply-outline',
-        //   permission: () =>
-        //     this.user &&
-        //     !this.commentDisabled &&
-        //     this.user &&
-        //     !this.showArticleLink
-        // },
+        {
+          title: 'Reply',
+          icon: 'mdi-reply-outline',
+          permission: () =>
+            this.user &&
+            !this.commentDisabled &&
+            this.user &&
+            !this.showArticleLink
+        },
         {
           title: 'Delete',
           icon: 'mdi-delete-outline',
@@ -293,6 +289,12 @@ export default {
 </script>
 
 <style scoped>
+.pos-r {
+  position: relative;
+}
+.pos-a {
+  position: absolute;
+}
 .right-menu {
   right: 0;
   top: 0;
@@ -338,8 +340,5 @@ img {
 }
 div ::v-deep > iframe {
   min-width: 0 !important;
-}
-.delete-overlay {
-  min-width: 300px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar elevate-on-scroll class="pos-sticky app-bar">
+    <v-toolbar flat>
       <v-btn icon large class="d-flex d-md-none" to="/">
         <v-icon>mdi-home-outline</v-icon>
       </v-btn>
@@ -40,9 +40,16 @@
         {{ article.movieReviewCard.Title }} -
         <span class="text--secondary">{{ article.movieReviewCard.Year }}</span>
       </div>
-    </v-app-bar>
+    </v-toolbar>
     <v-divider />
-    <div id="articleContainer" class="overflowY-auto scrollBar">
+    <div
+      id="articleContainer"
+      :style="{
+        'min-height': windowHeight - 66 - editorHeight + 'px',
+        'max-height': windowHeight - 66 - editorHeight + 'px'
+      }"
+      class="overflowY-auto scrollBar"
+    >
       <v-row v-if="article" class="mx-0">
         <v-col v-if="article.articleType === 'quoteCard'" cols="12">
           <QuoteCard :cardcontent="article"> </QuoteCard>
@@ -64,34 +71,9 @@
         :comment-disable="commentDisable"
       />
     </div>
-    <v-btn
-      fab
-      dark
-      color="accent"
-      class="pos-f action-button d-block d-md-none"
-      @click="writeComment"
-    >
-      <v-icon dark>mdi-pencil</v-icon>
-    </v-btn>
-    <v-row class="mx-0 pos-sticky footer d-none d-md-flex">
-      <v-col cols="auto" class="mx-auto">
-        <v-btn dark color="accent" @click="writeComment">
-          <v-icon dark class="pr-2">mdi-pencil</v-icon>
-          Write Comment
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-overlay :value="overlay" :dark="isDarkMode">
-      <div class="editor-pos overlay">
-        <v-toolbar>
-          <v-toolbar-title>Write your comment</v-toolbar-title>
-
-          <v-spacer></v-spacer>
-
-          <v-btn icon @click="overlay = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
+    <v-divider />
+    <div class="editor-pos">
+      <v-card flat class="br-0 px-3">
         <v-btn
           v-if="replyComment"
           class="right-menu pos-a"
@@ -100,43 +82,43 @@
           @click="removeReply"
           ><v-icon small>mdi-close</v-icon>
         </v-btn>
-        <v-sheet class="h-100">
-          <v-row class="ma-0 h-100">
-            <v-col cols="11" md="auto" class="ma-auto">
-              <ReplyCard v-if="replyComment" :replycontent="replyComment" />
-              <div v-if="user && user.userDetails && isAllowed()">
-                <CommentFormMD @formData="formUpdate" @onSubmit="onSubmit" />
+        <ReplyCard v-if="replyComment" :replycontent="replyComment" />
+        <resize-observer @notify="handleResize" />
+        <!-- <CommentForm
+          v-if="user && user.userDetails && isAllowed()"
+          @formData="formUpdate"
+          @onSubmit="onSubmit"
+        /> -->
+        <div v-if="user && user.userDetails && isAllowed()">
+          <CommentFormMD @formData="formUpdate" @onSubmit="onSubmit" />
+        </div>
+        <v-row v-else-if="user">
+          <v-col class="pa-0">
+            <v-card-text color="accent" class="subtitle-1 text--disabled">
+              <resize-observer @notify="handleResize" />
+              Thank you for your contribution
+              <div class="caption text--disabled">
+                You can comment only once
               </div>
-            </v-col>
-          </v-row>
-        </v-sheet>
-      </div>
-    </v-overlay>
+            </v-card-text>
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col class="pa-0">
+            <v-card-text color="accent" class="subtitle-1 text--disabled">
+              <resize-observer @notify="handleResize" />
+              Login to Comment
+            </v-card-text>
+          </v-col>
+          <v-col cols="auto">
+            <v-btn class="accent" type="button" @click="loginPopUp">
+              Login
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card>
+    </div>
   </div>
-  <!-- <v-row v-else-if="user">
-            <v-col class="pa-0">
-              <v-card-text color="accent" class="subtitle-1 text--disabled">
-                <resize-observer @notify="handleResize" />
-                Thank you for your contribution
-                <div class="caption text--disabled">
-                  You can comment only once
-                </div>
-              </v-card-text>
-            </v-col>
-          </v-row>
-          <v-row v-else>
-            <v-col class="pa-0">
-              <v-card-text color="accent" class="subtitle-1 text--disabled">
-                <resize-observer @notify="handleResize" />
-                Login to Comment
-              </v-card-text>
-            </v-col>
-            <v-col cols="auto">
-              <v-btn class="accent" type="button" @click="loginPopUp">
-                Login
-              </v-btn>
-            </v-col>
-          </v-row> -->
 </template>
 
 <script>
@@ -180,8 +162,7 @@ export default {
       comment: '',
       formdata: null,
       isTwitterLoaded: false,
-      commentDisable: false,
-      overlay: false
+      commentDisable: false
     }
   },
   computed: {
@@ -192,19 +173,13 @@ export default {
       user: 'user',
       titleSection: 'article/titleSection',
       replyComment: 'commonState/replyComment',
-      contentLoading: 'article/contentLoading',
-      isDarkMode: 'commonState/isDarkMode'
+      contentLoading: 'article/contentLoading'
     })
   },
   watch: {
     article(newValue) {
       if (!newValue) {
         this.$router.replace({ path: '/' })
-      }
-    },
-    replyComment(newVal) {
-      if (newVal) {
-        this.overlay = true
       }
     }
   },
@@ -252,13 +227,8 @@ export default {
       }
       const sendForm = { ...this.formdata, articleId: this.$route.params.id }
       await this.$store.dispatch('article/postComment', sendForm)
-      this.overlay = false
-      window.scrollTo(
-        0,
-        document.body.scrollHeight || document.documentElement.scrollHeight
-      )
-      // const container = this.$el.querySelector('#articleContainer')
-      // container.scrollTop = container.scrollHeight
+      const container = this.$el.querySelector('#articleContainer')
+      container.scrollTop = container.scrollHeight
     },
     removeReply() {
       this.$store.dispatch('commonState/replyComment', null)
@@ -270,13 +240,6 @@ export default {
             this.titleSection.user &&
             this.titleSection.user._id}`
         )
-      }
-    },
-    writeComment() {
-      if (!this.user) {
-        this.loginPopUp()
-      } else {
-        this.overlay = true
       }
     }
   },
@@ -304,6 +267,12 @@ export default {
 </script>
 
 <style scoped>
+.pos-r {
+  position: relative;
+}
+.pos-a {
+  position: absolute;
+}
 .pointer {
   cursor: pointer;
 }
@@ -354,27 +323,5 @@ export default {
 .text-line:after {
   left: 0.5em;
   margin-right: -50%;
-}
-
-.action-button {
-  bottom: 20px;
-  right: 20px;
-}
-.app-bar {
-  top: 0;
-  z-index: 1;
-}
-.footer {
-  bottom: 0;
-  z-index: 1;
-}
-@media screen and (max-width: 960px) {
-  .overlay {
-    height: 100vh;
-    width: 100vw;
-  }
-  .h-100 {
-    height: 100%;
-  }
 }
 </style>

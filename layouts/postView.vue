@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main>
+    <v-content>
       <v-container class="pa-0" fluid>
         <v-toolbar flat>
           <v-btn icon to="/">
@@ -17,7 +17,7 @@
       <v-container class="py-0">
         <nuxt />
       </v-container>
-    </v-main>
+    </v-content>
   </v-app>
 </template>
 

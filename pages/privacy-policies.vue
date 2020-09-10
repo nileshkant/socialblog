@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main>
+    <v-content>
       <v-container>
         <div>
           <h1>
@@ -644,7 +644,7 @@
           </p>
         </div>
       </v-container>
-    </v-main>
+    </v-content>
   </v-app>
 </template>
 
