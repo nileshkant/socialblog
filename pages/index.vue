@@ -1,81 +1,96 @@
 <template>
-  <v-row>
-    <v-col
-      sm="12"
-      md="3"
-      cols="12"
-      class="py-0 border-right-grey"
-      :class="showCategories ? '' : 'd-none d-md-block'"
-    >
-      <sidebar
-        @closeCategory="
-          showCategories = false
-          bottomNav = 1
-        "
-      />
-    </v-col>
-    <v-col class="pa-0 border-right-grey middle-col" sm="12" md="6" cols="12">
-      <NuxtChild
-        v-if="!showCategories && !isTrending"
-        :key="$route.params.id"
-        keep-alive
-      />
-      <div v-if="$route.path === '/' && !showCategories && !isTrending">
-        <AllArticleList :articles="articles" :user="user" />
-      </div>
-    </v-col>
-    <v-col
-      sm="12"
-      md="3"
-      cols="12"
-      class="py-0"
-      :class="isTrending ? '' : 'd-none d-md-block'"
-    >
-      <v-row>
-        <v-col cols="12" class="px-0 py-0">
-          <v-toolbar flat>
+  <div>
+    <v-row>
+      <v-col
+        sm="12"
+        md="3"
+        cols="12"
+        class="py-0 sidebar"
+        :class="showCategories ? '' : 'd-none d-md-block'"
+      >
+        <sidebar
+          @closeCategory="
+            showCategories = false
+            bottomNav = 1
+          "
+        />
+      </v-col>
+      <v-col
+        class="pa-0 border-left-grey border-right-grey middle-col ml-auto"
+        sm="12"
+        md="6"
+        cols="12"
+      >
+        <NuxtChild
+          v-if="!showCategories && !isTrending"
+          :key="$route.params.id"
+          keep-alive
+        />
+        <div v-if="$route.path === '/' && !showCategories && !isTrending">
+          <AllArticleList :articles="articles" :user="user" />
+        </div>
+        <v-row
+          v-if="$route.path === '/' && articles.length === page * pageSize"
+          class="mb-4 mx-0"
+        >
+          <v-col cols="auto" class="mx-auto">
+            <v-btn @click="loadMore">
+              <v-icon class="pr-2">mdi-arrow-down</v-icon>
+              Load more
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col
+        sm="12"
+        md="3"
+        cols="12"
+        class="py-0 sidebar"
+        :class="isTrending ? '' : 'd-none d-md-block'"
+      >
+        <v-row>
+          <v-col cols="12" class="px-0 py-0 text-right py-2">
             <!-- <v-toolbar-title class="title pl-0"
               >Highlights Today</v-toolbar-title
             > -->
-            <v-spacer></v-spacer>
             <v-btn icon large @click="drawer">
               <v-icon>mdi-menu</v-icon>
             </v-btn>
-          </v-toolbar>
-          <!-- <v-divider /> -->
-        </v-col>
-        <v-col
-          :style="{
-            'min-height': windowHeight - 66 + 'px',
-            'max-height': windowHeight - 66 + 'px'
-          }"
-          class="overflowY-auto scrollBar"
-          cols="12"
-        >
-          <div>
-            <Hightlights />
-          </div>
-        </v-col>
-      </v-row>
-    </v-col>
-    <v-bottom-navigation
-      v-if="!this.$route.path.startsWith('/article/')"
-      v-model="bottomNav"
-      shift
-      grow
-      color="accent"
-      class="d-flex d-md-none pos-f"
-    >
-      <v-btn
-        v-for="(menu, index) in bottomMenu"
-        :key="index"
-        @click="menu.action()"
+            <!-- <v-divider /> -->
+          </v-col>
+          <v-col
+            :style="{
+              'min-height': windowHeight - 66 + 'px',
+              'max-height': windowHeight - 66 + 'px'
+            }"
+            class="overflowY-auto scrollBar"
+            cols="12"
+          >
+            <div>
+              <Hightlights />
+            </div>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-bottom-navigation
+        v-if="!this.$route.path.startsWith('/article/')"
+        v-model="bottomNav"
+        shift
+        grow
+        color="accent"
+        class="d-flex d-md-none pos-f"
       >
-        <span>{{ menu.title }}</span>
-        <v-icon>{{ menu.icon }}</v-icon>
-      </v-btn>
-    </v-bottom-navigation>
-  </v-row>
+        <v-btn
+          v-for="(menu, index) in bottomMenu"
+          :key="index"
+          @click="menu.action()"
+        >
+          <span>{{ menu.title }}</span>
+          <v-icon>{{ menu.icon }}</v-icon>
+        </v-btn>
+      </v-bottom-navigation>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -101,6 +116,8 @@ export default {
   },
   data() {
     return {
+      page: 1,
+      pageSize: 10,
       isTrending: false,
       bottomNav: this.$route.path.startsWith('/search') ? 2 : 1,
       showCategories: false,
@@ -195,6 +212,13 @@ export default {
     },
     menuClicked(value) {
       this.viewCategory = value
+    },
+    async loadMore() {
+      this.page = this.page + 1
+      await this.$store.dispatch('article/getArticles', {
+        page: this.page,
+        pageSize: this.pageSize
+      })
     }
   }
 }
@@ -207,6 +231,9 @@ export default {
 .border-right-grey {
   border-right: 1px solid var(--v-greyAccent-base);
 }
+.border-left-grey {
+  border-left: 1px solid var(--v-greyAccent-base);
+}
 .editor-pos {
   position: relative;
   bottom: 0;
@@ -218,5 +245,13 @@ export default {
 }
 .pos-f {
   position: fixed;
+}
+.sidebar {
+  /* position: fixed;
+  height: 100%;
+  max-width: 295px; */
+  position: sticky;
+  height: 100%;
+  top: 0;
 }
 </style>

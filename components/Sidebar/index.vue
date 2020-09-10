@@ -41,10 +41,32 @@
               @click="clickedTopic(item)"
             >
               <h5>{{ item.name }}</h5>
-              <v-icon class="pos-a card-icon">{{
+              <v-icon class="card-icon">{{
                 categoryCard(item.name).icon
               }}</v-icon>
             </v-sheet>
+          </v-col>
+        </v-row>
+        <v-row v-if="user" class="mx-0 mt-5">
+          <v-col cols="12" class="px-md-0 py-0">
+            <v-btn color="primary" text to="/profile/me" retain-focus-on-click>
+              <v-icon class="pr-3">mdi-account-circle-outline</v-icon>
+              Profile
+            </v-btn>
+          </v-col>
+          <v-col cols="12" class="px-md-0">
+            <v-btn to="/bookmarks" color="primary" text retain-focus-on-click>
+              <v-icon class="pr-3">mdi-bookmark-multiple-outline</v-icon>
+              Bookmarks
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row class="mx-0">
+          <v-col cols="12" class="pl-md-0">
+            <v-btn block color="primary" rounded large @click="addStory">
+              <v-icon class="pr-3">mdi-note-plus-outline</v-icon>
+              Add Story
+            </v-btn>
           </v-col>
         </v-row>
         <!-- <v-list dense class="py-0">
@@ -111,6 +133,13 @@ export default {
         this.$router.push({ path: `/topic-articles/${item._id}` })
       }
       this.$emit('closeCategory')
+    },
+    addStory() {
+      if (this.user) {
+        this.$router.push('/create-post')
+      } else {
+        this.$store.dispatch('commonState/loginPopUp')
+      }
     },
     categoryCard(name) {
       let cardObj = {}
@@ -184,12 +213,6 @@ export default {
 .overflowY-auto {
   overflow-y: auto;
 }
-.pos-a {
-  position: absolute;
-}
-.pos-r {
-  position: relative;
-}
 .fab-button {
   bottom: 12%;
   right: 30px;
@@ -207,5 +230,6 @@ export default {
   bottom: 5px;
   font-size: 40px;
   opacity: 0.2;
+  position: absolute;
 }
 </style>

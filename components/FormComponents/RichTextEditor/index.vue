@@ -421,9 +421,6 @@ $color-black: #000000;
     color: var(--v-colorTheme-base);
   }
 }
-.pos-r {
-  position: relative;
-}
 .menuItemBar {
   position: absolute;
   width: 350px;

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-content>
+    <v-main>
       <v-container>
         <h1>The Open Stories' Terms and Conditions of Use</h1>
 
@@ -233,7 +233,7 @@
           see fit and without any obligation to you.
         </p>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
