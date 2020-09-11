@@ -54,36 +54,27 @@
         Read More...
       </NLink>
     </div> -->
-      <div>
-        <v-divider
-          v-if="
-            cardcontent &&
-              cardcontent.hashtags &&
-              cardcontent.hashtags.length > 0
-          "
-        ></v-divider>
-        <v-row class="mx-2">
-          <v-col v-if="cardcontent && cardcontent.hashtags">
+      <v-row v-if="cardcontent && cardcontent.hashtags" class="mx-2">
+        <v-col>
+          <span
+            v-for="(tag, index) in cardcontent.hashtags"
+            :key="index"
+            class="pr-2"
+          >
             <span
-              v-for="(tag, index) in cardcontent.hashtags"
-              :key="index"
-              class="pr-2"
+              text
+              small
+              color="primary"
+              class="tt-none nlink link"
+              @click.stop="
+                $router.push(`/search?search=%23${tag}&type=article`)
+              "
             >
-              <span
-                text
-                small
-                color="primary"
-                class="tt-none nlink link"
-                @click.stop="
-                  $router.push(`/search?search=%23${tag}&type=article`)
-                "
-              >
-                #{{ tag }}
-              </span>
+              #{{ tag }}
             </span>
-          </v-col>
-        </v-row>
-      </div>
+          </span>
+        </v-col>
+      </v-row>
 
       <CardAction
         :cardcontent="cardcontent"
