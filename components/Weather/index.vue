@@ -111,12 +111,6 @@ export default {
     rgba(4, 178, 217, 1) 100.2%
   );
 }
-.pos-a {
-  position: absolute;
-}
-.pos-r {
-  position: relative;
-}
 .edit-icon {
   right: 0;
   margin: auto;

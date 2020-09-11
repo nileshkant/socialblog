@@ -15,8 +15,15 @@ export default {
       user: 'user'
     })
   },
+  watch: {
+    $route(newValue, oldValue) {
+      if (newValue.fullPath === '/bookmarks') {
+        this.$store.dispatch('article/setTitle', { title: 'My bookmarks' })
+      }
+    }
+  },
   mounted() {
-    this.$store.dispatch('article/setTitle', 'My bookmarks')
+    this.$store.dispatch('article/setTitle', { title: 'My bookmarks' })
   }
 }
 </script>
