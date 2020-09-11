@@ -14,7 +14,6 @@
           <h3>The Open Stories</h3>
         </v-col>
       </v-row>
-      <!-- <v-divider /> -->
       <div
         :style="{
           'min-height': windowHeight - 66 + 'px',
@@ -22,7 +21,9 @@
         }"
         class="overflowY-auto scrollBar"
       >
-        <h3 class="pb-1 pt-5 px-md-1 px-3 ">Categories</h3>
+        <div>
+          <h3 class="pb-1 pt-5 px-md-1 px-3 ">Categories</h3>
+        </div>
         <v-row class="mx-0">
           <v-col
             v-for="(item, index) in categories"
@@ -69,32 +70,6 @@
             </v-btn>
           </v-col>
         </v-row>
-        <!-- <v-list dense class="py-0">
-          <template v-for="(item, index) in categories">
-            <v-divider
-              v-if="index !== categories.length && index !== 0"
-              :key="index"
-              :inset="true"
-            ></v-divider>
-
-            <v-list-item
-              v-if="item.name"
-              :key="item._id"
-              @click="clickedTopic(item)"
-            >
-              <v-list-item-avatar color="primary" class="color.white">
-                <span class="white--text headline">{{
-                  item.name | capitalize
-                }}</span>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ item.name }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </template>
-        </v-list> -->
       </div>
     </v-col>
   </v-row>

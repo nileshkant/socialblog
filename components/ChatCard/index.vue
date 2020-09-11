@@ -69,9 +69,13 @@
       </NLink>
     </div> -->
     <div>
-      <v-divider v-if="cardcontent.hashtags.length > 0"></v-divider>
+      <v-divider
+        v-if="
+          cardcontent && cardcontent.hashtags && cardcontent.hashtags.length > 0
+        "
+      ></v-divider>
       <v-row class="mx-2">
-        <v-col>
+        <v-col v-if="cardcontent && cardcontent.hashtags">
           <span
             v-for="(tag, index) in cardcontent.hashtags"
             :key="index"
@@ -87,7 +91,14 @@
             >
           </span>
         </v-col>
-        <v-divider v-if="cardcontent.hashtags.length > 0" vertical></v-divider>
+        <v-divider
+          v-if="
+            cardcontent &&
+              cardcontent.hashtags &&
+              cardcontent.hashtags.length > 0
+          "
+          vertical
+        ></v-divider>
         <v-col cols="auto" class="pa-0 pl-2" align-self="center">
           <NLink
             v-if="$route.name !== 'index-article-id' && cardcontent._id"
@@ -100,7 +111,11 @@
           </NLink>
         </v-col>
       </v-row>
-      <v-divider v-if="cardcontent.hashtags.length > 0"></v-divider>
+      <v-divider
+        v-if="
+          cardcontent && cardcontent.hashtags && cardcontent.hashtags.length > 0
+        "
+      ></v-divider>
     </div>
 
     <CardAction

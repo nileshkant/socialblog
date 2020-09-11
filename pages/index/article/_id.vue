@@ -113,30 +113,6 @@
       </div>
     </v-overlay>
   </div>
-  <!-- <v-row v-else-if="user">
-            <v-col class="pa-0">
-              <v-card-text color="accent" class="subtitle-1 text--disabled">
-                <resize-observer @notify="handleResize" />
-                Thank you for your contribution
-                <div class="caption text--disabled">
-                  You can comment only once
-                </div>
-              </v-card-text>
-            </v-col>
-          </v-row>
-          <v-row v-else>
-            <v-col class="pa-0">
-              <v-card-text color="accent" class="subtitle-1 text--disabled">
-                <resize-observer @notify="handleResize" />
-                Login to Comment
-              </v-card-text>
-            </v-col>
-            <v-col cols="auto">
-              <v-btn class="accent" type="button" @click="loginPopUp">
-                Login
-              </v-btn>
-            </v-col>
-          </v-row> -->
 </template>
 
 <script>
