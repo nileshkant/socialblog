@@ -30,7 +30,7 @@
       </div>
     </v-overlay>
     <v-card-actions>
-      <v-btn icon :disabled="!cardcontent._id" @click="likeArticle">
+      <v-btn icon :disabled="!cardcontent._id" @click.stop="likeArticle">
         <v-icon v-if="likes" color="error">mdi-heart</v-icon>
         <v-icon
           v-else
@@ -52,7 +52,7 @@
         {{ cardcontent.likes && cardcontent.likes.length }}
       </div>
 
-      <v-btn icon :disabled="!cardcontent._id" @click="bookmarkArticle">
+      <v-btn icon :disabled="!cardcontent._id" @click.stop="bookmarkArticle">
         <v-icon
           v-if="isBookmarked"
           :class="{
@@ -202,6 +202,11 @@ export default {
       } else {
         return false
       }
+    }
+  },
+  watch: {
+    socialOverlay(newValue) {
+      this.$emit('socialShare', newValue)
     }
   },
   methods: {

@@ -346,7 +346,7 @@ export default {
 }
 @media screen and (max-width: 960px) {
   .overlay {
-    height: 100vh;
+    /* height: 100vh; */
     width: 100vw;
   }
   .h-100 {

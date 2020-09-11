@@ -31,7 +31,8 @@
         </div>
         <v-row
           v-if="$route.path === '/' && articles.length === page * pageSize"
-          class="mb-4 mx-0"
+          v-show="!showCategories && !isTrending"
+          class="mb-14 mb-mb-4 mx-0"
         >
           <v-col cols="auto" class="mx-auto">
             <v-btn @click="loadMore">

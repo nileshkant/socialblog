@@ -1,86 +1,74 @@
 <template>
-  <v-card
-    :color="cardcontent.quoteCard && cardcontent.quoteCard.color"
-    :class="{
-      'black--text': checkColor === 'light',
-      'white--text': checkColor === 'dark'
-    }"
+  <div
+    :class="
+      $route.name === 'index-article-id' ||
+      (cardcontent && socialShare === cardcontent._id)
+        ? ''
+        : 'cursor-pointer'
+    "
+    @click="linkToPost"
   >
-    <AuthorAndDate :cardcontent="cardcontent" :useTheme="false" />
+    <v-card
+      :color="cardcontent.quoteCard && cardcontent.quoteCard.color"
+      :class="{
+        'black--text': checkColor === 'light',
+        'white--text': checkColor === 'dark'
+      }"
+    >
+      <AuthorAndDate :cardcontent="cardcontent" :use-theme="false" />
 
-    <v-card-title class="pt-0">
-      <NLink
-        :class="!cardcontent._id && 'disable-click'"
-        :to="
-          `/article/${cardcontent._id}?title=${
-            cardcontent.quoteCard && cardcontent.quoteCard.title
-              ? cardcontent.quoteCard.title
-              : ''
-          }`
-        "
-        class="title font-weight-light link"
-        ><span>{{
+      <v-card-title class="pt-0">
+        <span class="title">{{
           cardcontent.quoteCard && cardcontent.quoteCard.title
-        }}</span></NLink
-      >
-    </v-card-title>
-    <div
-      v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
-      class="mdStyle px-4"
-      :class="[
-        cardcontent.quoteCard.quote.length > 300 &&
-          $route.params.id !== cardcontent._id &&
-          'truncate-overflow'
-      ]"
-      v-html="$md.render(cardcontent.quoteCard.quote)"
-    ></div>
-    <div
-      v-if="cardcontent.quoteCard && cardcontent.quoteCard.source"
-      class="caption py-2 px-4 text-truncate"
-    >
-      - {{ cardcontent.quoteCard.source }}
-    </div>
-    <div class="ml-4">
-      <span
-        v-for="(tag, index) in cardcontent.hashtags"
-        :key="index"
-        class="pr-2"
-      >
-        <NLink
-          class="tt-none nlink link"
-          :to="`/search?search=%23${tag}&type=article`"
-          >#{{ tag }}</NLink
-        >
-      </span>
-    </div>
-    <CardAction
-      :cardcontent="cardcontent"
-      :check-color="checkColor"
-      :share-data="cardcontent._id && shareData()"
-    >
-      <v-spacer></v-spacer>
+        }}</span>
+      </v-card-title>
       <div
-        v-if="
-          cardcontent.quoteCard &&
-            cardcontent.quoteCard.quote &&
-            cardcontent.quoteCard.quote.length > 300 &&
-            $route.params.id !== cardcontent._id
-        "
+        v-if="cardcontent.quoteCard && cardcontent.quoteCard.quote"
+        class="mdStyle px-4"
+        :class="[
+          cardcontent.quoteCard.quote.length > 300 &&
+            $route.params.id !== cardcontent._id &&
+            'truncate-overflow'
+        ]"
+        v-html="$md.render(cardcontent.quoteCard.quote)"
+      ></div>
+      <div
+        v-if="cardcontent.quoteCard && cardcontent.quoteCard.source"
+        class="caption py-2 px-4 text-truncate"
       >
-        <NLink
-          class="read-more-link"
-          :class="{
-            'black--text': checkColor === 'light',
-            'white--text': checkColor === 'dark'
-          }"
-          :to="
-            `/article/${cardcontent._id}?title=${cardcontent.quoteCard.title}`
-          "
-          >Read more...</NLink
-        >
+        - {{ cardcontent.quoteCard.source }}
       </div>
-    </CardAction>
-  </v-card>
+      <div class="ml-4">
+        <span
+          v-for="(tag, index) in cardcontent.hashtags"
+          :key="index"
+          class="pr-2"
+        >
+          <span
+            class="tt-none nlink link"
+            @click.stop="$router.push(`/search?search=%23${tag}&type=article`)"
+            >#{{ tag }}
+          </span>
+        </span>
+      </div>
+      <CardAction
+        :cardcontent="cardcontent"
+        :check-color="checkColor"
+        :share-data="cardcontent._id && shareData()"
+        @socialShare="socialModal"
+      >
+        <v-spacer></v-spacer>
+        <div
+          v-if="
+            cardcontent.quoteCard &&
+              cardcontent.quoteCard.quote &&
+              cardcontent.quoteCard.quote.length > 300 &&
+              $route.params.id !== cardcontent._id
+          "
+        ></div>
+      </CardAction>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -107,6 +95,11 @@ export default {
           }
         }
       }
+    }
+  },
+  data() {
+    return {
+      socialShare: false
     }
   },
   computed: {
@@ -138,6 +131,24 @@ export default {
         hashtags: ''
       }
       return data
+    },
+    socialModal(data) {
+      this.socialShare = data
+    },
+    linkToPost() {
+      if (
+        this.$route.name !== 'index-article-id' &&
+        this.cardcontent &&
+        this.socialShare !== this.cardcontent._id
+      ) {
+        this.$router.push(
+          `/article/${this.cardcontent._id}?title=${
+            this.cardcontent.quoteCard && this.cardcontent.quoteCard.title
+              ? this.cardcontent.quoteCard.title
+              : ''
+          }`
+        )
+      }
     }
   }
 }
@@ -170,5 +181,8 @@ export default {
 .truncate-overflow {
   max-height: calc(1.375rem * 6) !important;
   overflow: hidden;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

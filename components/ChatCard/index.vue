@@ -1,16 +1,14 @@
 <template>
-  <v-card>
-    <NLink
-      :to="
-        `/article/${cardcontent._id}?title=${
-          cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.title
-            ? cardcontent.fullDetailsCard.title
-            : ''
-        }`
-      "
-      :event="overlay || !cardcontent._id ? '' : 'click'"
-      class="link"
-    >
+  <div
+    :class="
+      $route.name === 'index-article-id' ||
+      (cardcontent && socialShare === cardcontent._id)
+        ? ''
+        : 'cursor-pointer'
+    "
+    @click="linkToPost"
+  >
+    <v-card>
       <v-img
         v-if="
           cardcontent &&
@@ -32,32 +30,20 @@
         height="200px"
       >
       </v-img>
-    </NLink>
-    {{ cardcontent.file }}
+      {{ cardcontent.file }}
 
-    <AuthorAndDate :cardcontent="cardcontent" />
+      <AuthorAndDate :cardcontent="cardcontent" />
 
-    <div class="title pt-0 px-4">
-      <NLink
-        :class="!cardcontent._id && 'disable-click'"
-        :to="
-          `/article/${cardcontent._id}?title=${
-            cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.title
-              ? cardcontent.fullDetailsCard.title
-              : ''
-          }`
-        "
-        class="link in-color"
-        @click.native="redirectTo"
-      >
+      <div class="title pt-0 px-4">
         {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.title }}
-      </NLink>
-    </div>
+      </div>
 
-    <v-card-subtitle>
-      {{ cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.subtitle }}
-    </v-card-subtitle>
-    <!-- <div class="pl-4">
+      <v-card-subtitle>
+        {{
+          cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.subtitle
+        }}
+      </v-card-subtitle>
+      <!-- <div class="pl-4">
       <NLink
         v-if="$route.name !== 'index-article-id' && cardcontent._id"
         class="read-more-link"
@@ -68,112 +54,96 @@
         Read More...
       </NLink>
     </div> -->
-    <div>
-      <v-divider
-        v-if="
-          cardcontent && cardcontent.hashtags && cardcontent.hashtags.length > 0
-        "
-      ></v-divider>
-      <v-row class="mx-2">
-        <v-col v-if="cardcontent && cardcontent.hashtags">
-          <span
-            v-for="(tag, index) in cardcontent.hashtags"
-            :key="index"
-            class="pr-2"
-          >
-            <NLink
-              text
-              small
-              color="primary"
-              class="tt-none nlink link"
-              :to="`/search?search=%23${tag}&type=article`"
-              >#{{ tag }}</NLink
-            >
-          </span>
-        </v-col>
+      <div>
         <v-divider
           v-if="
             cardcontent &&
               cardcontent.hashtags &&
               cardcontent.hashtags.length > 0
           "
-          vertical
         ></v-divider>
-        <v-col cols="auto" class="pa-0 pl-2" align-self="center">
-          <NLink
-            v-if="$route.name !== 'index-article-id' && cardcontent._id"
-            class="read-more-link"
-            :to="
-              `/article/${cardcontent._id}?title=${cardcontent.fullDetailsCard.title}`
+        <v-row class="mx-2">
+          <v-col v-if="cardcontent && cardcontent.hashtags">
+            <span
+              v-for="(tag, index) in cardcontent.hashtags"
+              :key="index"
+              class="pr-2"
+            >
+              <span
+                text
+                small
+                color="primary"
+                class="tt-none nlink link"
+                @click.stop="
+                  $router.push(`/search?search=%23${tag}&type=article`)
+                "
+              >
+                #{{ tag }}
+              </span>
+            </span>
+          </v-col>
+        </v-row>
+      </div>
+
+      <CardAction
+        :cardcontent="cardcontent"
+        :share-data="cardcontent._id && shareData()"
+        @socialShare="socialModal"
+      >
+        <v-spacer></v-spacer>
+        <v-btn fab small color="primary" @click.stop="show = !show">
+          <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+        </v-btn>
+      </CardAction>
+
+      <v-expand-transition>
+        <div v-show="show">
+          <v-divider></v-divider>
+          <v-card-text
+            v-if="
+              cardcontent.fullDetailsCard &&
+                !cardcontent.fullDetailsCard.isMarkdown
+            "
+            class="pb-0"
+            v-html="
+              cardcontent.fullDetailsCard &&
+                cardcontent.fullDetailsCard.articleBody
             "
           >
-            Read More...
-          </NLink>
-        </v-col>
-      </v-row>
-      <v-divider
-        v-if="
-          cardcontent && cardcontent.hashtags && cardcontent.hashtags.length > 0
-        "
-      ></v-divider>
-    </div>
-
-    <CardAction
-      :cardcontent="cardcontent"
-      :share-data="cardcontent._id && shareData()"
-    >
-      <v-spacer></v-spacer>
-      <v-btn fab small color="primary" @click="show = !show">
-        <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-      </v-btn>
-    </CardAction>
-
-    <v-expand-transition>
-      <div v-show="show">
-        <v-divider></v-divider>
-        <v-card-text
-          v-if="
-            cardcontent.fullDetailsCard &&
-              !cardcontent.fullDetailsCard.isMarkdown
-          "
-          class="pb-0"
-          v-html="
-            cardcontent.fullDetailsCard &&
-              cardcontent.fullDetailsCard.articleBody
-          "
-        >
-        </v-card-text>
-        <v-card-text
-          v-if="
-            cardcontent.fullDetailsCard &&
-              cardcontent.fullDetailsCard.articleBody &&
-              cardcontent.fullDetailsCard.isMarkdown
-          "
-          class="mdStyle"
-          v-html="$md.render(cardcontent.fullDetailsCard.articleBody)"
-        ></v-card-text>
-        <v-tooltip bottom content-class="caption">
-          <template v-slot:activator="{ on }">
-            <v-card-text
-              class="caption text-truncate text--disabled pt-0"
-              v-on="on"
+          </v-card-text>
+          <v-card-text
+            v-if="
+              cardcontent.fullDetailsCard &&
+                cardcontent.fullDetailsCard.articleBody &&
+                cardcontent.fullDetailsCard.isMarkdown
+            "
+            class="mdStyle"
+            v-html="$md.render(cardcontent.fullDetailsCard.articleBody)"
+          ></v-card-text>
+          <v-tooltip bottom content-class="caption">
+            <template v-slot:activator="{ on }">
+              <v-card-text
+                class="caption text-truncate text--disabled pt-0"
+                v-on="on"
+                >Source:
+                {{
+                  cardcontent.fullDetailsCard &&
+                    cardcontent.fullDetailsCard.source
+                }}
+              </v-card-text>
+            </template>
+            <span
               >Source:
               {{
                 cardcontent.fullDetailsCard &&
                   cardcontent.fullDetailsCard.source
-              }}
-            </v-card-text>
-          </template>
-          <span
-            >Source:
-            {{
-              cardcontent.fullDetailsCard && cardcontent.fullDetailsCard.source
-            }}</span
-          >
-        </v-tooltip>
-      </div>
-    </v-expand-transition>
-  </v-card>
+              }}</span
+            >
+          </v-tooltip>
+        </div>
+      </v-expand-transition>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -223,7 +193,8 @@ export default {
     show: false,
     hoverDelete: false,
     overlay: false,
-    socialOverlay: false
+    socialOverlay: false,
+    socialShare: false
   }),
   computed: {
     ...mapGetters({
@@ -248,6 +219,25 @@ export default {
         hashtags: 'TheOpenStories'
       }
       return data
+    },
+    linkToPost() {
+      if (
+        this.$route.name !== 'index-article-id' &&
+        this.cardcontent &&
+        this.socialShare !== this.cardcontent._id
+      ) {
+        this.$router.push(
+          `/article/${this.cardcontent._id}?title=${
+            this.cardcontent.fullDetailsCard &&
+            this.cardcontent.fullDetailsCard.title
+              ? this.cardcontent.fullDetailsCard.title
+              : ''
+          }`
+        )
+      }
+    },
+    socialModal(data) {
+      this.socialShare = data
     }
   }
 }
@@ -299,6 +289,7 @@ export default {
   background-position: 0 1em;
   background-position: -10000px 1em;
   cursor: pointer;
+  color: var(--v-accent-base);
 }
 .in-color {
   color: inherit;
@@ -312,5 +303,8 @@ export default {
 }
 .disable-click {
   pointer-events: none;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

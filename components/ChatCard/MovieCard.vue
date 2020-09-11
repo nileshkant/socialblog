@@ -1,31 +1,32 @@
 <template>
-  <v-card class="mt-4 mx-auto">
-    <div v-if="cardcontent.movieReviewCard">
-      <v-row class="ma-0">
-        <v-col cols="6">
-          <div class="title">
-            <NLink
-              :class="!cardcontent._id && 'disable-click'"
-              :to="
-                `/article/${cardcontent._id}?title=${cardcontent.movieReviewCard.Title}`
-              "
-              class="link in-color"
-            >
+  <div
+    :class="
+      $route.name === 'index-article-id' ||
+      (cardcontent && socialShare === cardcontent._id)
+        ? ''
+        : 'cursor-pointer'
+    "
+    @click="linkToPost"
+  >
+    <v-card class="mt-4 mx-auto">
+      <div v-if="cardcontent.movieReviewCard">
+        <v-row class="ma-0">
+          <v-col cols="6">
+            <div class="title">
               {{ cardcontent.movieReviewCard.Title }}
               <span class="text--secondary caption">
                 {{ cardcontent.movieReviewCard.Year }}
               </span>
-            </NLink>
-          </div>
-          <div class="caption text-capitalize">
-            {{ cardcontent.movieReviewCard.Type }} -
-            {{ cardcontent.movieReviewCard.Language }}
-          </div>
-          <div class="caption font-weight-bold mt-1">
-            Genre
-          </div>
-          <div class="caption">
-            <!-- <v-chip
+            </div>
+            <div class="caption text-capitalize">
+              {{ cardcontent.movieReviewCard.Type }} -
+              {{ cardcontent.movieReviewCard.Language }}
+            </div>
+            <div class="caption font-weight-bold mt-1">
+              Genre
+            </div>
+            <div class="caption">
+              <!-- <v-chip
             v-for="genre in cardcontent.movieReviewCard.Genre.split(',')"
             :key="genre"
             small
@@ -33,15 +34,15 @@
           >
             {{ genre }}
           </v-chip> -->
-            {{ cardcontent.movieReviewCard.Genre }}
-          </div>
-          <div class="caption font-weight-bold mt-1">
-            Casts
-          </div>
-          <div class="caption">
-            {{ cardcontent.movieReviewCard.Actors }}
-          </div>
-          <!-- <div class="caption font-weight-bold mt-1">
+              {{ cardcontent.movieReviewCard.Genre }}
+            </div>
+            <div class="caption font-weight-bold mt-1">
+              Casts
+            </div>
+            <div class="caption">
+              {{ cardcontent.movieReviewCard.Actors }}
+            </div>
+            <!-- <div class="caption font-weight-bold mt-1">
             TOS users' rating
           </div>
           <div>
@@ -50,20 +51,8 @@
               half-increments
             ></v-rating>
           </div> -->
-        </v-col>
-        <v-col cols="6">
-          <NLink
-            :to="
-              `/article/${cardcontent._id}?title=${
-                cardcontent._id &&
-                cardcontent.movieReviewCard &&
-                cardcontent.movieReviewCard.Title
-                  ? cardcontent.movieReviewCard.Title
-                  : ''
-              }`
-            "
-            :event="!cardcontent._id ? '' : 'click'"
-          >
+          </v-col>
+          <v-col cols="6">
             <v-sheet
               elevation="12"
               class="v-sheet--offset mx-auto rounded-image"
@@ -75,60 +64,45 @@
               >
               </v-img>
             </v-sheet>
-          </NLink>
-        </v-col>
-      </v-row>
-      <v-divider></v-divider>
-      <v-row class="mx-0">
-        <v-col
-          v-for="rating in cardcontent.movieReviewCard.Ratings"
-          :key="rating.Source"
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+        <v-row class="mx-0">
+          <v-col
+            v-for="rating in cardcontent.movieReviewCard.Ratings"
+            :key="rating.Source"
+          >
+            <div class="font-weight-bold">
+              {{ rating.Value }}
+            </div>
+            <div class="caption">
+              {{ ratingSource(rating.Source) }}
+            </div>
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+        <v-row class="mx-0">
+          <v-col>
+            <div class="caption font-weight-bold">
+              Summary
+            </div>
+            <div class="caption font-weight-regular">
+              {{ cardcontent.movieReviewCard.Plot }}
+            </div>
+          </v-col>
+        </v-row>
+        <CardAction
+          :cardcontent="cardcontent"
+          :share-data="cardcontent._id && shareData()"
+          @socialShare="socialModal"
         >
-          <div class="font-weight-bold">
-            {{ rating.Value }}
-          </div>
-          <div class="caption">
-            {{ ratingSource(rating.Source) }}
-          </div>
-        </v-col>
-      </v-row>
-      <v-divider></v-divider>
-      <v-row class="mx-0">
-        <v-col>
-          <div class="caption font-weight-bold">
-            Summary
-          </div>
-          <div class="caption font-weight-regular">
-            {{ cardcontent.movieReviewCard.Plot }}
-          </div>
-        </v-col>
-      </v-row>
-      <CardAction
-        :cardcontent="cardcontent"
-        :share-data="cardcontent._id && shareData()"
-      >
-        <v-spacer></v-spacer>
-        <NLink
-          v-if="$route.name !== 'index-article-id'"
-          class="read-more-link"
-          :to="
-            `/article/${cardcontent._id}?title=${
-              cardcontent._id &&
-              cardcontent.movieReviewCard &&
-              cardcontent.movieReviewCard.Title
-                ? cardcontent.movieReviewCard.Title
-                : ''
-            }`
-          "
-        >
-          Read Reviews
-        </NLink>
-      </CardAction>
-    </div>
-    <div v-else>
-      <MovieReviewSkeleton />
-    </div>
-  </v-card>
+        </CardAction>
+      </div>
+      <div v-else>
+        <MovieReviewSkeleton />
+      </div>
+    </v-card>
+  </div>
 </template>
 <script>
 import MovieReviewSkeleton from '../LoadingSkeleton/movieSkeleton'
@@ -186,6 +160,11 @@ export default {
       })
     }
   },
+  data() {
+    return {
+      socialShare: false
+    }
+  },
   methods: {
     ratingSource(name) {
       if (name === 'Internet Movie Database') {
@@ -212,6 +191,26 @@ export default {
         .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
         .join('')
       return `${hashtag},theopenstories`
+    },
+    socialModal(data) {
+      this.socialShare = data
+    },
+    linkToPost() {
+      if (
+        this.$route.name !== 'index-article-id' &&
+        this.cardcontent &&
+        this.socialShare !== this.cardcontent._id
+      ) {
+        this.$router.push(
+          `/article/${this.cardcontent._id}?title=${
+            this.cardcontent._id &&
+            this.cardcontent.movieReviewCard &&
+            this.cardcontent.movieReviewCard.Title
+              ? this.cardcontent.movieReviewCard.Title
+              : ''
+          }`
+        )
+      }
     }
   }
 }
@@ -236,5 +235,11 @@ export default {
 }
 .in-color {
   color: inherit;
+}
+.disable-click {
+  pointer-events: none;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

@@ -8,7 +8,11 @@
 
 function hashtag_open(tokens, idx) {
   var tagName = tokens[idx].content
-  return '<a href="/search?search=%23' + tagName + '" class="tag">'
+  return (
+    '<a href="/search?search=%23' +
+    tagName +
+    '" class="tag" onclick="$(this).stopPropagation();">'
+  )
 }
 
 function hashtag_close() {
