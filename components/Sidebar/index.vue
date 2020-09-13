@@ -65,7 +65,17 @@
         <v-row class="mx-0">
           <v-col cols="12" class="pl-md-0">
             <v-btn block color="primary" rounded large @click="addStory">
-              <v-icon class="pr-3">mdi-note-plus-outline</v-icon>
+              <span
+                ><v-img
+                  :src="coinSymbol"
+                  height="18px"
+                  width="15px"
+                  responsive
+                  contain
+                ></v-img
+              ></span>
+              <span class="pr-4"> +2</span>
+              <!-- <v-icon class="pr-3">mdi-note-plus-outline</v-icon> -->
               Add Story
             </v-btn>
           </v-col>
@@ -78,6 +88,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import icon from '~/static/images/TOSIcon.png'
+import coinSymbol from '~/static/images/p-coin-symbol.svg'
 
 export default {
   filters: {
@@ -89,7 +100,8 @@ export default {
   },
   data() {
     return {
-      icon
+      icon,
+      coinSymbol
     }
   },
   computed: {

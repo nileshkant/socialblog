@@ -75,8 +75,17 @@
     </v-btn>
     <v-row class="mx-0 pos-sticky footer d-none d-md-flex">
       <v-col cols="auto" class="mx-auto">
-        <v-btn dark color="accent" @click="writeComment">
-          <v-icon dark class="pr-2">mdi-pencil</v-icon>
+        <v-btn dark color="accent" outlined @click="writeComment">
+          <span
+            ><v-img
+              :src="coinSymbol"
+              height="18px"
+              width="15px"
+              responsive
+              contain
+            ></v-img
+          ></span>
+          <span class="pr-4"> +1</span>
           Write Comment
         </v-btn>
       </v-col>
@@ -126,6 +135,7 @@ import QuoteCard from '~/components/ChatCard/QuoteCard'
 import ReplyCard from '~/components/ChatCard/ReplyCard'
 import MovieCard from '~/components/ChatCard/MovieCard'
 import CommentFormMD from '~/components/CommentFormMD'
+import coinSymbol from '~/static/images/p-coin-symbol.svg'
 // import LoadingSkeleton from '~/components/LoadingSkeleton'
 
 export default {
@@ -157,7 +167,8 @@ export default {
       formdata: null,
       isTwitterLoaded: false,
       commentDisable: false,
-      overlay: false
+      overlay: false,
+      coinSymbol
     }
   },
   computed: {
