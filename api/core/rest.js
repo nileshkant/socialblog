@@ -8,6 +8,7 @@ import userProfile from '../routes/userProfile'
 import noembed from '../routes/noembed'
 import contactUs from '../routes/contactUs'
 import movieDetails from '../routes/MovieDetails'
+import userAdditionalDetails from '../routes/userAdditionalDetails'
 
 // import blog from '~/blog/rest'
 
@@ -28,5 +29,6 @@ router.use('/user-profile', userProfile)
 router.use('/noembed', noembed)
 router.use('/contact-us', contactUs)
 router.use('/movie-details', movieDetails)
+router.use('/user-details', userAdditionalDetails)
 
 export default router

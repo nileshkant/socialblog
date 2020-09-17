@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="user" class="mb-5">
+      <CoinCard />
+    </div>
     <Weather v-if="weatherReport" :weather="weatherNow" />
     <Covid19 />
     <div class="caption mt-2 text-center mb-12 mb-md-2">
@@ -27,11 +30,13 @@
 import { mapGetters } from 'vuex'
 import Weather from '../Weather'
 import Covid19 from '../covid19'
+import CoinCard from '../CoinCard'
 
 export default {
   components: {
     Weather,
-    Covid19
+    Covid19,
+    CoinCard
   },
   data() {
     return {
@@ -41,7 +46,8 @@ export default {
   computed: {
     ...mapGetters({
       ipDetails: 'highlights/ipDetails',
-      weatherReport: 'highlights/weatherReport'
+      weatherReport: 'highlights/weatherReport',
+      user: 'user'
     })
   },
   watch: {

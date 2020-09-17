@@ -199,6 +199,9 @@ export default {
   mounted() {
     this.$meta().refresh()
     this.$store.dispatch('covid19/covidSummary')
+    if (this.user) {
+      this.$store.dispatch('userProfile/userAdditionalDetails')
+    }
   },
   methods: {
     closeModel() {

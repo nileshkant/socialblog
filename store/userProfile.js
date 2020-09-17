@@ -2,7 +2,8 @@ export const state = () => ({
   profileLoading: false,
   userPosts: null,
   anyUserDetails: null,
-  repostedStory: null
+  repostedStory: null,
+  userAdditionalDetails: null
 })
 
 export const mutations = {
@@ -24,6 +25,9 @@ export const mutations = {
       return article
     })
     state.userPosts.articles = updatedArticle
+  },
+  userAdditionalDetails(state, payload) {
+    state.userAdditionalDetails = payload
   }
 }
 
@@ -42,9 +46,15 @@ export const actions = {
     )
     commit('anyUserDetails', userDetails)
   },
-  async repostStory({ commit, rootState }, payload) {
+  async repostStory({ commit }, payload) {
     await this.$axios.$post(`/article/repost-story`, payload)
     commit('repostStory', payload)
+  },
+  async userAdditionalDetails({ commit }, payload) {
+    const additionalDetails = await this.$axios.$get(
+      '/user-details/get-additional-details'
+    )
+    commit('userAdditionalDetails', additionalDetails)
   }
 }
 
@@ -60,5 +70,8 @@ export const getters = {
   },
   repostedStory: (state) => {
     return state.repostedStory
+  },
+  userAdditionalDetails: (state) => {
+    return state.userAdditionalDetails
   }
 }
