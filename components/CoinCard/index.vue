@@ -39,7 +39,7 @@
             <v-icon v-if="value.slice(-1)[0] >= 0" color="success" small
               >mdi-arrow-up-thick</v-icon
             >
-            <v-icon v-else color="success" small>mdi-arrow-down-thick</v-icon>
+            <v-icon v-else color="error" small>mdi-arrow-down-thick</v-icon>
           </span>
         </div>
       </v-col>
