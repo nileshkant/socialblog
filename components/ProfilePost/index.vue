@@ -5,6 +5,29 @@
         v-if="post && post.articleType === 'fullDetailsCard'"
         class="mx-auto"
       >
+        <v-overlay absolute :opacity="0.7" :value="overlay === post._id">
+          <v-row class="text-center">
+            <v-col cols="12">
+              <h3 class="py-3">
+                Use 5 Pebbl coin to promote this post.
+              </h3>
+            </v-col>
+            <v-col>
+              <v-btn outlined class="mr-2" @click.stop.prevent="overlay = null">
+                Cancel
+              </v-btn>
+            </v-col>
+            <v-col>
+              <v-btn
+                color="error"
+                class="ml-2"
+                @click.stop.prevent="repostStory(post._id)"
+              >
+                Promote
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-overlay>
         <v-img height="250" :src="post.fullDetailsCard.mediaUrl"></v-img>
         <v-card-title class="title pb-0">{{
           post.fullDetailsCard.title
@@ -25,11 +48,13 @@
               user &&
                 user.userDetails._id === post.author &&
                 post.isVerified &&
+                userAdditionalDetails &&
+                userAdditionalDetails.coinBalance >= 5 &&
                 checkRepost
             "
             title="Repost Story"
             outlined
-            @click.stop="repostStory(post._id)"
+            @click.stop="overlay = post._id"
           >
             <v-icon>mdi-trending-up</v-icon>
             <v-img
@@ -42,6 +67,19 @@
             ></v-img>
             <span> -5</span>
           </v-btn>
+          <v-chip
+            v-if="
+              user &&
+                user.userDetails._id === post.author &&
+                userAdditionalDetails &&
+                userAdditionalDetails.coinBalance < 5
+            "
+            class="ma-2"
+            x-small
+          >
+            <v-icon x-small class="pr-1">mdi-lock</v-icon>
+            Requires 5 coins to promote
+          </v-chip>
           <v-card-text v-if="!post.isVerified" class="pa-0 caption px-2">
             This Story is blocked!
           </v-card-text>
@@ -57,6 +95,29 @@
           'white--text': checkColor === 'dark'
         }"
       >
+        <v-overlay absolute :opacity="0.7" :value="overlay === post._id">
+          <v-row class="text-center">
+            <v-col cols="12">
+              <h3 class="py-3">
+                Use 5 Pebbl coin to promote this post.
+              </h3>
+            </v-col>
+            <v-col>
+              <v-btn outlined class="mr-2" @click.stop.prevent="overlay = null">
+                Cancel
+              </v-btn>
+            </v-col>
+            <v-col>
+              <v-btn
+                color="error"
+                class="ml-2"
+                @click.stop.prevent="repostStory(post._id)"
+              >
+                Promote
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-overlay>
         <v-card-title class="pb-0">
           <span class="title font-weight-light">{{
             post.quoteCard.title
@@ -91,13 +152,24 @@
           }"
           v-html="$md.render(post.quoteCard.quote)"
         ></v-card-text>
+        <v-card-text
+          v-if="post.quoteCard && post.quoteCard.source"
+          class="caption py-0 text-truncate"
+          :class="{
+            'black--text': checkColor === 'light',
+            'white--text': checkColor === 'dark'
+          }"
+        >
+          - {{ post.quoteCard.source }}
+        </v-card-text>
         <v-card-actions>
           <v-btn
             v-if="
               user &&
                 user.userDetails._id === post.author &&
                 post.isVerified &&
-                checkRepost
+                checkRepost &&
+                userAdditionalDetails.coinBalance >= 5
             "
             :color="
               checkColor === 'light'
@@ -109,7 +181,7 @@
             :dark="checkColor === 'dark'"
             outlined
             title="Repost Story"
-            @click.stop="repostStory(post._id)"
+            @click.stop="overlay = post._id"
           >
             <v-icon>mdi-trending-up</v-icon>
             <v-img
@@ -122,15 +194,21 @@
             ></v-img>
             <span> -5</span>
           </v-btn>
+          <v-chip
+            v-if="
+              user &&
+                user.userDetails._id === post.author &&
+                userAdditionalDetails &&
+                userAdditionalDetails.coinBalance < 5
+            "
+            class="ma-2"
+            x-small
+          >
+            <v-icon x-small class="pr-1">mdi-lock</v-icon>
+            Requires 5 coins to promote
+          </v-chip>
           <v-card-text v-if="!post.isVerified" class="pa-0 caption px-2">
             This Story is blocked!
-          </v-card-text>
-          <v-spacer></v-spacer>
-          <v-card-text
-            v-if="post.quoteCard && post.quoteCard.source"
-            class="caption py-0 text-truncate text-right"
-          >
-            {{ post.quoteCard.source }}
           </v-card-text>
         </v-card-actions>
       </v-card>
@@ -152,12 +230,14 @@ export default {
   },
   data() {
     return {
-      coinSymbol
+      coinSymbol,
+      overlay: null
     }
   },
   computed: {
     ...mapGetters({
-      user: 'user'
+      user: 'user',
+      userAdditionalDetails: 'userProfile/userAdditionalDetails'
     }),
     checkColor() {
       let color = 'noColor'
@@ -190,9 +270,12 @@ export default {
         const articleId = { articleId: id }
         this.$store.dispatch('userProfile/repostStory', articleId)
       }
+      this.overlay = null
     },
     linkToPost() {
-      this.$router.push(`/article/${this.post.id}`)
+      if (this.overlay !== this.post._id) {
+        this.$router.push(`/article/${this.post.id}`)
+      }
     }
   }
 }

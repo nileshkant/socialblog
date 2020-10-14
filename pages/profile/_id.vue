@@ -81,6 +81,9 @@
                     user.userDetails.facebook.displayName
                 }}
               </v-col>
+              <v-col v-if="$route.params.id === 'me'" cols="12">
+                <CoinCard />
+              </v-col>
               <v-col cols="12">
                 <v-row justify="space-around">
                   <v-col cols="auto">
@@ -136,12 +139,14 @@
 import { mapGetters } from 'vuex'
 import ProfilePost from '~/components/ProfilePost'
 import NoRecords from '~/components/NoRecords'
+import CoinCard from '~/components/CoinCard'
 
 export default {
   middleware: 'authenticated',
   components: {
     ProfilePost,
-    NoRecords
+    NoRecords,
+    CoinCard
   },
   filters: {
     filterPosts: (value, type) => {
@@ -181,10 +186,15 @@ export default {
             this.$dateFns.differenceInDays(
               new Date(),
               new Date(article.modifiedDate)
-            ) < 2
+            ) < 2 && article.modifiedDate !== article.createdDate
           )
         })
       return (filterRepost && filterRepost.length) || 0
+    }
+  },
+  mounted() {
+    if (this.$route.params.id === 'me') {
+      this.$store.dispatch('userProfile/userAdditionalDetails')
     }
   },
   beforeRouteLeave(to, from, next) {
